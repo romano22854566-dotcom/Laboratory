@@ -10,7 +10,6 @@ private:
     int rows2;
     int cols2;
 
-    // «апрещаем копирование и присваивание
     TwoDArray(const TwoDArray&) = delete;
     TwoDArray& operator=(const TwoDArray&) = delete;
 

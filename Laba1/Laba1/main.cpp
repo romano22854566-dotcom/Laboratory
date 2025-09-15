@@ -19,40 +19,68 @@ int getPositiveInt(const char* prompt) {
     }
 }
 
-int main() {
-    setlocale(0, "rus");
-    // Ввод размеров первого массива
+void inputArrays(TwoDArray*& arrays) {
     cout << "=== РАЗМЕРЫ ПЕРВОГО МАССИВА ===\n";
     int rows1 = getPositiveInt("Введите количество строк для первого массива: ");
     int cols1 = getPositiveInt("Введите количество столбцов для первого массива: ");
 
-    // Ввод размеров второго массива
     cout << "\n=== РАЗМЕРЫ ВТОРОГО МАССИВА ===\n";
     int rows2 = getPositiveInt("Введите количество строк для второго массива: ");
     int cols2 = getPositiveInt("Введите количество столбцов для второго массива: ");
 
-    // Создаем объект с массивами разных размеров
-    TwoDArray arrays(rows1, cols1, rows2, cols2);
+    if (arrays != nullptr) {
+        delete arrays;
+    }
 
-    // Заполняем массивы с клавиатуры
-    arrays.fillArraysFromKeyboard();
+    arrays = new TwoDArray(rows1, cols1, rows2, cols2);
+    arrays->fillArraysFromKeyboard();
+}
 
-    cout << "\n=== ИСХОДНЫЕ МАССИВЫ ===\n";
+void showMenu() {
+    cout << "\n=== МЕНЮ ===\n";
+    cout << "1. Показать пересечение\n";
+    cout << "2. Показать объединение\n";
+    cout << "3. Ввести новые массивы\n";
+    cout << "4. Выйти из программы\n";
+    cout << "Выберите пункт: ";
+}
 
-    // Выводим исходные массивы
-    arrays.printArray(arrays.getArray1(), arrays.getRows1(), arrays.getCols1(), "Массив 1");
-    cout << endl;
-    arrays.printArray(arrays.getArray2(), arrays.getRows2(), arrays.getCols2(), "Массив 2");
+int main() {
+    setlocale(0, "rus");
+    TwoDArray* arrays = nullptr;
 
-    // Получаем пересечение
-    arrays.getIntersection();
+    cout << "=== ПРОГРАММА ДЛЯ РАБОТЫ С ДВУМЕРНЫМИ МАССИВАМИ ===\n";
+    inputArrays(arrays);
 
-    // Получаем объединение
-    arrays.getUnion();
+    int choice;
+    do {
+        showMenu();
 
-    cout << "\nПрограмма завершена. Нажмите Enter для выхода...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+        while (!(cin >> choice) || choice < 1 || choice > 4) {
+            cout << "Ошибка! Введите число от 1 до 4: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        switch (choice) {
+        case 1:
+            arrays->getIntersection();
+            break;
+        case 2:
+            arrays->getUnion();
+            break;
+        case 3:
+            inputArrays(arrays);
+            break;
+        case 4:
+            cout << "Выход из программы...\n";
+            break;
+        }
+    } while (choice != 4);
+
+    if (arrays != nullptr) {
+        delete arrays;
+    }
 
     return 0;
 }
