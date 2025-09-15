@@ -1,98 +1,100 @@
-#include "TwoDArray.h"
 #include <iostream>
-#include <algorithm>
-#include <locale>
 #include <limits>
+#include "TwoDArray.h"
 
-TwoDArray::TwoDArray(int r, int c) : rows(r), cols(c) {
-    if (rows <= 0 || cols <= 0) {
-        throw std::invalid_argument("Размеры массива должны быть положительными числами");
+using namespace std;
+
+// Конструктор с разными размерами для двух массивов
+TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) : rows1(r1), cols1(c1), rows2(r2), cols2(c2) {
+    // Выделяем память для первого массива
+    array1 = new int* [rows1];
+    for (int i = 0; i < rows1; i++) {
+        array1[i] = new int[cols1];
     }
 
-    data = new int* [rows];
-    for (int i = 0; i < rows; i++) {
-        data[i] = new int[cols](); // Инициализация нулями
+    // Выделяем память для второго массива
+    array2 = new int* [rows2];
+    for (int i = 0; i < rows2; i++) {
+        array2[i] = new int[cols2];
+    }
+
+    // Заполняем нулями по умолчанию
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols1; j++) {
+            array1[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < rows2; i++) {
+        for (int j = 0; j < cols2; j++) {
+            array2[i][j] = 0;
+        }
     }
 }
 
+// Деструктор
 TwoDArray::~TwoDArray() {
-    for (int i = 0; i < rows; i++) {
-        delete[] data[i];
+    // Освобождаем память первого массива
+    for (int i = 0; i < rows1; i++) {
+        delete[] array1[i];
     }
-    delete[] data;
+    delete[] array1;
+
+    // Освобождаем память второго массива
+    for (int i = 0; i < rows2; i++) {
+        delete[] array2[i];
+    }
+    delete[] array2;
 }
 
-void TwoDArray::fillArray() {
-    std::cout << "Заполните массив " << rows << "x" << cols << ":\n";
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            std::string prompt = "Элемент [" + std::to_string(i) + "][" + std::to_string(j) + "]: ";
-            data[i][j] = getValidatedInt(prompt);
+// Функция для заполнения массивов с клавиатуры
+void TwoDArray::fillArraysFromKeyboard() {
+    cout << "=== Заполнение первого массива " << rows1 << "x" << cols1 << " ===\n";
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols1; j++) {
+            while (true) {
+                cout << "Массив 1[" << i << "][" << j << "] = ";
+                if (cin >> array1[i][j]) {
+                    break; // Успешный ввод
+                }
+                else {
+                    cout << "Ошибка! Введите целое число.\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
+        }
+    }
+
+    cout << "\n=== Заполнение второго массива " << rows2 << "x" << cols2 << " ===\n";
+    for (int i = 0; i < rows2; i++) {
+        for (int j = 0; j < cols2; j++) {
+            while (true) {
+                cout << "Массив 2[" << i << "][" << j << "] = ";
+                if (cin >> array2[i][j]) {
+                    break; // Успешный ввод
+                }
+                else {
+                    cout << "Ошибка! Введите целое число.\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
         }
     }
 }
 
-void TwoDArray::printArray(const std::string& name) const {
-    std::cout << name << ":\n";
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            std::cout << data[i][j] << " ";
+// Функция для вывода массива
+void TwoDArray::printArray(int** arr, int r, int c, const char* name) {
+    cout << name << " (" << r << "x" << c << "):\n";
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            cout << arr[i][j] << "\t";
         }
-        std::cout << std::endl;
+        cout << endl;
     }
 }
 
-std::set<int> TwoDArray::getUniqueElements() const {
-    std::set<int> uniqueElements;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            uniqueElements.insert(data[i][j]);
-        }
-    }
-    return uniqueElements;
-}
-
-int TwoDArray::getElement(int i, int j) const {
-    if (i < 0 || i >= rows || j < 0 || j >= cols) {
-        throw std::out_of_range("Индекс выходит за границы массива");
-    }
-    return data[i][j];
-}
-
-void TwoDArray::setElement(int i, int j, int value) {
-    if (i < 0 || i >= rows || j < 0 || j >= cols) {
-        throw std::out_of_range("Индекс выходит за границы массива");
-    }
-    data[i][j] = value;
-}
-
-void printVector(const std::vector<int>& vec, const std::string& name) {
-    std::cout << name << ": ";
-    if (vec.empty()) {
-        std::cout << "пусто";
-    }
-    else {
-        for (int num : vec) {
-            std::cout << num << " ";
-        }
-    }
-    std::cout << std::endl;
-}
-
-int getValidatedInt(const std::string& prompt) {
-    int value;
-    while (true) {
-        std::cout << prompt;
-        std::cin >> value;
-
-        if (std::cin.fail()) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Ошибка! Пожалуйста, введите целое число.\n";
-        }
-        else {
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            return value;
-        }
-    }
-}
+// Геттеры для доступа к массивам
+int** TwoDArray::getArray1() { return array1; }
+int** TwoDArray::getArray2() { return array2; }

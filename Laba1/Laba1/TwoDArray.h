@@ -1,41 +1,28 @@
 #ifndef TWO_D_ARRAY_H
 #define TWO_D_ARRAY_H
 
-#include <vector>
-#include <set>
-#include <string>
-
 class TwoDArray {
 private:
-    int** data;
-    int rows;
-    int cols;
+    int** array1;
+    int** array2;
+    int rows1, cols1; // размеры первого массива
+    int rows2, cols2; // размеры второго массива
 
 public:
-    TwoDArray(int r, int c);
+    TwoDArray(int r1, int c1, int r2, int c2);
     ~TwoDArray();
 
-    // Запрет копирования и присваивания для избежания проблем с памятью
-    TwoDArray(const TwoDArray&) = delete;
-    TwoDArray& operator=(const TwoDArray&) = delete;
+    void fillArraysFromKeyboard();
+    void getIntersection();
+    void getUnion();
+    void printArray(int** arr, int r, int c, const char* name);
 
-    void fillArray();
-    void printArray(const std::string& name) const;
-    std::set<int> getUniqueElements() const;
-
-    // Геттеры
-    int getRows() const { return rows; }
-    int getCols() const { return cols; }
-    int getElement(int i, int j) const;
-    void setElement(int i, int j, int value);
-
-    // Статические методы для операций с множествами
-    static std::vector<int> getIntersection(const TwoDArray& arr1, const TwoDArray& arr2);
-    static std::vector<int> getUnion(const TwoDArray& arr1, const TwoDArray& arr2);
+    int** getArray1();
+    int** getArray2();
+    int getRows1() { return rows1; }
+    int getCols1() { return cols1; }
+    int getRows2() { return rows2; }
+    int getCols2() { return cols2; }
 };
-
-// Вспомогательные функции
-void printVector(const std::vector<int>& vec, const std::string& name);
-int getValidatedInt(const std::string& prompt);
 
 #endif

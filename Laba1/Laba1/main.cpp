@@ -1,65 +1,58 @@
-#include "TwoDArray.h"
 #include <iostream>
-#include <locale>
 #include <limits>
+#include "TwoDArray.h"
+#include <locale>
+using namespace std;
+
+int getPositiveInt(const char* prompt) {
+    int value;
+    while (true) {
+        cout << prompt;
+        if (cin >> value && value > 0) {
+            return value;
+        }
+        else {
+            cout << "Ошибка! Введите положительное целое число.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+}
 
 int main() {
-    setlocale(0, "rus");
+    setlocale(0, "Rus");
+    // Ввод размеров первого массива
+    cout << "=== РАЗМЕРЫ ПЕРВОГО МАССИВА ===\n";
+    int rows1 = getPositiveInt("Введите количество строк для первого массива: ");
+    int cols1 = getPositiveInt("Введите количество столбцов для первого массива: ");
 
-    try {
-        int rows, cols;
+    // Ввод размеров второго массива
+    cout << "\n=== РАЗМЕРЫ ВТОРОГО МАССИВА ===\n";
+    int rows2 = getPositiveInt("Введите количество строк для второго массива: ");
+    int cols2 = getPositiveInt("Введите количество столбцов для второго массива: ");
 
-        // Ввод размеров первого массива с проверкой
-        while (true) {
-            std::cout << "Введите размеры первого массива (строки столбцы): ";
-            std::cin >> rows >> cols;
+    // Создаем объект с массивами разных размеров
+    TwoDArray arrays(rows1, cols1, rows2, cols2);
 
-            if (std::cin.fail() || rows <= 0 || cols <= 0) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Ошибка! Размеры должны быть положительными целыми числами.\n";
-            }
-            else {
-                break;
-            }
-        }
+    // Заполняем массивы с клавиатуры
+    arrays.fillArraysFromKeyboard();
 
-        TwoDArray array1(rows, cols);
-        array1.fillArray();
+    cout << "\n=== ИСХОДНЫЕ МАССИВЫ ===\n";
 
-        // Ввод размеров второго массива с проверкой
-        while (true) {
-            std::cout << "Введите размеры второго массива (строки столбцы): ";
-            std::cin >> rows >> cols;
+    // Выводим исходные массивы
+    arrays.printArray(arrays.getArray1(), rows1, cols1, "Массив 1");
+    cout << endl;
+    arrays.printArray(arrays.getArray2(), rows2, cols2, "Массив 2");
 
-            if (std::cin.fail() || rows <= 0 || cols <= 0) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Ошибка! Размеры должны быть положительными целыми числами.\n";
-            }
-            else {
-                break;
-            }
-        }
+    // Получаем пересечение
+    arrays.getIntersection();
 
-        TwoDArray array2(rows, cols);
-        array2.fillArray();
+    // Получаем объединение
+    arrays.getUnion();
 
-        std::cout << "\n";
-        array1.printArray("Первый массив");
-        array2.printArray("Второй массив");
-
-        std::vector<int> intersection = TwoDArray::getIntersection(array1, array2);
-        printVector(intersection, "Пересечение элементов");
-
-        std::vector<int> unionSet = TwoDArray::getUnion(array1, array2);
-        printVector(unionSet, "Объединение элементов");
-
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Ошибка: " << e.what() << std::endl;
-        return 1;
-    }
+    cout << "\nПрограмма завершена. Нажмите Enter для выхода...";
+    cin.ignore();
+    cin.get();
 
     return 0;
 }

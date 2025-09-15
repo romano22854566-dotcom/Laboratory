@@ -1,15 +1,56 @@
+#include <iostream>
 #include "TwoDArray.h"
-#include <algorithm>
-#include <iterator>
 
-std::vector<int> TwoDArray::getIntersection(const TwoDArray& arr1, const TwoDArray& arr2) {
-    std::set<int> set1 = arr1.getUniqueElements();
-    std::set<int> set2 = arr2.getUniqueElements();
-    std::vector<int> intersection;
+using namespace std;
 
-    std::set_intersection(set1.begin(), set1.end(),
-        set2.begin(), set2.end(),
-        std::back_inserter(intersection));
+// Функция для получения пересечения
+void TwoDArray::getIntersection() {
+    cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ===\n";
 
-    return intersection;
+    // Создаем новый массив для пересечения
+    int intersectionSize = 0;
+
+    // Сначала подсчитаем количество общих элементов
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols1; j++) {
+            for (int k = 0; k < rows2; k++) {
+                for (int l = 0; l < cols2; l++) {
+                    if (array1[i][j] == array2[k][l]) {
+                        intersectionSize++;
+                    }
+                }
+            }
+        }
+    }
+
+    if (intersectionSize == 0) {
+        cout << "Пересечение пустое - нет общих элементов\n";
+        return;
+    }
+
+    // Создаем одномерный массив для пересечения
+    int* intersection = new int[intersectionSize];
+    int index = 0;
+
+    // Заполняем массив пересечения
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols1; j++) {
+            for (int k = 0; k < rows2; k++) {
+                for (int l = 0; l < cols2; l++) {
+                    if (array1[i][j] == array2[k][l]) {
+                        intersection[index++] = array1[i][j];
+                    }
+                }
+            }
+        }
+    }
+
+    cout << "Пересечение (" << intersectionSize << " элементов): ";
+    for (int i = 0; i < intersectionSize; i++) {
+        cout << intersection[i] << " ";
+    }
+    cout << endl;
+
+    // Освобождаем память
+    delete[] intersection;
 }
