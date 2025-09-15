@@ -1,0 +1,53 @@
+# Игнорировать ВСЁ
+*
+
+# Но разрешить исходные коды C++
+!*.cpp
+!*.h
+!*.hpp
+!*.c
+
+# Разрешить файл gitignore
+!.gitignore
+
+# Разрешить README (если нужно)
+!README.md
+
+# Явно игнорировать папки Visual Studio
+.vs/
+x64/
+x86/
+Debug/
+Release/
+ipch/
+*.tlog/
+
+# Игнорировать файлы проектов Visual Studio
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.sdf
+*.opensdf
+
+# Игнорировать скомпилированные файлы
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.iobj
+*.ipdb
+
+# Игнорировать резервные копии
+*.bak
+*.backup
+*.~*
+
+# Игнорировать системные файлы
+Thumbs.db
+.DS_Store
