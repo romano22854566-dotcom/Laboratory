@@ -4,11 +4,18 @@
 using namespace std;
 
 // Функция для получения объединения
-void TwoDArray::getUnion() {
+void TwoDArray::getUnion() const {
+    if (array1 == nullptr || array2 == nullptr) {
+        cerr << "Error: Arrays not properly initialized" << endl;
+        return;
+    }
+
     cout << "\n=== ОБЪЕДИНЕНИЕ МАССИВОВ ===\n";
 
     // Максимально возможный размер объединения
     int maxSize = rows1 * cols1 + rows2 * cols2;
+
+    // Создаем массив с помощью new
     int* unionArray = new int[maxSize];
     int unionSize = 0;
 
@@ -24,7 +31,8 @@ void TwoDArray::getUnion() {
                 }
             }
             if (!found) {
-                unionArray[unionSize++] = array1[i][j];
+                unionArray[unionSize] = array1[i][j];
+                unionSize++;
             }
         }
     }
@@ -40,7 +48,8 @@ void TwoDArray::getUnion() {
                 }
             }
             if (!found) {
-                unionArray[unionSize++] = array2[i][j];
+                unionArray[unionSize] = array2[i][j];
+                unionSize++;
             }
         }
     }
@@ -51,6 +60,6 @@ void TwoDArray::getUnion() {
     }
     cout << endl;
 
-    // Освобождаем память
+    // Освобождаем память с помощью delete
     delete[] unionArray;
 }

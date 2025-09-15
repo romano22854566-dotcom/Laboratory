@@ -1,7 +1,7 @@
 #include <iostream>
-#include <limits>
-#include "TwoDArray.h"
 #include <locale>
+#include "TwoDArray.h"
+
 using namespace std;
 
 int getPositiveInt(const char* prompt) {
@@ -20,7 +20,7 @@ int getPositiveInt(const char* prompt) {
 }
 
 int main() {
-    setlocale(0, "Rus");
+    setlocale(0, "rus");
     // Ввод размеров первого массива
     cout << "=== РАЗМЕРЫ ПЕРВОГО МАССИВА ===\n";
     int rows1 = getPositiveInt("Введите количество строк для первого массива: ");
@@ -40,9 +40,9 @@ int main() {
     cout << "\n=== ИСХОДНЫЕ МАССИВЫ ===\n";
 
     // Выводим исходные массивы
-    arrays.printArray(arrays.getArray1(), rows1, cols1, "Массив 1");
+    arrays.printArray(arrays.getArray1(), arrays.getRows1(), arrays.getCols1(), "Массив 1");
     cout << endl;
-    arrays.printArray(arrays.getArray2(), rows2, cols2, "Массив 2");
+    arrays.printArray(arrays.getArray2(), arrays.getRows2(), arrays.getCols2(), "Массив 2");
 
     // Получаем пересечение
     arrays.getIntersection();
@@ -51,7 +51,7 @@ int main() {
     arrays.getUnion();
 
     cout << "\nПрограмма завершена. Нажмите Enter для выхода...";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 
     return 0;

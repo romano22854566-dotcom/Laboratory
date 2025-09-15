@@ -5,24 +5,30 @@ class TwoDArray {
 private:
     int** array1;
     int** array2;
-    int rows1, cols1; // размеры первого массива
-    int rows2, cols2; // размеры второго массива
+    int rows1;
+    int cols1;
+    int rows2;
+    int cols2;
+
+    // Запрещаем копирование и присваивание
+    TwoDArray(const TwoDArray&) = delete;
+    TwoDArray& operator=(const TwoDArray&) = delete;
 
 public:
     TwoDArray(int r1, int c1, int r2, int c2);
     ~TwoDArray();
 
     void fillArraysFromKeyboard();
-    void getIntersection();
-    void getUnion();
-    void printArray(int** arr, int r, int c, const char* name);
+    void getIntersection() const;
+    void getUnion() const;
+    void printArray(int** arr, int r, int c, const char* name) const;
 
-    int** getArray1();
-    int** getArray2();
-    int getRows1() { return rows1; }
-    int getCols1() { return cols1; }
-    int getRows2() { return rows2; }
-    int getCols2() { return cols2; }
+    int** getArray1() const { return array1; }
+    int** getArray2() const { return array2; }
+    int getRows1() const { return rows1; }
+    int getCols1() const { return cols1; }
+    int getRows2() const { return rows2; }
+    int getCols2() const { return cols2; }
 };
 
 #endif
