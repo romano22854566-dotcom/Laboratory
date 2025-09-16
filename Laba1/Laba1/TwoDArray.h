@@ -10,9 +10,6 @@ private:
     int rows2;
     int cols2;
 
-    TwoDArray(const TwoDArray&) = delete;
-    TwoDArray& operator=(const TwoDArray&) = delete;
-
 public:
     TwoDArray(int r1, int c1, int r2, int c2);
     ~TwoDArray();
@@ -20,7 +17,7 @@ public:
     void fillArraysFromKeyboard();
     void getIntersection() const;
     void getUnion() const;
-    void printArray(int** arr, int r, int c, const char* name) const;
+    void printArrays() const;
 
     int** getArray1() const { return array1; }
     int** getArray2() const { return array2; }

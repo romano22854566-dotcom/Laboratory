@@ -1,66 +1,82 @@
 #include <iostream>
 #include <locale>
+#include <string>
+#include <sstream>
 #include "TwoDArray.h"
 
 using namespace std;
 
-int getPositiveInt(const char* prompt) {
-    int value;
+// Функция для безопасного выбора из меню
+int getMenuChoice() {
+    string input;
+    int choice;
+
     while (true) {
-        cout << prompt;
-        if (cin >> value && value > 0) {
-            return value;
+        cout << "Выберите пункт: ";
+        getline(cin, input);
+
+        if (input.empty()) {
+            cout << "Ошибка! Введите число от 1 до 5.\n";
+            continue;
+        }
+
+        // Проверяем, что ввод состоит только из одной цифры
+        if (input.length() != 1 || !isdigit(input[0])) {
+            cout << "Ошибка! Введите одну цифру от 1 до 5.\n";
+            continue;
+        }
+
+        choice = input[0] - '0';
+        if (choice >= 1 && choice <= 5) {
+            return choice;
         }
         else {
-            cout << "Ошибка! Введите положительное целое число.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Ошибка! Введите число от 1 до 5.\n";
         }
     }
 }
 
-void inputArrays(TwoDArray*& arrays) {
+TwoDArray* createArrays() {
     cout << "=== РАЗМЕРЫ ПЕРВОГО МАССИВА ===\n";
-    int rows1 = getPositiveInt("Введите количество строк для первого массива: ");
-    int cols1 = getPositiveInt("Введите количество столбцов для первого массива: ");
+    int rows1;
+    int cols1;
+    int rows2;
+    int cols2;
+
+    // Используем функции из TwoDArray.cpp
+    extern int getSafePositiveInt(const string & prompt);
+
+    rows1 = getSafePositiveInt("Введите количество строк для первого массива: ");
+    cols1 = getSafePositiveInt("Введите количество столбцов для первого массива: ");
 
     cout << "\n=== РАЗМЕРЫ ВТОРОГО МАССИВА ===\n";
-    int rows2 = getPositiveInt("Введите количество строк для второго массива: ");
-    int cols2 = getPositiveInt("Введите количество столбцов для второго массива: ");
+    rows2 = getSafePositiveInt("Введите количество строк для второго массива: ");
+    cols2 = getSafePositiveInt("Введите количество столбцов для второго массива: ");
 
-    if (arrays != nullptr) {
-        delete arrays;
-    }
-
-    arrays = new TwoDArray(rows1, cols1, rows2, cols2);
-    arrays->fillArraysFromKeyboard();
+    return new TwoDArray(rows1, cols1, rows2, cols2);
 }
 
 void showMenu() {
     cout << "\n=== МЕНЮ ===\n";
     cout << "1. Показать пересечение\n";
     cout << "2. Показать объединение\n";
-    cout << "3. Ввести новые массивы\n";
-    cout << "4. Выйти из программы\n";
-    cout << "Выберите пункт: ";
+    cout << "3. Показать оба массива\n";
+    cout << "4. Ввести новые массивы\n";
+    cout << "5. Выйти из программы\n";
 }
 
 int main() {
     setlocale(0, "rus");
-    TwoDArray* arrays = nullptr;
 
     cout << "=== ПРОГРАММА ДЛЯ РАБОТЫ С ДВУМЕРНЫМИ МАССИВАМИ ===\n";
-    inputArrays(arrays);
+
+    TwoDArray* arrays = createArrays();
+    arrays->fillArraysFromKeyboard();
 
     int choice;
     do {
         showMenu();
-
-        while (!(cin >> choice) || choice < 1 || choice > 4) {
-            cout << "Ошибка! Введите число от 1 до 4: ";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
+        choice = getMenuChoice();
 
         switch (choice) {
         case 1:
@@ -70,17 +86,19 @@ int main() {
             arrays->getUnion();
             break;
         case 3:
-            inputArrays(arrays);
+            arrays->printArrays();
             break;
         case 4:
+            delete arrays;
+            arrays = createArrays();
+            arrays->fillArraysFromKeyboard();
+            break;
+        case 5:
             cout << "Выход из программы...\n";
             break;
         }
-    } while (choice != 4);
+    } while (choice != 5);
 
-    if (arrays != nullptr) {
-        delete arrays;
-    }
-
+    delete arrays;
     return 0;
 }
