@@ -10,9 +10,9 @@ private:
     int** array1 = nullptr;
     int** array2 = nullptr;
 
-    // «апрещаем копирование и присваивание
-    TwoDArray(const TwoDArray&) = delete;
-    TwoDArray& operator=(const TwoDArray&) = delete;
+    // «апрещаем копирование и присваивание (старый способ)
+    TwoDArray(const TwoDArray&);
+    TwoDArray& operator=(const TwoDArray&);
 
 public:
     TwoDArray(int r1, int c1, int r2, int c2);

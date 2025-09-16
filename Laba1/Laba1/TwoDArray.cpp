@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
 #include "TwoDArray.h"
 
@@ -136,22 +135,21 @@ void TwoDArray::showArrays() const {
     }
 }
 
-// Исправленная функция с const и ranges::contains
-bool isElementInArray(int element, const vector<int>& array) {
-    // Используем std::ranges::contains для C++20 и новее
-#if __cplusplus >= 202002L
-    return std::ranges::contains(array, element);
-#else
-    return find(array.begin(), array.end(), element) != array.end();
-#endif
-}
-
 bool isElementInMatrix(int element, int** matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             if (matrix[i][j] == element) {
                 return true;
             }
+        }
+    }
+    return false;
+}
+
+bool isElementInArray(int element, int* array, int size) {
+    for (int i = 0; i < size; i++) {
+        if (array[i] == element) {
+            return true;
         }
     }
     return false;
@@ -165,34 +163,39 @@ void TwoDArray::showIntersection() const {
 
     cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ===\n";
 
-    vector<int> intersection;
+    // Создаем временный массив для хранения пересечения
+    int maxSize = rows1 * cols1;
+    int* intersection = new int[maxSize];
+    int intersectionSize = 0;
 
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
             int current = array1[i][j];
 
             bool inSecondArray = isElementInMatrix(current, array2, rows2, cols2);
-            bool alreadyAdded = isElementInArray(current, intersection);
+            bool alreadyAdded = isElementInArray(current, intersection, intersectionSize);
 
             if (inSecondArray && !alreadyAdded) {
-                intersection.push_back(current);
+                intersection[intersectionSize++] = current;
             }
         }
     }
 
-    if (intersection.empty()) {
+    if (intersectionSize == 0) {
         cout << "Пересечение пустое - нет общих элементов\n";
     }
     else {
-        cout << "Пересечение (" << intersection.size() << " элементов):\n";
+        cout << "Пересечение (" << intersectionSize << " элементов):\n";
 
         const int cols = 3;
-        for (size_t i = 0; i < intersection.size(); i++) {
+        for (int i = 0; i < intersectionSize; i++) {
             cout << intersection[i] << " ";
             if ((i + 1) % cols == 0) cout << endl;
         }
-        if (intersection.size() % cols != 0) cout << endl;
+        if (intersectionSize % cols != 0) cout << endl;
     }
+
+    delete[] intersection;
 }
 
 void TwoDArray::showUnion() const {
@@ -203,14 +206,17 @@ void TwoDArray::showUnion() const {
 
     cout << "\n=== ОБЪЕДИНЕНИЕ МАССИВОВ ===\n";
 
-    vector<int> unionElements;
+    // Создаем временный массив для хранения объединения
+    int maxSize = rows1 * cols1 + rows2 * cols2;
+    int* unionElements = new int[maxSize];
+    int unionSize = 0;
 
     // Добавляем элементы из первого массива
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
             int current = array1[i][j];
-            if (!isElementInArray(current, unionElements)) {
-                unionElements.push_back(current);
+            if (!isElementInArray(current, unionElements, unionSize)) {
+                unionElements[unionSize++] = current;
             }
         }
     }
@@ -219,18 +225,20 @@ void TwoDArray::showUnion() const {
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
             int current = array2[i][j];
-            if (!isElementInArray(current, unionElements)) {
-                unionElements.push_back(current);
+            if (!isElementInArray(current, unionElements, unionSize)) {
+                unionElements[unionSize++] = current;
             }
         }
     }
 
-    cout << "Объединение (" << unionElements.size() << " элементов):\n";
+    cout << "Объединение (" << unionSize << " элементов):\n";
 
     const int cols = 3;
-    for (size_t i = 0; i < unionElements.size(); i++) {
+    for (int i = 0; i < unionSize; i++) {
         cout << unionElements[i] << " ";
         if ((i + 1) % cols == 0) cout << endl;
     }
-    if (unionElements.size() % cols != 0) cout << endl;
+    if (unionSize % cols != 0) cout << endl;
+
+    delete[] unionElements;
 }
