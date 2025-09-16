@@ -19,7 +19,7 @@ public:
     ~TwoDArray();
 
     bool initializeArrays();
-    void fillArrays();
+    void fillArrays() const;
     void showIntersection() const;
     void showUnion() const;
     void showArrays() const;

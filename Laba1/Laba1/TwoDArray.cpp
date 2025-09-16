@@ -80,7 +80,7 @@ bool TwoDArray::initializeArrays() {
     return true;
 }
 
-void TwoDArray::fillArrays() {
+void TwoDArray::fillArrays() const {
     if (!isValid()) {
         cout << "Ошибка: массивы не инициализированы\n";
         return;
