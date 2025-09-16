@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "TwoDArray.h"
 
 using namespace std;
@@ -137,12 +138,7 @@ void TwoDArray::showArrays() const {
 }
 
 bool isElementInArray(int element, const vector<int>& array) {
-    for (int value : array) {
-        if (value == element) {
-            return true;
-        }
-    }
-    return false;
+    return find(array.begin(), array.end(), element) != array.end();
 }
 
 bool isElementInMatrix(int element, int** matrix, int rows, int cols) {
