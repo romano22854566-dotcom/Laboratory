@@ -161,11 +161,11 @@ void TwoDArray::showIntersection() const {
         return;
     }
 
-    cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ==\n";
+    cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ===\n";
 
     // Создаем временный массив для хранения пересечения
     int maxSize = rows1 * cols1;
-    int* intersection = new int[maxSize];
+    auto intersection = new int[maxSize];
     int intersectionSize = 0;
 
     for (int i = 0; i < rows1; i++) {
@@ -208,7 +208,7 @@ void TwoDArray::showUnion() const {
 
     // Создаем временный массив для хранения объединения
     int maxSize = rows1 * cols1 + rows2 * cols2;
-    int* unionElements = new int[maxSize];
+    auto unionElements = new int[maxSize];
     int unionSize = 0;
 
     // Добавляем элементы из первого массива
