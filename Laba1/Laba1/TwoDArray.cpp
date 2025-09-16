@@ -164,7 +164,7 @@ void TwoDArray::showIntersection() const {
     cout << "\n=== ÏÅÐÅÑÅ×ÅÍÈÅ ÌÀÑÑÈÂÎÂ ===\n";
 
     // Ñîçäàåì âðåìåííûé ìàññèâ äëÿ õðàíåíèÿ ïåðåñå÷åíèÿ
-    int maxSize = rows1 * cols1;
+    auto maxSize = rows1 * cols1;
     auto intersection = new int[maxSize];
     int intersectionSize = 0;
 
@@ -207,7 +207,7 @@ void TwoDArray::showUnion() const {
     cout << "\n=== ÎÁÚÅÄÈÍÅÍÈÅ ÌÀÑÑÈÂÎÂ ===\n";
 
     // Ñîçäàåì âðåìåííûé ìàññèâ äëÿ õðàíåíèÿ îáúåäèíåíèÿ
-    int maxSize = rows1 * cols1 + rows2 * cols2;
+    auto maxSize = rows1 * cols1 + rows2 * cols2;
     auto unionElements = new int[maxSize];
     int unionSize = 0;
 
