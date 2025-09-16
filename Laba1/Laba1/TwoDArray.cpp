@@ -1,46 +1,103 @@
 #include <iostream>
+#include <string>
+#include <cstdlib>
 #include "TwoDArray.h"
 
 using namespace std;
 
 TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) :
-    rows1(r1), cols1(c1), rows2(r2), cols2(c2) {
+    rows1(r1 > 0 ? r1 : 1),
+    cols1(c1 > 0 ? c1 : 1),
+    rows2(r2 > 0 ? r2 : 1),
+    cols2(c2 > 0 ? c2 : 1),
+    array1(nullptr),
+    array2(nullptr) {
+}
+
+TwoDArray::~TwoDArray() {
+    if (array1 != nullptr) {
+        for (int i = 0; i < rows1; i++) {
+            delete[] array1[i];
+        }
+        delete[] array1;
+    }
+
+    if (array2 != nullptr) {
+        for (int i = 0; i < rows2; i++) {
+            delete[] array2[i];
+        }
+        delete[] array2;
+    }
+}
+
+bool TwoDArray::initializeArrays() {
+    if (array1 != nullptr || array2 != nullptr) {
+        return false;
+    }
 
     array1 = new int* [rows1];
+    if (array1 == nullptr) return false;
+
     for (int i = 0; i < rows1; i++) {
-        array1[i] = new int[cols1];
-        for (int j = 0; j < cols1; j++) {
-            array1[i][j] = 0;
+        array1[i] = new int[cols1]();
+        if (array1[i] == nullptr) {
+            for (int j = 0; j < i; j++) {
+                delete[] array1[j];
+            }
+            delete[] array1;
+            array1 = nullptr;
+            return false;
         }
     }
 
     array2 = new int* [rows2];
+    if (array2 == nullptr) {
+        for (int i = 0; i < rows1; i++) {
+            delete[] array1[i];
+        }
+        delete[] array1;
+        array1 = nullptr;
+        return false;
+    }
+
     for (int i = 0; i < rows2; i++) {
-        array2[i] = new int[cols2];
-        for (int j = 0; j < cols2; j++) {
-            array2[i][j] = 0;
+        array2[i] = new int[cols2]();
+        if (array2[i] == nullptr) {
+            for (int j = 0; j < i; j++) {
+                delete[] array2[j];
+            }
+            delete[] array2;
+            array2 = nullptr;
+
+            for (int j = 0; j < rows1; j++) {
+                delete[] array1[j];
+            }
+            delete[] array1;
+            array1 = nullptr;
+
+            return false;
         }
     }
-}
 
-TwoDArray::~TwoDArray() {
-    for (int i = 0; i < rows1; i++) {
-        delete[] array1[i];
-    }
-    delete[] array1;
-
-    for (int i = 0; i < rows2; i++) {
-        delete[] array2[i];
-    }
-    delete[] array2;
+    return true;
 }
 
 void TwoDArray::fillArrays() {
+    if (!isValid()) {
+        cout << "Ошибка: массивы не инициализированы\n";
+        return;
+    }
+
     cout << "=== Заполнение первого массива " << rows1 << "x" << cols1 << " ===\n";
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
             cout << "Массив 1[" << i << "][" << j << "] = ";
-            cin >> array1[i][j];
+            if (!(cin >> array1[i][j])) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Ошибка ввода! Введите число.\n";
+                j--;
+            }
         }
     }
 
@@ -48,12 +105,22 @@ void TwoDArray::fillArrays() {
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
             cout << "Массив 2[" << i << "][" << j << "] = ";
-            cin >> array2[i][j];
+            if (!(cin >> array2[i][j])) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Ошибка ввода! Введите число.\n";
+                j--;
+            }
         }
     }
 }
 
-void TwoDArray::showArrays() {
+void TwoDArray::showArrays() const {
+    if (!isValid()) {
+        cout << "Ошибка: массивы не инициализированы\n";
+        return;
+    }
+
     cout << "\nМассив 1 (" << rows1 << "x" << cols1 << "):\n";
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
@@ -71,10 +138,15 @@ void TwoDArray::showArrays() {
     }
 }
 
-void TwoDArray::showIntersection() {
+void TwoDArray::showIntersection() const {
+    if (!isValid()) {
+        cout << "Ошибка: массивы не инициализированы\n";
+        return;
+    }
+
     cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ===\n";
 
-    int maxSize = rows1 * cols1;
+    const int maxSize = rows1 * cols1;
     int* temp = new int[maxSize];
     int count = 0;
 
@@ -82,14 +154,12 @@ void TwoDArray::showIntersection() {
         for (int j = 0; j < cols1; j++) {
             bool foundInSecond = false;
 
-            for (int k = 0; k < rows2; k++) {
-                for (int l = 0; l < cols2; l++) {
+            for (int k = 0; k < rows2 && !foundInSecond; k++) {
+                for (int l = 0; l < cols2 && !foundInSecond; l++) {
                     if (array1[i][j] == array2[k][l]) {
                         foundInSecond = true;
-                        break;
                     }
                 }
-                if (foundInSecond) break;
             }
 
             if (foundInSecond) {
@@ -100,7 +170,7 @@ void TwoDArray::showIntersection() {
                         break;
                     }
                 }
-                if (!alreadyAdded) {
+                if (!alreadyAdded && count < maxSize) {
                     temp[count] = array1[i][j];
                     count++;
                 }
@@ -114,27 +184,26 @@ void TwoDArray::showIntersection() {
     else {
         cout << "Пересечение (" << count << " элементов):\n";
 
-        int cols = 3;
-        int rows = (count + cols - 1) / cols;
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                int index = i * cols + j;
-                if (index < count) {
-                    cout << temp[index] << "\t";
-                }
-            }
-            cout << endl;
+        const int cols = 3;
+        for (int i = 0; i < count; i++) {
+            cout << temp[i] << " ";
+            if ((i + 1) % cols == 0) cout << endl;
         }
+        if (count % cols != 0) cout << endl;
     }
 
     delete[] temp;
 }
 
-void TwoDArray::showUnion() {
+void TwoDArray::showUnion() const {
+    if (!isValid()) {
+        cout << "Ошибка: массивы не инициализированы\n";
+        return;
+    }
+
     cout << "\n=== ОБЪЕДИНЕНИЕ МАССИВОВ ===\n";
 
-    int maxSize = rows1 * cols1 + rows2 * cols2;
+    const int maxSize = rows1 * cols1 + rows2 * cols2;
     int* temp = new int[maxSize];
     int count = 0;
 
@@ -147,7 +216,7 @@ void TwoDArray::showUnion() {
                     break;
                 }
             }
-            if (!found) {
+            if (!found && count < maxSize) {
                 temp[count] = array1[i][j];
                 count++;
             }
@@ -163,7 +232,7 @@ void TwoDArray::showUnion() {
                     break;
                 }
             }
-            if (!found) {
+            if (!found && count < maxSize) {
                 temp[count] = array2[i][j];
                 count++;
             }
@@ -172,18 +241,12 @@ void TwoDArray::showUnion() {
 
     cout << "Объединение (" << count << " элементов):\n";
 
-    int cols = 3;
-    int rows = (count + cols - 1) / cols;
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            int index = i * cols + j;
-            if (index < count) {
-                cout << temp[index] << "\t";
-            }
-        }
-        cout << endl;
+    const int cols = 3;
+    for (int i = 0; i < count; i++) {
+        cout << temp[i] << " ";
+        if ((i + 1) % cols == 0) cout << endl;
     }
+    if (count % cols != 0) cout << endl;
 
     delete[] temp;
 }
