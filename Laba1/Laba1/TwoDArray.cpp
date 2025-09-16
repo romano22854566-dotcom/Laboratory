@@ -10,7 +10,6 @@ TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) :
     cols1(c1 > 0 ? c1 : 1),
     rows2(r2 > 0 ? r2 : 1),
     cols2(c2 > 0 ? c2 : 1) {
-    // Инициализаторы в правильном порядке
 }
 
 TwoDArray::~TwoDArray() {
@@ -138,7 +137,12 @@ void TwoDArray::showArrays() const {
 }
 
 bool isElementInArray(int element, const vector<int>& array) {
+    // Используем std::ranges::contains если доступен C++23, иначе std::find
+#if __cplusplus >= 202002L
+    return ranges::contains(array, element);
+#else
     return find(array.begin(), array.end(), element) != array.end();
+#endif
 }
 
 bool isElementInMatrix(int element, int** matrix, int rows, int cols) {
