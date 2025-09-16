@@ -14,17 +14,10 @@ public:
     TwoDArray(int r1, int c1, int r2, int c2);
     ~TwoDArray();
 
-    void fillArraysFromKeyboard();
-    void getIntersection() const;
-    void getUnion() const;
-    void printArrays() const;
-
-    int** getArray1() const { return array1; }
-    int** getArray2() const { return array2; }
-    int getRows1() const { return rows1; }
-    int getCols1() const { return cols1; }
-    int getRows2() const { return rows2; }
-    int getCols2() const { return cols2; }
+    void fillArrays();
+    void showIntersection();
+    void showUnion();
+    void showArrays();
 };
 
 #endif

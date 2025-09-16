@@ -1,80 +1,10 @@
 #include <iostream>
-#include <limits>
-#include <string>
-#include <sstream>
 #include "TwoDArray.h"
 
 using namespace std;
 
-// Функция для безопасного ввода целого числа
-int getSafeInt(const string& prompt) {
-    string input;
-    int value;
-
-    while (true) {
-        cout << prompt;
-        getline(cin, input);
-
-        // Проверяем, не пустая ли строка
-        if (input.empty()) {
-            cout << "Ошибка! Введите число.\n";
-            continue;
-        }
-
-        // Проверяем каждый символ на цифру или знак
-        bool isValid = true;
-        bool hasDigit = false;
-        for (size_t i = 0; i < input.length(); i++) {
-            char c = input[i];
-            if (i == 0 && (c == '-' || c == '+')) {
-                continue; // Разрешаем знак в начале
-            }
-            if (!isdigit(c)) {
-                isValid = false;
-                break;
-            }
-            hasDigit = true;
-        }
-
-        if (!isValid || !hasDigit) {
-            cout << "Ошибка! Введите целое число без букв и символов.\n";
-            continue;
-        }
-
-        // Пробуем преобразовать строку в число
-        stringstream ss(input);
-        if (ss >> value) {
-            // Проверяем, что в строке не осталось лишних символов
-            if (ss.eof()) {
-                return value;
-            }
-        }
-
-        cout << "Ошибка! Введите корректное целое число.\n";
-    }
-}
-
-// Функция для безопасного ввода положительного целого числа
-int getSafePositiveInt(const string& prompt) {
-    int value;
-    while (true) {
-        value = getSafeInt(prompt);
-        if (value > 0) {
-            return value;
-        }
-        else {
-            cout << "Ошибка! Введите положительное число.\n";
-        }
-    }
-}
-
-TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) : rows1(r1), cols1(c1), rows2(r2), cols2(c2) {
-    if (rows1 <= 0 || cols1 <= 0 || rows2 <= 0 || cols2 <= 0) {
-        cerr << "Error: Array dimensions must be positive integers" << endl;
-        array1 = nullptr;
-        array2 = nullptr;
-        return;
-    }
+TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) :
+    rows1(r1), cols1(c1), rows2(r2), cols2(c2) {
 
     array1 = new int* [rows1];
     for (int i = 0; i < rows1; i++) {
@@ -94,50 +24,36 @@ TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) : rows1(r1), cols1(c1), row
 }
 
 TwoDArray::~TwoDArray() {
-    if (array1 != nullptr) {
-        for (int i = 0; i < rows1; i++) {
-            delete[] array1[i];
-        }
-        delete[] array1;
+    for (int i = 0; i < rows1; i++) {
+        delete[] array1[i];
     }
+    delete[] array1;
 
-    if (array2 != nullptr) {
-        for (int i = 0; i < rows2; i++) {
-            delete[] array2[i];
-        }
-        delete[] array2;
+    for (int i = 0; i < rows2; i++) {
+        delete[] array2[i];
     }
+    delete[] array2;
 }
 
-void TwoDArray::fillArraysFromKeyboard() {
-    if (array1 == nullptr || array2 == nullptr) {
-        cerr << "Error: Arrays not properly initialized" << endl;
-        return;
-    }
-
+void TwoDArray::fillArrays() {
     cout << "=== Заполнение первого массива " << rows1 << "x" << cols1 << " ===\n";
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
-            string prompt = "Массив 1[" + to_string(i) + "][" + to_string(j) + "] = ";
-            array1[i][j] = getSafeInt(prompt);
+            cout << "Массив 1[" << i << "][" << j << "] = ";
+            cin >> array1[i][j];
         }
     }
 
     cout << "\n=== Заполнение второго массива " << rows2 << "x" << cols2 << " ===\n";
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
-            string prompt = "Массив 2[" + to_string(i) + "][" + to_string(j) + "] = ";
-            array2[i][j] = getSafeInt(prompt);
+            cout << "Массив 2[" << i << "][" << j << "] = ";
+            cin >> array2[i][j];
         }
     }
 }
 
-void TwoDArray::printArrays() const {
-    if (array1 == nullptr || array2 == nullptr) {
-        cerr << "Error: Arrays not properly initialized" << endl;
-        return;
-    }
-
+void TwoDArray::showArrays() {
     cout << "\nМассив 1 (" << rows1 << "x" << cols1 << "):\n";
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
@@ -155,92 +71,85 @@ void TwoDArray::printArrays() const {
     }
 }
 
-void TwoDArray::getIntersection() const {
-    if (array1 == nullptr || array2 == nullptr) {
-        cerr << "Error: Arrays not properly initialized" << endl;
-        return;
-    }
-
+void TwoDArray::showIntersection() {
     cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ===\n";
 
     int maxSize = rows1 * cols1;
-    int* tempIntersection = new int[maxSize];
-    int tempSize = 0;
+    int* temp = new int[maxSize];
+    int count = 0;
 
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
-            bool foundInArray2 = false;
-            for (int k = 0; k < rows2 && !foundInArray2; k++) {
-                for (int l = 0; l < cols2 && !foundInArray2; l++) {
+            bool foundInSecond = false;
+
+            for (int k = 0; k < rows2; k++) {
+                for (int l = 0; l < cols2; l++) {
                     if (array1[i][j] == array2[k][l]) {
-                        foundInArray2 = true;
+                        foundInSecond = true;
+                        break;
                     }
                 }
+                if (foundInSecond) break;
             }
 
-            if (foundInArray2) {
+            if (foundInSecond) {
                 bool alreadyAdded = false;
-                for (int m = 0; m < tempSize; m++) {
-                    if (tempIntersection[m] == array1[i][j]) {
+                for (int m = 0; m < count; m++) {
+                    if (temp[m] == array1[i][j]) {
                         alreadyAdded = true;
                         break;
                     }
                 }
                 if (!alreadyAdded) {
-                    tempIntersection[tempSize] = array1[i][j];
-                    tempSize++;
+                    temp[count] = array1[i][j];
+                    count++;
                 }
             }
         }
     }
 
-    if (tempSize == 0) {
+    if (count == 0) {
         cout << "Пересечение пустое - нет общих элементов\n";
-        delete[] tempIntersection;
-        return;
     }
+    else {
+        cout << "Пересечение (" << count << " элементов):\n";
 
-    int resultCols = 3;
-    int resultRows = (tempSize + resultCols - 1) / resultCols;
+        int cols = 3;
+        int rows = (count + cols - 1) / cols;
 
-    cout << "Пересечение (" << tempSize << " уникальных элементов):\n";
-    for (int i = 0; i < resultRows; i++) {
-        for (int j = 0; j < resultCols; j++) {
-            int index = i * resultCols + j;
-            if (index < tempSize) {
-                cout << tempIntersection[index] << "\t";
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int index = i * cols + j;
+                if (index < count) {
+                    cout << temp[index] << "\t";
+                }
             }
+            cout << endl;
         }
-        cout << endl;
     }
 
-    delete[] tempIntersection;
+    delete[] temp;
 }
 
-void TwoDArray::getUnion() const {
-    if (array1 == nullptr || array2 == nullptr) {
-        cerr << "Error: Arrays not properly initialized" << endl;
-        return;
-    }
-
+void TwoDArray::showUnion() {
     cout << "\n=== ОБЪЕДИНЕНИЕ МАССИВОВ ===\n";
 
     int maxSize = rows1 * cols1 + rows2 * cols2;
-    int* tempUnion = new int[maxSize];
-    int tempSize = 0;
+    int* temp = new int[maxSize];
+    int count = 0;
 
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
             bool found = false;
-            for (int k = 0; k < tempSize; k++) {
-                if (tempUnion[k] == array1[i][j]) {
+            for (int k = 0; k < count; k++) {
+                if (temp[k] == array1[i][j]) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                tempUnion[tempSize] = array1[i][j];
-                tempSize++;
+                temp[count] = array1[i][j];
+                count++;
             }
         }
     }
@@ -248,32 +157,33 @@ void TwoDArray::getUnion() const {
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
             bool found = false;
-            for (int k = 0; k < tempSize; k++) {
-                if (tempUnion[k] == array2[i][j]) {
+            for (int k = 0; k < count; k++) {
+                if (temp[k] == array2[i][j]) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                tempUnion[tempSize] = array2[i][j];
-                tempSize++;
+                temp[count] = array2[i][j];
+                count++;
             }
         }
     }
 
-    int resultCols = 3;
-    int resultRows = (tempSize + resultCols - 1) / resultCols;
+    cout << "Объединение (" << count << " элементов):\n";
 
-    cout << "Объединение (" << tempSize << " уникальных элементов):\n";
-    for (int i = 0; i < resultRows; i++) {
-        for (int j = 0; j < resultCols; j++) {
-            int index = i * resultCols + j;
-            if (index < tempSize) {
-                cout << tempUnion[index] << "\t";
+    int cols = 3;
+    int rows = (count + cols - 1) / cols;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int index = i * cols + j;
+            if (index < count) {
+                cout << temp[index] << "\t";
             }
         }
         cout << endl;
     }
 
-    delete[] tempUnion;
+    delete[] temp;
 }
