@@ -8,9 +8,8 @@ TwoDArray::TwoDArray(int r1, int c1, int r2, int c2) :
     rows1(r1 > 0 ? r1 : 1),
     cols1(c1 > 0 ? c1 : 1),
     rows2(r2 > 0 ? r2 : 1),
-    cols2(c2 > 0 ? c2 : 1),
-    array1(nullptr),
-    array2(nullptr) {
+    cols2(c2 > 0 ? c2 : 1) {
+    // Инициализаторы в правильном порядке
 }
 
 TwoDArray::~TwoDArray() {
@@ -137,9 +136,9 @@ void TwoDArray::showArrays() const {
     }
 }
 
-bool isElementInArray(int element, const int* array, int size) {
-    for (int i = 0; i < size; i++) {
-        if (array[i] == element) {
+bool isElementInArray(int element, const vector<int>& array) {
+    for (int value : array) {
+        if (value == element) {
             return true;
         }
     }
@@ -171,11 +170,8 @@ void TwoDArray::showIntersection() const {
         for (int j = 0; j < cols1; j++) {
             int current = array1[i][j];
 
-            // Проверяем, есть ли элемент во втором массиве
             bool inSecondArray = isElementInMatrix(current, array2, rows2, cols2);
-
-            // Проверяем, не добавили ли уже этот элемент
-            bool alreadyAdded = isElementInArray(current, intersection.data(), intersection.size());
+            bool alreadyAdded = isElementInArray(current, intersection);
 
             if (inSecondArray && !alreadyAdded) {
                 intersection.push_back(current);
@@ -212,7 +208,7 @@ void TwoDArray::showUnion() const {
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
             int current = array1[i][j];
-            if (!isElementInArray(current, unionElements.data(), unionElements.size())) {
+            if (!isElementInArray(current, unionElements)) {
                 unionElements.push_back(current);
             }
         }
@@ -222,7 +218,7 @@ void TwoDArray::showUnion() const {
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
             int current = array2[i][j];
-            if (!isElementInArray(current, unionElements.data(), unionElements.size())) {
+            if (!isElementInArray(current, unionElements)) {
                 unionElements.push_back(current);
             }
         }
