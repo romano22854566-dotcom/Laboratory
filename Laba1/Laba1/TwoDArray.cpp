@@ -1,6 +1,5 @@
 #include <iostream>
-#include <string>
-#include <cstdlib>
+#include <vector>
 #include "TwoDArray.h"
 
 using namespace std;
@@ -138,6 +137,26 @@ void TwoDArray::showArrays() const {
     }
 }
 
+bool isElementInArray(int element, const int* array, int size) {
+    for (int i = 0; i < size; i++) {
+        if (array[i] == element) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isElementInMatrix(int element, int** matrix, int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == element) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void TwoDArray::showIntersection() const {
     if (!isValid()) {
         cout << "Ошибка: массивы не инициализированы\n";
@@ -146,53 +165,37 @@ void TwoDArray::showIntersection() const {
 
     cout << "\n=== ПЕРЕСЕЧЕНИЕ МАССИВОВ ===\n";
 
-    const int maxSize = rows1 * cols1;
-    int* temp = new int[maxSize];
-    int count = 0;
+    vector<int> intersection;
 
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
-            bool foundInSecond = false;
+            int current = array1[i][j];
 
-            for (int k = 0; k < rows2 && !foundInSecond; k++) {
-                for (int l = 0; l < cols2 && !foundInSecond; l++) {
-                    if (array1[i][j] == array2[k][l]) {
-                        foundInSecond = true;
-                    }
-                }
-            }
+            // Проверяем, есть ли элемент во втором массиве
+            bool inSecondArray = isElementInMatrix(current, array2, rows2, cols2);
 
-            if (foundInSecond) {
-                bool alreadyAdded = false;
-                for (int m = 0; m < count; m++) {
-                    if (temp[m] == array1[i][j]) {
-                        alreadyAdded = true;
-                        break;
-                    }
-                }
-                if (!alreadyAdded && count < maxSize) {
-                    temp[count] = array1[i][j];
-                    count++;
-                }
+            // Проверяем, не добавили ли уже этот элемент
+            bool alreadyAdded = isElementInArray(current, intersection.data(), intersection.size());
+
+            if (inSecondArray && !alreadyAdded) {
+                intersection.push_back(current);
             }
         }
     }
 
-    if (count == 0) {
+    if (intersection.empty()) {
         cout << "Пересечение пустое - нет общих элементов\n";
     }
     else {
-        cout << "Пересечение (" << count << " элементов):\n";
+        cout << "Пересечение (" << intersection.size() << " элементов):\n";
 
         const int cols = 3;
-        for (int i = 0; i < count; i++) {
-            cout << temp[i] << " ";
+        for (size_t i = 0; i < intersection.size(); i++) {
+            cout << intersection[i] << " ";
             if ((i + 1) % cols == 0) cout << endl;
         }
-        if (count % cols != 0) cout << endl;
+        if (intersection.size() % cols != 0) cout << endl;
     }
-
-    delete[] temp;
 }
 
 void TwoDArray::showUnion() const {
@@ -203,50 +206,34 @@ void TwoDArray::showUnion() const {
 
     cout << "\n=== ОБЪЕДИНЕНИЕ МАССИВОВ ===\n";
 
-    const int maxSize = rows1 * cols1 + rows2 * cols2;
-    int* temp = new int[maxSize];
-    int count = 0;
+    vector<int> unionElements;
 
+    // Добавляем элементы из первого массива
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
-            bool found = false;
-            for (int k = 0; k < count; k++) {
-                if (temp[k] == array1[i][j]) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && count < maxSize) {
-                temp[count] = array1[i][j];
-                count++;
+            int current = array1[i][j];
+            if (!isElementInArray(current, unionElements.data(), unionElements.size())) {
+                unionElements.push_back(current);
             }
         }
     }
 
+    // Добавляем элементы из второго массива
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
-            bool found = false;
-            for (int k = 0; k < count; k++) {
-                if (temp[k] == array2[i][j]) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && count < maxSize) {
-                temp[count] = array2[i][j];
-                count++;
+            int current = array2[i][j];
+            if (!isElementInArray(current, unionElements.data(), unionElements.size())) {
+                unionElements.push_back(current);
             }
         }
     }
 
-    cout << "Объединение (" << count << " элементов):\n";
+    cout << "Объединение (" << unionElements.size() << " элементов):\n";
 
     const int cols = 3;
-    for (int i = 0; i < count; i++) {
-        cout << temp[i] << " ";
+    for (size_t i = 0; i < unionElements.size(); i++) {
+        cout << unionElements[i] << " ";
         if ((i + 1) % cols == 0) cout << endl;
     }
-    if (count % cols != 0) cout << endl;
-
-    delete[] temp;
+    if (unionElements.size() % cols != 0) cout << endl;
 }

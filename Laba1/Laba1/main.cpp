@@ -13,7 +13,7 @@ int getSafeNumber(const string& prompt) {
 
         bool valid = true;
         for (char c : input) {
-            if (!isdigit(c)) {
+            if (!isdigit(static_cast<unsigned char>(c))) {
                 valid = false;
                 break;
             }
@@ -75,10 +75,20 @@ int main() {
         choice = getMenuChoice();
 
         switch (choice) {
-        case 1: arrays.showIntersection(); break;
-        case 2: arrays.showUnion(); break;
-        case 3: arrays.showArrays(); break;
-        case 4: cout << "Выход из программы...\n"; break;
+        case 1:
+            arrays.showIntersection();
+            break;
+        case 2:
+            arrays.showUnion();
+            break;
+        case 3:
+            arrays.showArrays();
+            break;
+        case 4:
+            cout << "Выход из программы...\n";
+            break;
+        default:
+            break;
         }
     } while (choice != 4);
 
