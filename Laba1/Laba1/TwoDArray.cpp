@@ -136,10 +136,11 @@ void TwoDArray::showArrays() const {
     }
 }
 
+// Исправленная функция с const и ranges::contains
 bool isElementInArray(int element, const vector<int>& array) {
-    // Используем std::ranges::contains если доступен C++23, иначе std::find
+    // Используем std::ranges::contains для C++20 и новее
 #if __cplusplus >= 202002L
-    return ranges::contains(array, element);
+    return std::ranges::contains(array, element);
 #else
     return find(array.begin(), array.end(), element) != array.end();
 #endif
