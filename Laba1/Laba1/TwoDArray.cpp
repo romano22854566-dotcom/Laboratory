@@ -161,7 +161,7 @@ void TwoDArray::showIntersection() const {
         return;
     }
 
-    cout << "\n=== ÏÅÐÅÑÅ×ÅÍÈÅ ÌÀÑÑÈÂÎÂ ===\n";
+    cout << "\n=== ÏÅÐÅÑÅ×ÅÍÈÅ ÌÀÑÑÈÂÎÂ ==\n";
 
     // Ñîçäàåì âðåìåííûé ìàññèâ äëÿ õðàíåíèÿ ïåðåñå÷åíèÿ
     int maxSize = rows1 * cols1;
