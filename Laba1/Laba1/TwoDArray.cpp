@@ -146,7 +146,7 @@ bool isElementInMatrix(int element, int** matrix, int rows, int cols) {
     return false;
 }
 
-bool isElementInArray(int element, int* array, int size) {
+bool isElementInArray(int element, const int* array, int size) {
     for (int i = 0; i < size; i++) {
         if (array[i] == element) {
             return true;
@@ -170,7 +170,7 @@ void TwoDArray::showIntersection() const {
 
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
-            int current = array1[i][j];
+            auto current = array1[i][j];
 
             bool inSecondArray = isElementInMatrix(current, array2, rows2, cols2);
             bool alreadyAdded = isElementInArray(current, intersection, intersectionSize);
@@ -214,7 +214,7 @@ void TwoDArray::showUnion() const {
     // Добавляем элементы из первого массива
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols1; j++) {
-            int current = array1[i][j];
+            auto current = array1[i][j];
             if (!isElementInArray(current, unionElements, unionSize)) {
                 unionElements[unionSize++] = current;
             }
@@ -224,7 +224,7 @@ void TwoDArray::showUnion() const {
     // Добавляем элементы из второго массива
     for (int i = 0; i < rows2; i++) {
         for (int j = 0; j < cols2; j++) {
-            int current = array2[i][j];
+            auto current = array2[i][j];
             if (!isElementInArray(current, unionElements, unionSize)) {
                 unionElements[unionSize++] = current;
             }
