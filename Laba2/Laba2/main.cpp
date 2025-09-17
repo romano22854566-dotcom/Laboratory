@@ -75,7 +75,6 @@ int main() {
             break;
 
         default:
-            // Этот case никогда не выполнится из-за проверки в safeMenuInput
             break;
         }
 

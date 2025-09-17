@@ -10,6 +10,10 @@ private:
     int cols = 0;
     double** data = nullptr;
 
+    // Вспомогательные методы
+    void allocateMemory();
+    void copyDataFrom(const Matrix& other);
+
 public:
     // Конструкторы
     explicit Matrix(int r = 0, int c = 0);
@@ -28,8 +32,8 @@ public:
 
     // Скрытые дружественные функции
     friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
-        for (int i = 0; i < matrix.rows; i++) {
-            for (int j = 0; j < matrix.cols; j++) {
+        for (int i = 0; i < matrix.rows; ++i) {
+            for (int j = 0; j < matrix.cols; ++j) {
                 os << matrix.data[i][j] << " ";
             }
             os << "\n";
