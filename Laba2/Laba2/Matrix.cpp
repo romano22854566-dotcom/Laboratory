@@ -1,6 +1,5 @@
 #include "Matrix.h"
 #include <iostream>
-#include <limits>
 #include <string>
 #include <sstream>
 
@@ -32,7 +31,7 @@ double safeInput(const std::string& prompt) {
 }
 
 // Конструктор
-Matrix::Matrix(int r, int c) : rows(r), cols(c), data(nullptr) {
+Matrix::Matrix(int r, int c) : rows(r), cols(c) {
     if (rows > 0 && cols > 0) {
         data = new double* [rows];
         for (int i = 0; i < rows; i++) {
@@ -45,7 +44,7 @@ Matrix::Matrix(int r, int c) : rows(r), cols(c), data(nullptr) {
 }
 
 // Конструктор копирования
-Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols), data(nullptr) {
+Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
     if (rows > 0 && cols > 0) {
         data = new double* [rows];
         for (int i = 0; i < rows; i++) {
@@ -67,16 +66,30 @@ Matrix::~Matrix() {
     }
 }
 
+// Вспомогательная функция для освобождения памяти
+void freeMatrixMemory(double** data, int rows) {
+    if (data != nullptr) {
+        for (int i = 0; i < rows; i++) {
+            delete[] data[i];
+        }
+        delete[] data;
+    }
+}
+
+// Вспомогательная функция для копирования матрицы
+void copyMatrixData(double** dest, double** src, int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            dest[i][j] = src[i][j];
+        }
+    }
+}
+
 // Оператор присваивания
 Matrix& Matrix::operator=(const Matrix& other) {
     if (this != &other) {
         // Освобождаем старую память
-        if (data != nullptr) {
-            for (int i = 0; i < rows; i++) {
-                delete[] data[i];
-            }
-            delete[] data;
-        }
+        freeMatrixMemory(data, rows);
 
         // Копируем новые данные
         rows = other.rows;
@@ -86,10 +99,8 @@ Matrix& Matrix::operator=(const Matrix& other) {
             data = new double* [rows];
             for (int i = 0; i < rows; i++) {
                 data[i] = new double[cols];
-                for (int j = 0; j < cols; j++) {
-                    data[i][j] = other.data[i][j];
-                }
             }
+            copyMatrixData(data, other.data, rows, cols);
         }
         else {
             data = nullptr;
@@ -120,29 +131,13 @@ Matrix Matrix::operator&(const Matrix& other) const {
     return result;
 }
 
-// Оператор вывода
-std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
-    for (int i = 0; i < matrix.rows; i++) {
-        for (int j = 0; j < matrix.cols; j++) {
-            os << matrix.data[i][j] << " ";
-        }
-        os << "\n";
-    }
-    return os;
-}
-
 // Оператор ввода
 std::istream& operator>>(std::istream& is, Matrix& matrix) {
     // Освобождаем старую память
-    if (matrix.data != nullptr) {
-        for (int i = 0; i < matrix.rows; i++) {
-            delete[] matrix.data[i];
-        }
-        delete[] matrix.data;
-    }
+    freeMatrixMemory(matrix.data, matrix.rows);
 
-    matrix.rows = safeInput("Введите количество строк: ");
-    matrix.cols = safeInput("Введите количество столбцов: ");
+    matrix.rows = static_cast<int>(safeInput("Введите количество строк: "));
+    matrix.cols = static_cast<int>(safeInput("Введите количество столбцов: "));
 
     if (matrix.rows > 0 && matrix.cols > 0) {
         matrix.data = new double* [matrix.rows];

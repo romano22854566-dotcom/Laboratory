@@ -5,13 +5,13 @@
 
 class Matrix {
 private:
-    int rows;
-    int cols;
-    double** data;
+    int rows = 0;
+    int cols = 0;
+    double** data = nullptr;
 
 public:
     // Конструкторы
-    Matrix(int r = 0, int c = 0);
+    explicit Matrix(int r = 0, int c = 0);
     Matrix(const Matrix& other);
     ~Matrix();
 
@@ -25,8 +25,17 @@ public:
     int getRows() const { return rows; }
     int getCols() const { return cols; }
 
-    // Дружественные функции
-    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
+    // Скрытые дружественные функции
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
+        for (int i = 0; i < matrix.rows; i++) {
+            for (int j = 0; j < matrix.cols; j++) {
+                os << matrix.data[i][j] << " ";
+            }
+            os << "\n";
+        }
+        return os;
+    }
+
     friend std::istream& operator>>(std::istream& is, Matrix& matrix);
 };
 
