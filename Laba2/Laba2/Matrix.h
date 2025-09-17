@@ -12,7 +12,7 @@ private:
 
     // Вспомогательные методы
     void allocateMemory();
-    void copyDataFrom(const Matrix& other);
+    void copyDataFrom(const Matrix& other) const;
     void freeMemory();
 
 public:
@@ -24,26 +24,15 @@ public:
     // Оператор присваивания
     Matrix& operator=(const Matrix& other);
 
-    // Оператор умножения матриц
-    Matrix operator&(const Matrix& other) const;
-
     // Методы доступа
     int getRows() const { return rows; }
     int getCols() const { return cols; }
     bool isValid() const { return rows > 0 && cols > 0; }
 
-    // Скрытые дружественные функции
-    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
-        for (int i = 0; i < matrix.rows; ++i) {
-            for (int j = 0; j < matrix.cols; ++j) {
-                os << matrix.data[i][j] << " ";
-            }
-            os << "\n";
-        }
-        return os;
-    }
-
+    // Скрытые дружественные функции (объявления)
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
     friend std::istream& operator>>(std::istream& is, Matrix& matrix);
+    friend Matrix operator&(const Matrix& lhs, const Matrix& rhs);
 };
 
 // Вспомогательные функции

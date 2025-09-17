@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <limits>
 
 // Функция для безопасного ввода числа
 double safeInput(const std::string& prompt) {
@@ -52,8 +53,8 @@ void Matrix::freeMemory() {
     }
 }
 
-// Копирование данных из другой матрицы
-void Matrix::copyDataFrom(const Matrix& other) {
+// Копирование данных из другой матрицы (константный метод)
+void Matrix::copyDataFrom(const Matrix& other) const {
     if (rows > 0 && cols > 0) {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
@@ -93,29 +94,18 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
-// Оператор умножения матриц (скрытый друг)
-Matrix Matrix::operator&(const Matrix& other) const {
-    if (cols != other.rows) {
-        std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
-        return Matrix(0, 0);
-    }
-
-    Matrix result(rows, other.cols);
-
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < other.cols; ++j) {
-            double sum = 0.0;
-            for (int k = 0; k < cols; ++k) {
-                sum += data[i][k] * other.data[k][j];
-            }
-            result.data[i][j] = sum;
+// Оператор вывода
+std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
+    for (int i = 0; i < matrix.rows; ++i) {
+        for (int j = 0; j < matrix.cols; ++j) {
+            os << matrix.data[i][j] << " ";
         }
+        os << "\n";
     }
-
-    return result;
+    return os;
 }
 
-// Оператор ввода (скрытый друг)
+// Оператор ввода
 std::istream& operator>>(std::istream& is, Matrix& matrix) {
     matrix.freeMemory();
 
@@ -135,6 +125,28 @@ std::istream& operator>>(std::istream& is, Matrix& matrix) {
     }
 
     return is;
+}
+
+// Оператор умножения матриц
+Matrix operator&(const Matrix& lhs, const Matrix& rhs) {
+    if (lhs.cols != rhs.rows) {
+        std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
+        return Matrix(0, 0);
+    }
+
+    Matrix result(lhs.rows, rhs.cols);
+
+    for (int i = 0; i < lhs.rows; ++i) {
+        for (int j = 0; j < rhs.cols; ++j) {
+            double sum = 0.0;
+            for (int k = 0; k < lhs.cols; ++k) {
+                sum += lhs.data[i][k] * rhs.data[k][j];
+            }
+            result.data[i][j] = sum;
+        }
+    }
+
+    return result;
 }
 
 // Функция для показа матрицы

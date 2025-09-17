@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <locale>
+
 void printMenu() {
     std::cout << "\n=== МЕНЮ ===\n";
     std::cout << "1. Показать первую матрицу\n";
