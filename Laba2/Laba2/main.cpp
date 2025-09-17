@@ -3,7 +3,6 @@
 #include <string>
 #include <sstream>
 #include <locale>
-
 void printMenu() {
     std::cout << "\n=== МЕНЮ ===\n";
     std::cout << "1. Показать первую матрицу\n";
@@ -45,7 +44,7 @@ int main() {
     std::cout << "=== УМНОЖЕНИЕ МАТРИЦ ===\n\n";
 
     // Ввод первой матрицы
-    std::cout << "ПЕРВАЯ МАТРИЦА:\n";
+    std::cout << "ПЕРВАЯ МАТРИЦA:\n";
     std::cin >> matrix1;
 
     // Ввод второй матрицы
