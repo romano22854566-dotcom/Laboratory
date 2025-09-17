@@ -4,10 +4,35 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
+// Функция для безопасного ввода числа
+double safeInput(const std::string& prompt) {
+    std::string input;
+    double value;
+
+    while (true) {
+        std::cout << prompt;
+        std::getline(std::cin, input);
+
+        // Пропускаем пустые строки
+        if (input.empty()) {
+            continue;
+        }
+
+        std::stringstream ss(input);
+        ss >> value;
+
+        // Проверяем, что ввод корректен и нет лишних символов
+        if (ss.fail() || !ss.eof()) {
+            std::cout << "Ошибка! Введите только число: ";
+        }
+        else {
+            return value;
+        }
+    }
+}
 
 // Конструктор
-Matrix::Matrix(int r, int c) : rows(r), cols(c) {
+Matrix::Matrix(int r, int c) : rows(r), cols(c), data(nullptr) {
     if (rows > 0 && cols > 0) {
         data = new double* [rows];
         for (int i = 0; i < rows; i++) {
@@ -17,13 +42,10 @@ Matrix::Matrix(int r, int c) : rows(r), cols(c) {
             }
         }
     }
-    else {
-        data = nullptr;
-    }
 }
 
 // Конструктор копирования
-Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
+Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols), data(nullptr) {
     if (rows > 0 && cols > 0) {
         data = new double* [rows];
         for (int i = 0; i < rows; i++) {
@@ -32,9 +54,6 @@ Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
                 data[i][j] = other.data[i][j];
             }
         }
-    }
-    else {
-        data = nullptr;
     }
 }
 
@@ -48,12 +67,41 @@ Matrix::~Matrix() {
     }
 }
 
-// Оператор умножения матриц (&)
+// Оператор присваивания
+Matrix& Matrix::operator=(const Matrix& other) {
+    if (this != &other) {
+        // Освобождаем старую память
+        if (data != nullptr) {
+            for (int i = 0; i < rows; i++) {
+                delete[] data[i];
+            }
+            delete[] data;
+        }
+
+        // Копируем новые данные
+        rows = other.rows;
+        cols = other.cols;
+
+        if (rows > 0 && cols > 0) {
+            data = new double* [rows];
+            for (int i = 0; i < rows; i++) {
+                data[i] = new double[cols];
+                for (int j = 0; j < cols; j++) {
+                    data[i][j] = other.data[i][j];
+                }
+            }
+        }
+        else {
+            data = nullptr;
+        }
+    }
+    return *this;
+}
+
+// Оператор умножения матриц
 Matrix Matrix::operator&(const Matrix& other) const {
     if (cols != other.rows) {
-        cout << "Ошибка: размеры матриц не совместимы для умножения!\n";
-        cout << "Кол-во столбцов первой матрицы (" << cols << ") ";
-        cout << "должно равняться кол-ву строк второй матрицы (" << other.rows << ")\n";
+        std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
         return Matrix(0, 0);
     }
 
@@ -72,84 +120,19 @@ Matrix Matrix::operator&(const Matrix& other) const {
     return result;
 }
 
-// Функция для безопасного ввода числа с полной проверкой строки
-template<typename T>
-T safeInput(const string& prompt) {
-    string input;
-    T value;
-
-    while (true) {
-        cout << prompt;
-        getline(cin, input);
-
-        // Проверяем, что строка не пустая
-        if (input.empty()) {
-            cout << "Ошибка: ввод не может быть пустым! Попробуйте снова.\n";
-            continue;
-        }
-
-        stringstream ss(input);
-        ss >> value;
-
-        // Проверяем, что все символы были обработаны и нет ошибок
-        if (ss.fail() || !ss.eof()) {
-            cout << "Ошибка ввода! Пожалуйста, введите корректное число (без букв и символов).\n";
-            cin.clear();
-        }
-        else {
-            return value;
-        }
-    }
-}
-
-// Функция для безопасного ввода элемента матрицы
-double safeInputElement(const string& prompt, int row, int col) {
-    string input;
-    double value;
-
-    while (true) {
-        cout << "Элемент [" << (row + 1) << "][" << (col + 1) << "]: ";
-        getline(cin, input);
-
-        // Проверяем, что строка не пустая
-        if (input.empty()) {
-            cout << "Ошибка: ввод не может быть пустым! Попробуйте снова.\n";
-            continue;
-        }
-
-        stringstream ss(input);
-        ss >> value;
-
-        // Проверяем, что все символы были обработаны и нет ошибок
-        if (ss.fail() || !ss.eof()) {
-            cout << "Ошибка ввода! Пожалуйста, введите корректное число (например: 5, 3.14, -2).\n";
-            cin.clear();
-        }
-        else {
-            return value;
-        }
-    }
-}
-
 // Оператор вывода
-ostream& operator<<(ostream& os, const Matrix& matrix) {
+std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
     for (int i = 0; i < matrix.rows; i++) {
         for (int j = 0; j < matrix.cols; j++) {
-            os << matrix.data[i][j] << "\t";
+            os << matrix.data[i][j] << " ";
         }
-        os << endl;
+        os << "\n";
     }
     return os;
 }
 
 // Оператор ввода
-istream& operator>>(istream& is, Matrix& matrix) {
-    // Используем getline для полного контроля над вводом
-    string input;
-
-    matrix.rows = safeInput<int>("Введите количество строк: ");
-    matrix.cols = safeInput<int>("Введите количество столбцов: ");
-
+std::istream& operator>>(std::istream& is, Matrix& matrix) {
     // Освобождаем старую память
     if (matrix.data != nullptr) {
         for (int i = 0; i < matrix.rows; i++) {
@@ -158,23 +141,23 @@ istream& operator>>(istream& is, Matrix& matrix) {
         delete[] matrix.data;
     }
 
-    // Выделяем новую память
+    matrix.rows = safeInput("Введите количество строк: ");
+    matrix.cols = safeInput("Введите количество столбцов: ");
+
     if (matrix.rows > 0 && matrix.cols > 0) {
         matrix.data = new double* [matrix.rows];
-        cout << "Введите элементы матрицы построчно (" << matrix.rows << "x" << matrix.cols << "):\n";
+        std::cout << "Введите элементы матрицы:\n";
 
         for (int i = 0; i < matrix.rows; i++) {
             matrix.data[i] = new double[matrix.cols];
-            cout << "Строка " << (i + 1) << ":\n";
-
             for (int j = 0; j < matrix.cols; j++) {
-                matrix.data[i][j] = safeInputElement("", i, j);
+                std::string prompt = "Элемент [" + std::to_string(i + 1) + "][" + std::to_string(j + 1) + "]: ";
+                matrix.data[i][j] = safeInput(prompt);
             }
         }
     }
     else {
         matrix.data = nullptr;
-        cout << "Создана пустая матрица (0x0)\n";
     }
 
     return is;
