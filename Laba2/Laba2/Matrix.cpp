@@ -28,16 +28,6 @@ double safeInput(const std::string& prompt) {
     }
 }
 
-// Вспомогательная функция для освобождения памяти
-void freeMatrixMemory(double** data, int rows) {
-    if (data != nullptr) {
-        for (int i = 0; i < rows; ++i) {
-            delete[] data[i];
-        }
-        delete[] data;
-    }
-}
-
 // Выделение памяти для матрицы
 void Matrix::allocateMemory() {
     if (rows > 0 && cols > 0) {
@@ -48,6 +38,17 @@ void Matrix::allocateMemory() {
                 data[i][j] = 0.0;
             }
         }
+    }
+}
+
+// Освобождение памяти
+void Matrix::freeMemory() {
+    if (data != nullptr) {
+        for (int i = 0; i < rows; ++i) {
+            delete[] data[i];
+        }
+        delete[] data;
+        data = nullptr;
     }
 }
 
@@ -75,13 +76,13 @@ Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
 
 // Деструктор
 Matrix::~Matrix() {
-    freeMatrixMemory(data, rows);
+    freeMemory();
 }
 
 // Оператор присваивания
 Matrix& Matrix::operator=(const Matrix& other) {
     if (this != &other) {
-        freeMatrixMemory(data, rows);
+        freeMemory();
 
         rows = other.rows;
         cols = other.cols;
@@ -92,7 +93,7 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
-// Оператор умножения матриц
+// Оператор умножения матриц (скрытый друг)
 Matrix Matrix::operator&(const Matrix& other) const {
     if (cols != other.rows) {
         std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
@@ -114,9 +115,9 @@ Matrix Matrix::operator&(const Matrix& other) const {
     return result;
 }
 
-// Оператор ввода
+// Оператор ввода (скрытый друг)
 std::istream& operator>>(std::istream& is, Matrix& matrix) {
-    freeMatrixMemory(matrix.data, matrix.rows);
+    matrix.freeMemory();
 
     matrix.rows = static_cast<int>(safeInput("Введите количество строк: "));
     matrix.cols = static_cast<int>(safeInput("Введите количество столбцов: "));
@@ -127,8 +128,8 @@ std::istream& operator>>(std::istream& is, Matrix& matrix) {
 
         for (int i = 0; i < matrix.rows; ++i) {
             for (int j = 0; j < matrix.cols; ++j) {
-                std::string prompt = "Элемент [" + std::to_string(i + 1) + "][" + std::to_string(j + 1) + "]: ";
-                matrix.data[i][j] = safeInput(prompt);
+                std::cout << "Элемент [" << (i + 1) << "][" << (j + 1) << "]: ";
+                matrix.data[i][j] = safeInput("");
             }
         }
     }
@@ -139,7 +140,7 @@ std::istream& operator>>(std::istream& is, Matrix& matrix) {
 // Функция для показа матрицы
 void showMatrix(const Matrix& matrix, const std::string& name) {
     std::cout << "\n" << name << ":\n";
-    if (matrix.getRows() > 0 && matrix.getCols() > 0) {
+    if (matrix.isValid()) {
         std::cout << matrix;
     }
     else {
@@ -150,10 +151,9 @@ void showMatrix(const Matrix& matrix, const std::string& name) {
 // Функция для умножения матриц
 void multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2) {
     std::cout << "\nУмножение матриц:\n";
-    if (matrix1.getRows() > 0 && matrix1.getCols() > 0 &&
-        matrix2.getRows() > 0 && matrix2.getCols() > 0) {
+    if (matrix1.isValid() && matrix2.isValid()) {
         Matrix result = matrix1 & matrix2;
-        if (result.getRows() > 0) {
+        if (result.isValid()) {
             std::cout << "Результат:\n" << result;
         }
     }

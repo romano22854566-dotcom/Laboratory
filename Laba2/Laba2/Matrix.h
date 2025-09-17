@@ -13,6 +13,7 @@ private:
     // Вспомогательные методы
     void allocateMemory();
     void copyDataFrom(const Matrix& other);
+    void freeMemory();
 
 public:
     // Конструкторы
@@ -29,6 +30,7 @@ public:
     // Методы доступа
     int getRows() const { return rows; }
     int getCols() const { return cols; }
+    bool isValid() const { return rows > 0 && cols > 0; }
 
     // Скрытые дружественные функции
     friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
