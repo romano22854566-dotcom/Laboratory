@@ -2,6 +2,7 @@
 #define MATRIX_H
 
 #include <iostream>
+#include <string>
 
 class Matrix {
 private:
@@ -38,5 +39,10 @@ public:
 
     friend std::istream& operator>>(std::istream& is, Matrix& matrix);
 };
+
+// Вспомогательные функции
+double safeInput(const std::string& prompt);
+void showMatrix(const Matrix& matrix, const std::string& name);
+void multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2);
 
 #endif

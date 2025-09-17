@@ -30,6 +30,16 @@ double safeInput(const std::string& prompt) {
     }
 }
 
+// Вспомогательная функция для освобождения памяти
+void freeMatrixMemory(double** data, int rows) {
+    if (data != nullptr) {
+        for (int i = 0; i < rows; i++) {
+            delete[] data[i];
+        }
+        delete[] data;
+    }
+}
+
 // Конструктор
 Matrix::Matrix(int r, int c) : rows(r), cols(c) {
     if (rows > 0 && cols > 0) {
@@ -58,31 +68,7 @@ Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
 
 // Деструктор
 Matrix::~Matrix() {
-    if (data != nullptr) {
-        for (int i = 0; i < rows; i++) {
-            delete[] data[i];
-        }
-        delete[] data;
-    }
-}
-
-// Вспомогательная функция для освобождения памяти
-void freeMatrixMemory(double** data, int rows) {
-    if (data != nullptr) {
-        for (int i = 0; i < rows; i++) {
-            delete[] data[i];
-        }
-        delete[] data;
-    }
-}
-
-// Вспомогательная функция для копирования матрицы
-void copyMatrixData(double** dest, double** src, int rows, int cols) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            dest[i][j] = src[i][j];
-        }
-    }
+    freeMatrixMemory(data, rows);
 }
 
 // Оператор присваивания
@@ -99,8 +85,10 @@ Matrix& Matrix::operator=(const Matrix& other) {
             data = new double* [rows];
             for (int i = 0; i < rows; i++) {
                 data[i] = new double[cols];
+                for (int j = 0; j < cols; j++) {
+                    data[i][j] = other.data[i][j];
+                }
             }
-            copyMatrixData(data, other.data, rows, cols);
         }
         else {
             data = nullptr;
@@ -156,4 +144,30 @@ std::istream& operator>>(std::istream& is, Matrix& matrix) {
     }
 
     return is;
+}
+
+// Функция для показа матрицы
+void showMatrix(const Matrix& matrix, const std::string& name) {
+    std::cout << "\n" << name << ":\n";
+    if (matrix.getRows() > 0 && matrix.getCols() > 0) {
+        std::cout << matrix;
+    }
+    else {
+        std::cout << "Матрица не создана!\n";
+    }
+}
+
+// Функция для умножения матриц
+void multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2) {
+    std::cout << "\nУмножение матриц:\n";
+    if (matrix1.getRows() > 0 && matrix1.getCols() > 0 &&
+        matrix2.getRows() > 0 && matrix2.getCols() > 0) {
+        Matrix result = matrix1 & matrix2;
+        if (result.getRows() > 0) {
+            std::cout << "Результат:\n" << result;
+        }
+    }
+    else {
+        std::cout << "Обе матрицы должны быть созданы!\n";
+    }
 }

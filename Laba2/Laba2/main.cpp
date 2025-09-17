@@ -36,30 +36,6 @@ int safeMenuInput() {
     }
 }
 
-void showMatrix(const Matrix& matrix, const std::string& name) {
-    std::cout << "\n" << name << ":\n";
-    if (matrix.getRows() > 0 && matrix.getCols() > 0) {
-        std::cout << matrix;
-    }
-    else {
-        std::cout << "Матрица не создана!\n";
-    }
-}
-
-void multiplyMatrices(const Matrix& matrix1, const Matrix& matrix2) {
-    std::cout << "\nУмножение матриц:\n";
-    if (matrix1.getRows() > 0 && matrix1.getCols() > 0 &&
-        matrix2.getRows() > 0 && matrix2.getCols() > 0) {
-        Matrix result = matrix1 & matrix2;
-        if (result.getRows() > 0) {
-            std::cout << "Результат:\n" << result;
-        }
-    }
-    else {
-        std::cout << "Обе матрицы должны быть созданы!\n";
-    }
-}
-
 int main() {
     setlocale(0, "rus");
     Matrix matrix1;
@@ -72,7 +48,7 @@ int main() {
     std::cin >> matrix1;
 
     // Ввод второй матрицы
-    std::cout << "\nВТОРАЯ МАТРИЦА:\n";
+    std::cout << "\nВТОРАЯ МАТРИЦA:\n";
     std::cin >> matrix2;
 
     int choice;
