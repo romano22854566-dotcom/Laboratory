@@ -53,7 +53,7 @@ void Matrix::freeMemory() {
     }
 }
 
-// Копирование данных из другой матрицы (константный метод)
+// Копирование данных из другой матрицы (CONST добавлен)
 void Matrix::copyDataFrom(const Matrix& other) const {
     if (rows > 0 && cols > 0) {
         for (int i = 0; i < rows; ++i) {
@@ -94,7 +94,7 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
-// Оператор вывода
+// Оператор вывода (скрытый друг)
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
     for (int i = 0; i < matrix.rows; ++i) {
         for (int j = 0; j < matrix.cols; ++j) {
@@ -105,7 +105,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
     return os;
 }
 
-// Оператор ввода
+// Оператор ввода (скрытый друг)
 std::istream& operator>>(std::istream& is, Matrix& matrix) {
     matrix.freeMemory();
 
@@ -127,7 +127,7 @@ std::istream& operator>>(std::istream& is, Matrix& matrix) {
     return is;
 }
 
-// Оператор умножения матриц
+// Оператор умножения матриц (скрытый друг)
 Matrix operator&(const Matrix& lhs, const Matrix& rhs) {
     if (lhs.cols != rhs.rows) {
         std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
