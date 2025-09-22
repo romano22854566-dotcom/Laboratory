@@ -5,29 +5,33 @@
 using namespace std;
 int main() {
     setlocale(0,"rus");
-    cout << "=== ПРОГРАММА ДЛЯ РАБОТЫ С ДВУМЕРНЫМИ МАСИВАМИ ==\n";
-    int rows1 = getSafeNumber("Введите количество строк первого масива:");
-    int cols1 = getSafeNumber("Введите количество столбцов первого масива:");
-    int rows2 = getSafeNumber("Введите количество строк второго масива:");
-    int cols2 = getSafeNumber("Введите количество столбцов второго масива:");
-    TwoDArray arrays(rows1,cols1,rows2,cols2);
-    if (!arrays.initializeArrays()) {
-        cout << "Ошибка\n";
+    cout << "=== ПРОГРАММА ДЛЯ РАБОТЫ С ДВУМЕРНЫМИ МАССИВАМИ ===\n";
+    int rows1 = getSafeNumber("Введите количество строк первого массива:");
+    int cols1 = getSafeNumber("Введите количество столбцов первого массива:");
+    int rows2 = getSafeNumber("Введите количество строк второго массива:");
+    int cols2 = getSafeNumber("Введите количество столбцов второго массива:");
+    TwoDArray array1(rows1,cols1);
+    TwoDArray array2(rows2,cols2);
+    if (!array1.initializeArray() || !array2.initializeArray()) {
+        cout << "Ошибка инициализации массивов\n";
         return 1;
     }
-    arrays.fillArrays();
+    cout << "=== Заполнение первого массива ===\n";
+    array1.fillArray();
+    cout << "\n=== Заполнение второго массива ===\n";
+    array2.fillArray();
     int choice;
     do {
         choice = getMenuChoice();
         switch (choice) {
         case 1:
-        arrays.showIntersection();
+        showIntersection(array1,array2);
         break;
         case 2:
-        arrays.showUnion();
+        showUnion(array1,array2);
         break;
         case 3:
-        arrays.showArrays();
+        showBothArrays(array1,array2);
         break;
         case 4:
         cout << "Выход\n";
