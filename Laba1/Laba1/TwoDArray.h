@@ -1,6 +1,3 @@
-#ifndef TWO_D_ARRAY_H
-#define TWO_D_ARRAY_H
-
 class TwoDArray {
 private:
     int rows;
@@ -26,5 +23,3 @@ bool isElementInArray(int element,const int* array,int size);
 void showIntersection(const TwoDArray& arr1,const TwoDArray& arr2);
 void showUnion(const TwoDArray& arr1,const TwoDArray& arr2);
 void showBothArrays(const TwoDArray& arr1,const TwoDArray& arr2);
-
-#endif
