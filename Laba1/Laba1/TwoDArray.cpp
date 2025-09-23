@@ -131,6 +131,7 @@ void TwoDArray::showArray() const {
         cout << endl;
     }
 }
+
 void showIntersection(const TwoDArray& arr1,const TwoDArray& arr2) {
     if (!arr1.isValid() || !arr2.isValid()) {
         cout << "Ошибка: массивы не инициализированы\n";
@@ -152,13 +153,13 @@ void showIntersection(const TwoDArray& arr1,const TwoDArray& arr2) {
             }
         }
     }
-
     if (intersectionSize == 0) {
         cout << "Пересечение пустое - нет общих элементов\n";
     }
     else {
         cout << "Пересечение (" << intersectionSize << " элементов):\n";
-        int cols = (intersectionSize > 10) ? 4 : 3;
+        int cols = arr1.getCols() + arr2.getCols();
+
         for (int i = 0; i < intersectionSize; i++) {
             cout << intersection[i] << " ";
             if ((i + 1) % cols == 0) cout << endl;
@@ -167,6 +168,7 @@ void showIntersection(const TwoDArray& arr1,const TwoDArray& arr2) {
     }
     delete[] intersection;
 }
+
 void showUnion(const TwoDArray& arr1,const TwoDArray& arr2) {
     if (!arr1.isValid() || !arr2.isValid()) {
         cout << "Ошибка: массивы не инициализированы\n";
@@ -195,7 +197,8 @@ void showUnion(const TwoDArray& arr1,const TwoDArray& arr2) {
         }
     }
     cout << "Объединение (" << unionSize << " элементов):\n";
-    int cols = (unionSize > 15) ? 5 : 3;
+    int cols = arr1.getCols() + arr2.getCols();
+
     for (int i = 0; i < unionSize; i++) {
         cout << unionElements[i] << " ";
         if ((i + 1) % cols == 0) cout << endl;
