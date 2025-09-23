@@ -157,6 +157,7 @@ void showIntersection(const TwoDArray& arr1,const TwoDArray& arr2) {
         cout << "Пересечение пустое - нет общих элементов\n";
     }
     else {
+
         cout << "Пересечение (" << intersectionSize << " элементов):\n";
         int cols = arr1.getCols() + arr2.getCols();
 
