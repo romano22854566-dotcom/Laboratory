@@ -1,4 +1,4 @@
-#include <sstream>
+#pragma once
 #include <iostream>
 #include <string> 
 
@@ -23,11 +23,8 @@ public:
     friend std::istream& operator>>(std::istream& is,Matrix& matrix);
     friend Matrix operator&(const Matrix& lhs,const Matrix& rhs);
 };
+
 void showMatrix(const Matrix& matrix,const std::string& name);
 void multiplyMatrices(const Matrix& matrix1,const Matrix& matrix2);
 int safeMenuInput();
 void printMenu();
-
-
-
-
