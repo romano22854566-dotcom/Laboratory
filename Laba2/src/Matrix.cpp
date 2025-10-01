@@ -79,51 +79,6 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& os,const Matrix& matrix) {
-    for (int i = 0; i < matrix.rows; ++i) {
-        for (int j = 0; j < matrix.cols; ++j) {
-            os << matrix.data[i][j] << " ";
-        }
-        os << "\n";
-    }
-    return os;
-}
-
-std::istream& operator>>(std::istream& is,Matrix& matrix) {
-    matrix.freeMemory();
-    matrix.rows = static_cast<int>(Matrix::safeInput("¬ведите количество строк: "));
-    matrix.cols = static_cast<int>(Matrix::safeInput("¬ведите количество столбцов: "));
-    if (matrix.rows > 0 && matrix.cols > 0) {
-        matrix.allocateMemory();
-        std::cout << "¬ведите элементы матрицы:\n";
-        for (int i = 0; i < matrix.rows; ++i) {
-            for (int j = 0; j < matrix.cols; ++j) {
-                std::cout << "Ёлемент [" << (i + 1) << "][" << (j + 1) << "]: ";
-                matrix.data[i][j] = Matrix::safeInput("");
-            }
-        }
-    }
-    return is;
-}
-
-Matrix operator&(const Matrix& lhs,const Matrix& rhs) {
-    if (lhs.getCols() != rhs.getRows()) {
-        std::cout << "ќшибка: нельз€ умножить матрицы таких размеров!\n";
-        return Matrix(0,0);
-    }
-    Matrix result(lhs.getRows(),rhs.getCols());
-    for (int i = 0; i < lhs.getRows(); ++i) {
-        for (int j = 0; j < rhs.getCols(); ++j) {
-            double sum = 0.0;
-            for (int k = 0; k < lhs.getCols(); ++k) {
-                sum += lhs.data[i][k] * rhs.data[k][j];
-            }
-            result.data[i][j] = sum;
-        }
-    }
-    return result;
-}
-
 void showMatrix(const Matrix& matrix,const std::string& name) {
     std::cout << "\n" << name << ":\n";
     if (matrix.isValid()) {
