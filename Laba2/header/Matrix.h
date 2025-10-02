@@ -19,7 +19,24 @@ public:
     int getRows() const { return rows; }
     int getCols() const { return cols; }
     bool isValid() const { return rows > 0 && cols > 0; }
-    Matrix operator&(const Matrix& rhs) const;
+    friend Matrix operator&(const Matrix& lhs,const Matrix& rhs) {
+        if (lhs.cols != rhs.rows) {
+            std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
+            return Matrix(0,0);
+        }
+        Matrix result(lhs.rows,rhs.cols);
+        for (int i = 0; i < lhs.rows; ++i) {
+            for (int j = 0; j < rhs.cols; ++j) {
+                double sum = 0.0;
+                for (int k = 0; k < lhs.cols; ++k) {
+                    sum += lhs.data[i][k] * rhs.data[k][j];
+                }
+                result.data[i][j] = sum;
+            }
+        }
+        return result;
+    }
+
     friend void print(const Matrix& matrix);
     friend void input(Matrix& matrix);
 };

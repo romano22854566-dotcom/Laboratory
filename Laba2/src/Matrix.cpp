@@ -78,23 +78,6 @@ Matrix& Matrix::operator=(const Matrix& other) {
     }
     return *this;
 }
-Matrix Matrix::operator&(const Matrix& rhs) const {
-    if (cols != rhs.getRows()) {
-        std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
-        return Matrix(0,0);
-    }
-    Matrix result(rows,rhs.getCols());
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < rhs.getCols(); ++j) {
-            double sum = 0.0;
-            for (int k = 0; k < cols; ++k) {
-                sum += data[i][k] * rhs.data[k][j];
-            }
-            result.data[i][j] = sum;
-        }
-    }
-    return result;
-}
 
 void print(const Matrix& matrix) {
     for (int i = 0; i < matrix.rows; ++i) {
