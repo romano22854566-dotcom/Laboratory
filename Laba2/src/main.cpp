@@ -8,29 +8,29 @@ int main() {
     Matrix matrix2;
     std::cout << "=== ПРОГРАММА ДЛЯ УМНОЖЕНИЕ МАТРИЦ ===\n";
     std::cout << "ПЕРВАЯ МАТРИЦA:\n";
-    std::cin >> matrix1;
+    input(matrix1);
     std::cout << "\nВТОРАЯ МАТРИЦA:\n";
-    std::cin >> matrix2;
+    input(matrix2);
     int choice;
     do {
-    printMenu();
-    choice = safeMenuInput();
-    switch (choice) {
-    case 1:
-    showMatrix(matrix1,"Первая матрица");
-    break;
-    case 2:
-    showMatrix(matrix2,"Вторая матрица");
-    break;
-    case 3:
-    multiplyMatrices(matrix1,matrix2);
-    break;
-    case 4:
-    std::cout << "Выход\n";
-    break;
-    default:
-    break;
-    }
+        printMenu();
+        choice = safeMenuInput();
+        switch (choice) {
+        case 1:
+        showMatrix(matrix1,"Первая матрица");
+        break;
+        case 2:
+        showMatrix(matrix2,"Вторая матрица");
+        break;
+        case 3:
+        multiplyMatrices(matrix1,matrix2);
+        break;
+        case 4:
+        std::cout << "Выход\n";
+        break;
+        default:
+        break;
+        }
     } while (choice != 4);
     return 0;
 }

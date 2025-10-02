@@ -79,10 +79,53 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
+Matrix Matrix::operator&(const Matrix& rhs) const {
+    if (cols != rhs.getRows()) {
+        std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
+        return Matrix(0,0);
+    }
+    Matrix result(rows,rhs.getCols());
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < rhs.getCols(); ++j) {
+            double sum = 0.0;
+            for (int k = 0; k < cols; ++k) {
+                sum += data[i][k] * rhs.data[k][j];
+            }
+            result.data[i][j] = sum;
+        }
+    }
+    return result;
+}
+
+void print(const Matrix& matrix) {
+    for (int i = 0; i < matrix.rows; ++i) {
+        for (int j = 0; j < matrix.cols; ++j) {
+            std::cout << matrix.data[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void input(Matrix& matrix) {
+    matrix.freeMemory();
+    matrix.rows = static_cast<int>(Matrix::safeInput("Введите количество строк: "));
+    matrix.cols = static_cast<int>(Matrix::safeInput("Введите количество столбцов: "));
+    if (matrix.rows > 0 && matrix.cols > 0) {
+        matrix.allocateMemory();
+        std::cout << "Введите элементы матрицы:\n";
+        for (int i = 0; i < matrix.rows; ++i) {
+            for (int j = 0; j < matrix.cols; ++j) {
+                std::cout << "Элемент [" << (i + 1) << "][" << (j + 1) << "]: ";
+                matrix.data[i][j] = Matrix::safeInput("");
+            }
+        }
+    }
+}
+
 void showMatrix(const Matrix& matrix,const std::string& name) {
     std::cout << "\n" << name << ":\n";
     if (matrix.isValid()) {
-        std::cout << matrix;
+        print(matrix);
     }
     else {
         std::cout << "Матрица не создана!\n";
@@ -94,7 +137,8 @@ void multiplyMatrices(const Matrix& matrix1,const Matrix& matrix2) {
     if (matrix1.isValid() && matrix2.isValid()) {
         Matrix result = matrix1 & matrix2;
         if (result.isValid()) {
-            std::cout << "Результат:\n" << result;
+            std::cout << "Результат:\n";
+            print(result);
         }
     }
     else {
