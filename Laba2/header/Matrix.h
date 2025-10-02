@@ -19,7 +19,7 @@ public:
     int getRows() const { return rows; }
     int getCols() const { return cols; }
     bool isValid() const { return rows > 0 && cols > 0; }
-    inline Matrix operator&(const Matrix& rhs) const;
+    Matrix operator&(const Matrix& rhs) const;
     friend void print(const Matrix& matrix);
     friend void input(Matrix& matrix);
 };

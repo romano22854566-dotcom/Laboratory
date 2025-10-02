@@ -78,7 +78,6 @@ Matrix& Matrix::operator=(const Matrix& other) {
     }
     return *this;
 }
-
 Matrix Matrix::operator&(const Matrix& rhs) const {
     if (cols != rhs.getRows()) {
         std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
