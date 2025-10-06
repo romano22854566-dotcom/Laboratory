@@ -20,7 +20,7 @@ int getSafeNumber(const string& prompt) {
             int num = stoi(input);
             if (num > 0) return num;
         }
-        cout << "Îøèáêà! Ââåäèòå ÷èñëî:";
+        cout << "Îøèáêà! ââåäèòå ÷èñëî:";
         cin.clear();
         cin.ignore(1000,'\n');
     }
