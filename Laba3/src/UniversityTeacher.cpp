@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "UniversityTeacher.h"
 #include <iostream>
 
@@ -11,17 +12,14 @@ UniversityTeacher::UniversityTeacher(const char* fName,const char* lName,const c
                                    const char* pos,const char* degree,const char* spec)
     : Human(fName,lName,pat,year),worksCount(0),worksCapacity(10) {
 
-    size_t len = strlen(pos) + 1;
-    position = new char[len];
-    strcpy_s(position,len,pos);
+    position = new char[strlen(pos) + 1];
+    strcpy(position,pos);
 
-    len = strlen(degree) + 1;
-    academicDegree = new char[len];
-    strcpy_s(academicDegree,len,degree);
+    academicDegree = new char[strlen(degree) + 1];
+    strcpy(academicDegree,degree);
 
-    len = strlen(spec) + 1;
-    specialty = new char[len];
-    strcpy_s(specialty,len,spec);
+    specialty = new char[strlen(spec) + 1];
+    strcpy(specialty,spec);
 
     scientificWorks = new char* [worksCapacity];
 }
@@ -93,9 +91,8 @@ void UniversityTeacher::addScientificWork(const char* work) {
         scientificWorks = newWorks;
     }
 
-    size_t len = strlen(work) + 1;
-    scientificWorks[worksCount] = new char[len];
-    strcpy_s(scientificWorks[worksCount],len,work);
+    scientificWorks[worksCount] = new char[strlen(work) + 1];
+    strcpy(scientificWorks[worksCount],work);
     worksCount++;
 }
 
@@ -113,9 +110,8 @@ void UniversityTeacher::updateScientificWork(int index,const char* newWork) {
     if (index < 0 || index >= worksCount) return;
 
     delete[] scientificWorks[index];
-    size_t len = strlen(newWork) + 1;
-    scientificWorks[index] = new char[len];
-    strcpy_s(scientificWorks[index],len,newWork);
+    scientificWorks[index] = new char[strlen(newWork) + 1];
+    strcpy(scientificWorks[index],newWork);
 }
 
 const char* UniversityTeacher::getScientificWork(int index) const {
@@ -125,21 +121,18 @@ const char* UniversityTeacher::getScientificWork(int index) const {
 
 void UniversityTeacher::setPosition(const char* pos) {
     delete[] position;
-    size_t len = strlen(pos) + 1;
-    position = new char[len];
-    strcpy_s(position,len,pos);
+    position = new char[strlen(pos) + 1];
+    strcpy(position,pos);
 }
 
 void UniversityTeacher::setAcademicDegree(const char* degree) {
     delete[] academicDegree;
-    size_t len = strlen(degree) + 1;
-    academicDegree = new char[len];
-    strcpy_s(academicDegree,len,degree);
+    academicDegree = new char[strlen(degree) + 1];
+    strcpy(academicDegree,degree);
 }
 
 void UniversityTeacher::setSpecialty(const char* spec) {
     delete[] specialty;
-    size_t len = strlen(spec) + 1;
-    specialty = new char[len];
-    strcpy_s(specialty,len,spec);
+    specialty = new char[strlen(spec) + 1];
+    strcpy(specialty,spec);
 }

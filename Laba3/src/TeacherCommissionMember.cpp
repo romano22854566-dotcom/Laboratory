@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "TeacherCommissionMember.h"
 #include <iostream>
 
@@ -79,9 +80,8 @@ void TeacherCommissionMember::addCommissionWork(const char* work) {
         commissionWorks = newWorks;
     }
 
-    size_t len = strlen(work) + 1;
-    commissionWorks[commissionWorksCount] = new char[len];
-    strcpy_s(commissionWorks[commissionWorksCount],len,work);
+    commissionWorks[commissionWorksCount] = new char[strlen(work) + 1];
+    strcpy(commissionWorks[commissionWorksCount],work);
     commissionWorksCount++;
 }
 
@@ -99,9 +99,8 @@ void TeacherCommissionMember::updateCommissionWork(int index,const char* newWork
     if (index < 0 || index >= commissionWorksCount) return;
 
     delete[] commissionWorks[index];
-    size_t len = strlen(newWork) + 1;
-    commissionWorks[index] = new char[len];
-    strcpy_s(commissionWorks[index],len,newWork);
+    commissionWorks[index] = new char[strlen(newWork) + 1];
+    strcpy(commissionWorks[index],newWork);
 }
 
 const char* TeacherCommissionMember::getCommissionWork(int index) const {

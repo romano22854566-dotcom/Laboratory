@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "CommissionMember.h"
 #include <iostream>
 
@@ -12,13 +13,11 @@ CommissionMember::CommissionMember(const char* fName,const char* lName,const cha
     : Human(fName,lName,pat,year),appointmentYear(appYear),
     autobiographyLines(0),autobiographyCapacity(10) {
 
-    size_t len = strlen(commName) + 1;
-    commissionName = new char[len];
-    strcpy_s(commissionName,len,commName);
+    commissionName = new char[strlen(commName) + 1];
+    strcpy(commissionName,commName);
 
-    len = strlen(certNum) + 1;
-    certificateNumber = new char[len];
-    strcpy_s(certificateNumber,len,certNum);
+    certificateNumber = new char[strlen(certNum) + 1];
+    strcpy(certificateNumber,certNum);
 
     autobiography = new char* [autobiographyCapacity];
 }
@@ -89,9 +88,8 @@ void CommissionMember::addAutobiographyLine(const char* line) {
         autobiography = newAutobiography;
     }
 
-    size_t len = strlen(line) + 1;
-    autobiography[autobiographyLines] = new char[len];
-    strcpy_s(autobiography[autobiographyLines],len,line);
+    autobiography[autobiographyLines] = new char[strlen(line) + 1];
+    strcpy(autobiography[autobiographyLines],line);
     autobiographyLines++;
 }
 
@@ -109,9 +107,8 @@ void CommissionMember::updateAutobiographyLine(int index,const char* newLine) {
     if (index < 0 || index >= autobiographyLines) return;
 
     delete[] autobiography[index];
-    size_t len = strlen(newLine) + 1;
-    autobiography[index] = new char[len];
-    strcpy_s(autobiography[index],len,newLine);
+    autobiography[index] = new char[strlen(newLine) + 1];
+    strcpy(autobiography[index],newLine);
 }
 
 const char* CommissionMember::getAutobiographyLine(int index) const {
@@ -121,9 +118,8 @@ const char* CommissionMember::getAutobiographyLine(int index) const {
 
 void CommissionMember::setCommissionName(const char* commName) {
     delete[] commissionName;
-    size_t len = strlen(commName) + 1;
-    commissionName = new char[len];
-    strcpy_s(commissionName,len,commName);
+    commissionName = new char[strlen(commName) + 1];
+    strcpy(commissionName,commName);
 }
 
 void CommissionMember::setAppointmentYear(int year) {
@@ -132,7 +128,6 @@ void CommissionMember::setAppointmentYear(int year) {
 
 void CommissionMember::setCertificateNumber(const char* certNum) {
     delete[] certificateNumber;
-    size_t len = strlen(certNum) + 1;
-    certificateNumber = new char[len];
-    strcpy_s(certificateNumber,len,certNum);
+    certificateNumber = new char[strlen(certNum) + 1];
+    strcpy(certificateNumber,certNum);
 }
