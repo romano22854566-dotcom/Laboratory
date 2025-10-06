@@ -1,10 +1,12 @@
 name: Build & SonarCloud
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
   build-and-scan:
@@ -58,7 +60,11 @@ jobs:
             -Dsonar.projectKey=PeTkun_Industries_Laba2
             -Dsonar.organization=${{ env.SONAR_ORG }}
             -Dsonar.sources=Laba2
-                  - name: Build Laba3
+            -Dsonar.cfamily.compile-commands=Laba2/build_wrapper/compile_commands.json
+            -Dsonar.coverage.exclusions=**
+            -Dsonar.cfamily.skipCoverage=true
+
+      - name: Build Laba3
         run: |
           rm -rf Laba3/build
           mkdir Laba3/build
@@ -72,12 +78,8 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=PeTkun_Industries_Laba3
-            -Dsonar.organization=petkunindustries
+            -Dsonar.organization=${{ env.SONAR_ORG }}
             -Dsonar.sources=Laba3
             -Dsonar.cfamily.compile-commands=Laba3/build_wrapper/compile_commands.json
-            -Dsonar.coverage.exclusions=**
-            -Dsonar.cfamily.skipCoverage=true
-
-            -Dsonar.cfamily.compile-commands=Laba2/build_wrapper/compile_commands.json
             -Dsonar.coverage.exclusions=**
             -Dsonar.cfamily.skipCoverage=true
