@@ -1,0 +1,31 @@
+#ifndef TEACHERCOMMISSIONMEMBER_H
+#define TEACHERCOMMISSIONMEMBER_H
+
+#include "UniversityTeacher.h"
+#include "CommissionMember.h"
+
+class TeacherCommissionMember: public UniversityTeacher,public CommissionMember {
+private:
+    char** commissionWorks;
+    int commissionWorksCount;
+    int commissionWorksCapacity;
+
+public:
+    TeacherCommissionMember();
+    TeacherCommissionMember(const char* fName,const char* lName,const char* pat,int year,
+                          const char* pos,const char* degree,const char* spec,
+                          const char* commName,int appYear,const char* certNum);
+    ~TeacherCommissionMember();
+
+    void display() const override;
+    void input() override;
+
+    // Методы для работы с работами в комиссии
+    void addCommissionWork(const char* work);
+    void removeCommissionWork(int index);
+    void updateCommissionWork(int index,const char* newWork);
+    const char* getCommissionWork(int index) const;
+    int getCommissionWorksCount() const { return commissionWorksCount; }
+};
+
+#endif
