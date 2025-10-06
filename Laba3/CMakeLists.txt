@@ -10,7 +10,6 @@ set(SOURCES
     src/main.cpp
     src/Human.cpp
     src/CommissionMember.cpp
-    src/MenuFunctions.cpp
     src/TeacherCommissionMember.cpp
     src/UniversityTeacher.cpp
 )
