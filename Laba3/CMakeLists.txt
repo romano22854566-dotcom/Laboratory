@@ -7,10 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(header)
 
 set(SOURCES
+  src/MenuFunctions.cpp
     src/main.cpp
     src/Human.cpp
     src/CommissionMember.cpp
-    src/MenuFunctions.cpp
     src/TeacherCommissionMember.cpp
     src/UniversityTeacher.cpp
 )
