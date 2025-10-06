@@ -35,7 +35,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=petkunindustries_Laba1
+            -Dsonar.projectKey=PeTkun_Industries_Laba1
             -Dsonar.organization=${{ env.SONAR_ORG }}
             -Dsonar.sources=Laba1
             -Dsonar.cfamily.compile-commands=Laba1/build_wrapper/compile_commands.json
@@ -55,7 +55,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=petkunindustries_Laba2
+            -Dsonar.projectKey=PeTkun_Industries_Laba2
             -Dsonar.organization=${{ env.SONAR_ORG }}
             -Dsonar.sources=Laba2
             -Dsonar.cfamily.compile-commands=Laba2/build_wrapper/compile_commands.json
