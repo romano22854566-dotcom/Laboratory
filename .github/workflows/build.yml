@@ -58,6 +58,26 @@ jobs:
             -Dsonar.projectKey=PeTkun_Industries_Laba2
             -Dsonar.organization=${{ env.SONAR_ORG }}
             -Dsonar.sources=Laba2
+                  - name: Build Laba3
+        run: |
+          rm -rf Laba3/build
+          mkdir Laba3/build
+          cmake -S Laba3 -B Laba3/build
+          build-wrapper-linux-x86-64 --out-dir Laba3/build_wrapper make -C Laba3/build
+
+      - name: SonarCloud scan Laba3
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=PeTkun_Industries_Laba3
+            -Dsonar.organization=petkunindustries
+            -Dsonar.sources=Laba3
+            -Dsonar.cfamily.compile-commands=Laba3/build_wrapper/compile_commands.json
+            -Dsonar.coverage.exclusions=**
+            -Dsonar.cfamily.skipCoverage=true
+
             -Dsonar.cfamily.compile-commands=Laba2/build_wrapper/compile_commands.json
             -Dsonar.coverage.exclusions=**
             -Dsonar.cfamily.skipCoverage=true
