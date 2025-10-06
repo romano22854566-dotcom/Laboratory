@@ -19,8 +19,6 @@ public:
 
     void display() const override;
     void input() override;
-
-    // Методы для работы с работами в комиссии
     void addCommissionWork(const char* work);
     void removeCommissionWork(int index);
     void updateCommissionWork(int index,const char* newWork);
