@@ -1,4 +1,8 @@
+#ifndef HUMAN_H
+#define HUMAN_H
+
 #include <iostream>
+
 class Human {
 protected:
     char* firstName;
@@ -35,3 +39,5 @@ private:
     Human(const Human&) = delete;
     Human& operator=(const Human&) = delete;
 };
+
+#endif
