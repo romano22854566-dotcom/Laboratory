@@ -1,12 +1,14 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include "MenuFunctions.h"
 #include <locale.h>
+#include "MenuFunctions.h"
+
 int main() {
-    setlocale(0,"rus");
-    Human** people = new Human * [10];
+    setlocale(LC_ALL,"Russian");
+    Human** people = nullptr;
     int peopleCount = 0;
-    int capacity = 10;
+    int capacity = 0;
+
+    initializePeople(people,capacity);
 
     int choice;
 

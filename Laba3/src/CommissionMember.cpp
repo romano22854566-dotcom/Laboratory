@@ -1,25 +1,27 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "CommissionMember.h"
 #include <iostream>
 
 CommissionMember::CommissionMember():
     commissionName(nullptr),appointmentYear(0),certificateNumber(nullptr),
-    autobiography(nullptr),autobiographyLines(0),autobiographyCapacity(10) {
+    autobiography(nullptr),autobiographyLines(0),autobiographyCapacity(5) {
     autobiography = new char* [autobiographyCapacity];
+    for (int i = 0; i < autobiographyCapacity; i++) {
+        autobiography[i] = nullptr;
+    }
 }
 
 CommissionMember::CommissionMember(const char* fName,const char* lName,const char* pat,int year,
                                  const char* commName,int appYear,const char* certNum)
     : Human(fName,lName,pat,year),appointmentYear(appYear),
-    autobiographyLines(0),autobiographyCapacity(10) {
+    autobiographyLines(0),autobiographyCapacity(5) {
 
-    commissionName = new char[strlen(commName) + 1];
-    strcpy(commissionName,commName);
-
-    certificateNumber = new char[strlen(certNum) + 1];
-    strcpy(certificateNumber,certNum);
+    commissionName = safeCopy(commName);
+    certificateNumber = safeCopy(certNum);
 
     autobiography = new char* [autobiographyCapacity];
+    for (int i = 0; i < autobiographyCapacity; i++) {
+        autobiography[i] = nullptr;
+    }
 }
 
 CommissionMember::~CommissionMember() {
@@ -36,9 +38,9 @@ void CommissionMember::display() const {
     std::cout << "Член комиссии:\n";
     std::cout << "ФИО: " << lastName << " " << firstName << " " << patronymic << "\n";
     std::cout << "Год рождения: " << birthYear << "\n";
-    std::cout << "Название комиссии: " << commissionName << "\n";
+    std::cout << "Название комиссии: " << (commissionName ? commissionName : "") << "\n";
     std::cout << "Год назначения: " << appointmentYear << "\n";
-    std::cout << "Номер свидетельства: " << certificateNumber << "\n";
+    std::cout << "Номер свидетельства: " << (certificateNumber ? certificateNumber : "") << "\n";
     std::cout << "Автобиография (" << autobiographyLines << " строк):\n";
     for (int i = 0; i < autobiographyLines; i++) {
         std::cout << "  " << autobiography[i] << "\n";
@@ -46,7 +48,7 @@ void CommissionMember::display() const {
 }
 
 void CommissionMember::input() {
-    char buffer[100];
+    char buffer[256];
 
     std::cout << "Введите имя: ";
     std::cin >> buffer;
@@ -62,72 +64,50 @@ void CommissionMember::input() {
 
     std::cout << "Введите год рождения: ";
     std::cin >> birthYear;
+    std::cin.ignore();
 
     std::cout << "Введите название комиссии: ";
-    std::cin.ignore();
-    std::cin.getline(buffer,100);
-    setCommissionName(buffer);
+    std::cin.getline(buffer,256);
+    delete[] commissionName;
+    commissionName = safeCopy(buffer);
 
     std::cout << "Введите год назначения: ";
     std::cin >> appointmentYear;
+    std::cin.ignore();
 
     std::cout << "Введите номер свидетельства: ";
-    std::cin.ignore();
-    std::cin.getline(buffer,100);
-    setCertificateNumber(buffer);
+    std::cin.getline(buffer,256);
+    delete[] certificateNumber;
+    certificateNumber = safeCopy(buffer);
 }
 
 void CommissionMember::addAutobiographyLine(const char* line) {
+    if (!line) return;
+
     if (autobiographyLines >= autobiographyCapacity) {
-        autobiographyCapacity *= 2;
-        char** newAutobiography = new char* [autobiographyCapacity];
+        int newCapacity = autobiographyCapacity * 2;
+        char** newAutobiography = new char* [newCapacity];
         for (int i = 0; i < autobiographyLines; i++) {
             newAutobiography[i] = autobiography[i];
         }
+        for (int i = autobiographyLines; i < newCapacity; i++) {
+            newAutobiography[i] = nullptr;
+        }
         delete[] autobiography;
         autobiography = newAutobiography;
+        autobiographyCapacity = newCapacity;
     }
 
-    autobiography[autobiographyLines] = new char[strlen(line) + 1];
-    strcpy(autobiography[autobiographyLines],line);
+    autobiography[autobiographyLines] = safeCopy(line);
     autobiographyLines++;
 }
-
-void CommissionMember::removeAutobiographyLine(int index) {
-    if (index < 0 || index >= autobiographyLines) return;
-
-    delete[] autobiography[index];
-    for (int i = index; i < autobiographyLines - 1; i++) {
-        autobiography[i] = autobiography[i + 1];
-    }
-    autobiographyLines--;
-}
-
-void CommissionMember::updateAutobiographyLine(int index,const char* newLine) {
-    if (index < 0 || index >= autobiographyLines) return;
-
-    delete[] autobiography[index];
-    autobiography[index] = new char[strlen(newLine) + 1];
-    strcpy(autobiography[index],newLine);
-}
-
 const char* CommissionMember::getAutobiographyLine(int index) const {
     if (index < 0 || index >= autobiographyLines) return nullptr;
     return autobiography[index];
 }
 
-void CommissionMember::setCommissionName(const char* commName) {
-    delete[] commissionName;
-    commissionName = new char[strlen(commName) + 1];
-    strcpy(commissionName,commName);
-}
-
-void CommissionMember::setAppointmentYear(int year) {
-    appointmentYear = year;
-}
-
-void CommissionMember::setCertificateNumber(const char* certNum) {
-    delete[] certificateNumber;
-    certificateNumber = new char[strlen(certNum) + 1];
-    strcpy(certificateNumber,certNum);
+void CommissionMember::updateAutobiographyLine(int index,const char* newLine) {
+    if (index < 0 || index >= autobiographyLines || !newLine) return;
+    delete[] autobiography[index];
+    autobiography[index] = safeCopy(newLine);
 }

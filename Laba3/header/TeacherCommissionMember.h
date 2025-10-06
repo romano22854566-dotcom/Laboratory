@@ -19,11 +19,14 @@ public:
 
     void display() const override;
     void input() override;
+
     void addCommissionWork(const char* work);
-    void removeCommissionWork(int index);
-    void updateCommissionWork(int index,const char* newWork);
-    const char* getCommissionWork(int index) const;
     int getCommissionWorksCount() const { return commissionWorksCount; }
+    const char* getCommissionWork(int index) const;
+    void updateCommissionWork(int index,const char* newWork);
+private:
+    TeacherCommissionMember(const TeacherCommissionMember&) = delete;
+    TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;
 };
 
 #endif

@@ -21,21 +21,13 @@ public:
     void display() const override;
     void input() override;
 
-    // Методы для работы с научными трудами
     void addScientificWork(const char* work);
-    void removeScientificWork(int index);
-    void updateScientificWork(int index,const char* newWork);
-    const char* getScientificWork(int index) const;
     int getScientificWorksCount() const { return worksCount; }
-
-    // Геттеры и сеттеры
-    const char* getPosition() const { return position; }
-    const char* getAcademicDegree() const { return academicDegree; }
-    const char* getSpecialty() const { return specialty; }
-
-    void setPosition(const char* pos);
-    void setAcademicDegree(const char* degree);
-    void setSpecialty(const char* spec);
+    const char* getScientificWork(int index) const;
+    void updateScientificWork(int index,const char* newWork);
+private:
+    UniversityTeacher(const UniversityTeacher&) = delete;
+    UniversityTeacher& operator=(const UniversityTeacher&) = delete;
 };
 
 #endif

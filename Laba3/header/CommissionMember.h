@@ -21,21 +21,13 @@ public:
     void display() const override;
     void input() override;
 
-    // Методы для работы с автобиографией
     void addAutobiographyLine(const char* line);
-    void removeAutobiographyLine(int index);
-    void updateAutobiographyLine(int index,const char* newLine);
-    const char* getAutobiographyLine(int index) const;
     int getAutobiographyLinesCount() const { return autobiographyLines; }
-
-    // Геттеры и сеттеры
-    const char* getCommissionName() const { return commissionName; }
-    int getAppointmentYear() const { return appointmentYear; }
-    const char* getCertificateNumber() const { return certificateNumber; }
-
-    void setCommissionName(const char* commName);
-    void setAppointmentYear(int year);
-    void setCertificateNumber(const char* certNum);
+    const char* getAutobiographyLine(int index) const;
+    void updateAutobiographyLine(int index,const char* newLine);
+private:
+    CommissionMember(const CommissionMember&) = delete;
+    CommissionMember& operator=(const CommissionMember&) = delete;
 };
 
 #endif
