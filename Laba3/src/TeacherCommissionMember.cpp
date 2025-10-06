@@ -1,6 +1,20 @@
 #include "TeacherCommissionMember.h"
 #include <iostream>
 
+void TeacherCommissionMember::resizeCommissionWorks() {
+    int newCapacity = commissionWorksCapacity * 2;
+    char** newWorks = new char* [newCapacity];
+    for (int i = 0; i < commissionWorksCount; i++) {
+        newWorks[i] = commissionWorks[i];
+    }
+    for (int i = commissionWorksCount; i < newCapacity; i++) {
+        newWorks[i] = nullptr;
+    }
+    delete[] commissionWorks;
+    commissionWorks = newWorks;
+    commissionWorksCapacity = newCapacity;
+}
+
 TeacherCommissionMember::TeacherCommissionMember():
     commissionWorks(nullptr),commissionWorksCount(0),commissionWorksCapacity(5) {
     commissionWorks = new char* [commissionWorksCapacity];
@@ -30,29 +44,35 @@ TeacherCommissionMember::~TeacherCommissionMember() {
 }
 
 void TeacherCommissionMember::display() const {
-    std::cout << "Преподаватель - член комиссии:\n";
-    std::cout << "ФИО: " << lastName << " " << firstName << " " << patronymic << "\n";
-    std::cout << "Год рождения: " << birthYear << "\n";
-    std::cout << "Должность: " << (position ? position : "") << "\n";
-    std::cout << "Ученая степень: " << (academicDegree ? academicDegree : "") << "\n";
-    std::cout << "Специальность: " << (specialty ? specialty : "") << "\n";
-    std::cout << "Название комиссии: " << (commissionName ? commissionName : "") << "\n";
-    std::cout << "Год назначения: " << appointmentYear << "\n";
-    std::cout << "Номер свидетельства: " << (certificateNumber ? certificateNumber : "") << "\n";
+    std::cout << "Teacher - Commission Member:\n";
+    std::cout << "Name: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
+    std::cout << "Birth Year: " << birthYear << "\n";
+    std::cout << "Position: " << getPosition() << "\n";
+    std::cout << "Academic Degree: " << getAcademicDegree() << "\n";
+    std::cout << "Specialty: " << getSpecialty() << "\n";
+    std::cout << "Commission Name: " << getCommissionName() << "\n";
+    std::cout << "Appointment Year: " << appointmentYear << "\n";
+    std::cout << "Certificate Number: " << getCertificateNumber() << "\n";
 
-    std::cout << "Научные труды (" << worksCount << "):\n";
+    std::cout << "Scientific Works (" << worksCount << "):\n";
     for (int i = 0; i < worksCount; i++) {
-        std::cout << "  " << (i + 1) << ". " << scientificWorks[i] << "\n";
+        if (scientificWorks[i]) {
+            std::cout << "  " << (i + 1) << ". " << scientificWorks[i] << "\n";
+        }
     }
 
-    std::cout << "Автобиография (" << autobiographyLines << " строк):\n";
+    std::cout << "Autobiography (" << autobiographyLines << " lines):\n";
     for (int i = 0; i < autobiographyLines; i++) {
-        std::cout << "  " << autobiography[i] << "\n";
+        if (autobiography[i]) {
+            std::cout << "  " << autobiography[i] << "\n";
+        }
     }
 
-    std::cout << "Работы в комиссии (" << commissionWorksCount << "):\n";
+    std::cout << "Commission Works (" << commissionWorksCount << "):\n";
     for (int i = 0; i < commissionWorksCount; i++) {
-        std::cout << "  " << (i + 1) << ". " << commissionWorks[i] << "\n";
+        if (commissionWorks[i]) {
+            std::cout << "  " << (i + 1) << ". " << commissionWorks[i] << "\n";
+        }
     }
 }
 
@@ -60,48 +80,44 @@ void TeacherCommissionMember::input() {
     UniversityTeacher::input();
 
     char buffer[256];
-    std::cout << "Введите название комиссии: ";
-    std::cin.getline(buffer,256);
-    delete[] commissionName;
-    commissionName = safeCopy(buffer);
+    std::cout << "Enter commission name: ";
+    if (std::cin.getline(buffer,256)) {
+        setCommissionName(buffer);
+    }
 
-    std::cout << "Введите год назначения: ";
-    std::cin >> appointmentYear;
+    std::cout << "Enter appointment year: ";
+    if (std::cin >> appointmentYear) {
+        // valid input
+    }
     std::cin.ignore();
 
-    std::cout << "Введите номер свидетельства: ";
-    std::cin.getline(buffer,256);
-    delete[] certificateNumber;
-    certificateNumber = safeCopy(buffer);
+    std::cout << "Enter certificate number: ";
+    if (std::cin.getline(buffer,256)) {
+        setCertificateNumber(buffer);
+    }
 }
 
 void TeacherCommissionMember::addCommissionWork(const char* work) {
-    if (!work) return;
+    if (!work || strlen(work) == 0) return;
 
     if (commissionWorksCount >= commissionWorksCapacity) {
-        int newCapacity = commissionWorksCapacity * 2;
-        char** newWorks = new char* [newCapacity];
-        for (int i = 0; i < commissionWorksCount; i++) {
-            newWorks[i] = commissionWorks[i];
-        }
-        for (int i = commissionWorksCount; i < newCapacity; i++) {
-            newWorks[i] = nullptr;
-        }
-        delete[] commissionWorks;
-        commissionWorks = newWorks;
-        commissionWorksCapacity = newCapacity;
+        resizeCommissionWorks();
     }
 
     commissionWorks[commissionWorksCount] = safeCopy(work);
     commissionWorksCount++;
 }
+
 const char* TeacherCommissionMember::getCommissionWork(int index) const {
-    if (index < 0 || index >= commissionWorksCount) return nullptr;
+    if (index < 0 || index >= commissionWorksCount || !commissionWorks[index]) {
+        return "";
+    }
     return commissionWorks[index];
 }
 
 void TeacherCommissionMember::updateCommissionWork(int index,const char* newWork) {
-    if (index < 0 || index >= commissionWorksCount || !newWork) return;
+    if (index < 0 || index >= commissionWorksCount || !newWork || strlen(newWork) == 0) return;
+
     delete[] commissionWorks[index];
     commissionWorks[index] = safeCopy(newWork);
 }

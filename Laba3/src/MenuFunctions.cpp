@@ -2,23 +2,26 @@
 #include <iostream>
 
 void displayMenu() {
-    std::cout << "\n=== МЕНЮ ===\n";
-    std::cout << "1. Создать преподавателя университета\n";
-    std::cout << "2. Создать члена комиссии\n";
-    std::cout << "3. Создать преподавателя-члена комиссии\n";
-    std::cout << "4. Показать всех созданных людей\n";
-    std::cout << "5. Добавить научный труд преподавателю\n";
-    std::cout << "6. Добавить строку автобиографии члену комиссии\n";
-    std::cout << "7. Добавить работу в комиссии\n";
-    std::cout << "0. Выход\n";
-    std::cout << "Выберите опцию: ";
+    std::cout << "\n=== MENU ===\n";
+    std::cout << "1. Create university teacher\n";
+    std::cout << "2. Create commission member\n";
+    std::cout << "3. Create teacher-commission member\n";
+    std::cout << "4. Show all people\n";
+    std::cout << "5. Add scientific work to teacher\n";
+    std::cout << "6. Add autobiography line to commission member\n";
+    std::cout << "7. Add commission work\n";
+    std::cout << "0. Exit\n";
+    std::cout << "Choose option: ";
 }
 
-void resizePeopleArray(Human**& people,int& peopleCount,int& capacity) {
+void resizePeopleArray(Human**& people,int& capacity,int peopleCount) {
     int newCapacity = capacity * 2;
     Human** newPeople = new Human * [newCapacity];
     for (int i = 0; i < peopleCount; i++) {
         newPeople[i] = people[i];
+    }
+    for (int i = peopleCount; i < newCapacity; i++) {
+        newPeople[i] = nullptr;
     }
     delete[] people;
     people = newPeople;
@@ -28,144 +31,175 @@ void resizePeopleArray(Human**& people,int& peopleCount,int& capacity) {
 void initializePeople(Human**& people,int& capacity) {
     capacity = 2;
     people = new Human * [capacity];
+    for (int i = 0; i < capacity; i++) {
+        people[i] = nullptr;
+    }
 }
 
 void cleanup(Human** people,int peopleCount) {
     for (int i = 0; i < peopleCount; i++) {
-        delete people[i];
+        if (people[i]) {
+            delete people[i];
+        }
     }
     delete[] people;
 }
 
 void createUniversityTeacher(Human**& people,int& peopleCount,int& capacity) {
     if (peopleCount >= capacity) {
-        resizePeopleArray(people,peopleCount,capacity);
+        resizePeopleArray(people,capacity,peopleCount);
     }
     people[peopleCount] = new UniversityTeacher();
-    people[peopleCount]->input();
-    peopleCount++;
-    std::cout << "Преподаватель университета создан!\n";
+    if (people[peopleCount]) {
+        people[peopleCount]->input();
+        peopleCount++;
+        std::cout << "University teacher created!\n";
+    }
 }
 
 void createCommissionMember(Human**& people,int& peopleCount,int& capacity) {
     if (peopleCount >= capacity) {
-        resizePeopleArray(people,peopleCount,capacity);
+        resizePeopleArray(people,capacity,peopleCount);
     }
     people[peopleCount] = new CommissionMember();
-    people[peopleCount]->input();
-    peopleCount++;
-    std::cout << "Член комиссии создан!\n";
+    if (people[peopleCount]) {
+        people[peopleCount]->input();
+        peopleCount++;
+        std::cout << "Commission member created!\n";
+    }
 }
 
 void createTeacherCommissionMember(Human**& people,int& peopleCount,int& capacity) {
     if (peopleCount >= capacity) {
-        resizePeopleArray(people,peopleCount,capacity);
+        resizePeopleArray(people,capacity,peopleCount);
     }
     people[peopleCount] = new TeacherCommissionMember();
-    people[peopleCount]->input();
-    peopleCount++;
-    std::cout << "Преподаватель-член комиссии создан!\n";
+    if (people[peopleCount]) {
+        people[peopleCount]->input();
+        peopleCount++;
+        std::cout << "Teacher-commission member created!\n";
+    }
 }
 
 void displayAllPeople(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "Нет созданных людей.\n";
+        std::cout << "No people created.\n";
     }
     else {
-        std::cout << "\n=== ВСЕ СОЗДАННЫЕ ЛЮДИ (" << peopleCount << ") ===\n";
+        std::cout << "\n=== ALL CREATED PEOPLE (" << peopleCount << ") ===\n";
         for (int i = 0; i < peopleCount; i++) {
-            std::cout << "\n--- Человек " << (i + 1) << " ---\n";
-            people[i]->display();
+            if (people[i]) {
+                std::cout << "\n--- Person " << (i + 1) << " ---\n";
+                people[i]->display();
+            }
         }
     }
 }
 
 void addScientificWork(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "Нет созданных людей.\n";
+        std::cout << "No people created.\n";
         return;
     }
 
-    std::cout << "Выберите преподавателя (1-" << peopleCount << "): ";
+    std::cout << "Choose teacher (1-" << peopleCount << "): ";
     int index;
-    std::cin >> index;
+    if (!(std::cin >> index)) {
+        std::cout << "Invalid input!\n";
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        return;
+    }
     index--;
 
-    if (index < 0 || index >= peopleCount) {
-        std::cout << "Неверный индекс!\n";
+    if (index < 0 || index >= peopleCount || !people[index]) {
+        std::cout << "Invalid index!\n";
         return;
     }
 
     UniversityTeacher* teacher = dynamic_cast<UniversityTeacher*>(people[index]);
     if (!teacher) {
-        std::cout << "Выбранный человек не является преподавателем университета!\n";
+        std::cout << "Selected person is not a university teacher!\n";
         return;
     }
 
     char work[256];
-    std::cout << "Введите название научного труда: ";
+    std::cout << "Enter scientific work: ";
     std::cin.ignore();
-    std::cin.getline(work,256);
-    teacher->addScientificWork(work);
-    std::cout << "Научный труд добавлен!\n";
+    if (std::cin.getline(work,256)) {
+        teacher->addScientificWork(work);
+        std::cout << "Scientific work added!\n";
+    }
 }
 
 void addAutobiographyLine(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "Нет созданных людей.\n";
+        std::cout << "No people created.\n";
         return;
     }
 
-    std::cout << "Выберите члена комиссии (1-" << peopleCount << "): ";
+    std::cout << "Choose commission member (1-" << peopleCount << "): ";
     int index;
-    std::cin >> index;
+    if (!(std::cin >> index)) {
+        std::cout << "Invalid input!\n";
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        return;
+    }
     index--;
 
-    if (index < 0 || index >= peopleCount) {
-        std::cout << "Неверный индекс!\n";
+    if (index < 0 || index >= peopleCount || !people[index]) {
+        std::cout << "Invalid index!\n";
         return;
     }
 
     CommissionMember* member = dynamic_cast<CommissionMember*>(people[index]);
     if (!member) {
-        std::cout << "Выбранный человек не является членом комиссии!\n";
+        std::cout << "Selected person is not a commission member!\n";
         return;
     }
 
     char line[256];
-    std::cout << "Введите строку автобиографии: ";
+    std::cout << "Enter autobiography line: ";
     std::cin.ignore();
-    std::cin.getline(line,256);
-    member->addAutobiographyLine(line);
-    std::cout << "Строка автобиографии добавлена!\n";
+    if (std::cin.getline(line,256)) {
+        member->addAutobiographyLine(line);
+        std::cout << "Autobiography line added!\n";
+    }
 }
 
 void addCommissionWork(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "Нет созданных людей.\n";
+        std::cout << "No people created.\n";
         return;
     }
 
-    std::cout << "Выберите преподавателя-члена комиссии (1-" << peopleCount << "): ";
+    std::cout << "Choose teacher-commission member (1-" << peopleCount << "): ";
     int index;
-    std::cin >> index;
+    if (!(std::cin >> index)) {
+        std::cout << "Invalid input!\n";
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        return;
+    }
     index--;
 
-    if (index < 0 || index >= peopleCount) {
-        std::cout << "Неверный индекс!\n";
+    if (index < 0 || index >= peopleCount || !people[index]) {
+        std::cout << "Invalid index!\n";
         return;
     }
 
     TeacherCommissionMember* tcm = dynamic_cast<TeacherCommissionMember*>(people[index]);
     if (!tcm) {
-        std::cout << "Выбранный человек не является преподавателем-членом комиссии!\n";
+        std::cout << "Selected person is not a teacher-commission member!\n";
         return;
     }
 
     char work[256];
-    std::cout << "Введите работу в комиссии: ";
+    std::cout << "Enter commission work: ";
     std::cin.ignore();
-    std::cin.getline(work,256);
-    tcm->addCommissionWork(work);
-    std::cout << "Работа в комиссии добавлена!\n";
+    if (std::cin.getline(work,256)) {
+        tcm->addCommissionWork(work);
+        std::cout << "Commission work added!\n";
+    }
 }

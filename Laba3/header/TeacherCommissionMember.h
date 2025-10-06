@@ -10,6 +10,8 @@ private:
     int commissionWorksCount;
     int commissionWorksCapacity;
 
+    void resizeCommissionWorks();
+
 public:
     TeacherCommissionMember();
     TeacherCommissionMember(const char* fName,const char* lName,const char* pat,int year,
@@ -24,6 +26,7 @@ public:
     int getCommissionWorksCount() const { return commissionWorksCount; }
     const char* getCommissionWork(int index) const;
     void updateCommissionWork(int index,const char* newWork);
+
 private:
     TeacherCommissionMember(const TeacherCommissionMember&) = delete;
     TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;

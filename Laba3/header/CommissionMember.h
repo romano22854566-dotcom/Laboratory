@@ -12,6 +12,8 @@ protected:
     int autobiographyLines;
     int autobiographyCapacity;
 
+    void resizeAutobiography();
+
 public:
     CommissionMember();
     CommissionMember(const char* fName,const char* lName,const char* pat,int year,
@@ -25,6 +27,15 @@ public:
     int getAutobiographyLinesCount() const { return autobiographyLines; }
     const char* getAutobiographyLine(int index) const;
     void updateAutobiographyLine(int index,const char* newLine);
+
+    const char* getCommissionName() const { return commissionName ? commissionName : ""; }
+    int getAppointmentYear() const { return appointmentYear; }
+    const char* getCertificateNumber() const { return certificateNumber ? certificateNumber : ""; }
+
+    void setCommissionName(const char* commName);
+    void setAppointmentYear(int year);
+    void setCertificateNumber(const char* certNum);
+
 private:
     CommissionMember(const CommissionMember&) = delete;
     CommissionMember& operator=(const CommissionMember&) = delete;

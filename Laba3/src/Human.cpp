@@ -1,6 +1,23 @@
 #include "Human.h"
+#include <cstring>
 
-Human::Human(): firstName(nullptr),lastName(nullptr),patronymic(nullptr),birthYear(0) {}
+char* Human::safeCopy(const char* source) {
+    if (!source || strlen(source) == 0) {
+        char* empty = new char[1];
+        empty[0] = '\0';
+        return empty;
+    }
+
+    size_t len = strlen(source);
+    char* dest = new char[len + 1];
+    for (size_t i = 0; i < len; i++) {
+        dest[i] = source[i];
+    }
+    dest[len] = '\0';
+    return dest;
+}
+
+Human::Human(): firstName(safeCopy("")),lastName(safeCopy("")),patronymic(safeCopy("")),birthYear(0) {}
 
 Human::Human(const char* fName,const char* lName,const char* pat,int year): birthYear(year) {
     firstName = safeCopy(fName);
