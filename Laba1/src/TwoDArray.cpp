@@ -15,7 +15,7 @@ int getSafeNumber(const string& prompt) {
                 valid = false;
                 break;
             }
-        }
+        }//ποποποποπο
         if (valid && !input.empty()) {
             int num = stoi(input);
             if (num > 0) return num;
