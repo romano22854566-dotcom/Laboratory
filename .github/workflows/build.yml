@@ -22,12 +22,12 @@ jobs:
       - name: Install Build Wrapper
         uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v4
 
-      - name: Build Laba1
-        run: |
-          rm -rf Laba1/build
-          mkdir Laba1/build
-          cmake -S Laba1 -B Laba1/build 
-          build-wrapper-linux-x86-64 --out-dir Laba1/build_wrapper cmake --build Laba1/build --config Release
+      # Laba1
+      - name: Configure Laba1
+        run: cmake -S Laba1 -B Laba1/build
+
+      - name: Build Laba1 with wrapper
+        run: build-wrapper-linux-x86-64 --out-dir Laba1/build_wrapper make -C Laba1/build
 
       - name: SonarCloud scan Laba1
         uses: SonarSource/sonarqube-scan-action@v4
@@ -42,12 +42,12 @@ jobs:
             -Dsonar.coverage.exclusions=**
             -Dsonar.cfamily.skipCoverage=true
 
-      - name: Build Laba2
-        run: |
-          rm -rf Laba2/build
-          mkdir Laba2/build
-          cmake -S Laba2 -B Laba2/build 
-          build-wrapper-linux-x86-64 --out-dir Laba2/build_wrapper cmake --build Laba2/build --config Release
+      # Laba2
+      - name: Configure Laba2
+        run: cmake -S Laba2 -B Laba2/build
+
+      - name: Build Laba2 with wrapper
+        run: build-wrapper-linux-x86-64 --out-dir Laba2/build_wrapper make -C Laba2/build
 
       - name: SonarCloud scan Laba2
         uses: SonarSource/sonarqube-scan-action@v4
