@@ -105,7 +105,7 @@ void CommissionMember::input() {
 }
 
 void CommissionMember::addAutobiographyLine(const char* line) {
-    if (!line || strlen(line) == 0) return;
+    if (!line || std::strlen(line) == 0) return;  // Добавлено std::
 
     if (autobiographyLines >= autobiographyCapacity) {
         resizeAutobiography();
@@ -123,7 +123,7 @@ const char* CommissionMember::getAutobiographyLine(int index) const {
 }
 
 void CommissionMember::updateAutobiographyLine(int index,const char* newLine) {
-    if (index < 0 || index >= autobiographyLines || !newLine || strlen(newLine) == 0) return;
+    if (index < 0 || index >= autobiographyLines || !newLine || std::strlen(newLine) == 0) return;  // Добавлено std::
 
     delete[] autobiography[index];
     autobiography[index] = safeCopy(newLine);

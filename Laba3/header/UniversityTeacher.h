@@ -2,6 +2,7 @@
 #define UNIVERSITYTEACHER_H
 
 #include "Human.h"
+#include <cstring>  // Добавлено
 
 class UniversityTeacher: virtual public Human {
 protected:

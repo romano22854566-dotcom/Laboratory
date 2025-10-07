@@ -98,7 +98,7 @@ void TeacherCommissionMember::input() {
 }
 
 void TeacherCommissionMember::addCommissionWork(const char* work) {
-    if (!work || strlen(work) == 0) return;
+    if (!work || std::strlen(work) == 0) return;  // Добавлено std::
 
     if (commissionWorksCount >= commissionWorksCapacity) {
         resizeCommissionWorks();
@@ -116,7 +116,7 @@ const char* TeacherCommissionMember::getCommissionWork(int index) const {
 }
 
 void TeacherCommissionMember::updateCommissionWork(int index,const char* newWork) {
-    if (index < 0 || index >= commissionWorksCount || !newWork || strlen(newWork) == 0) return;
+    if (index < 0 || index >= commissionWorksCount || !newWork || std::strlen(newWork) == 0) return;  // Добавлено std::
 
     delete[] commissionWorks[index];
     commissionWorks[index] = safeCopy(newWork);

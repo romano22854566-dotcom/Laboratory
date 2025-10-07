@@ -2,6 +2,7 @@
 #define HUMAN_H
 
 #include <iostream>
+#include <cstring>  // Добавлено для strlen
 
 class Human {
 protected:

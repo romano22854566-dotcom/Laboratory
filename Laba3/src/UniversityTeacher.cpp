@@ -105,7 +105,7 @@ void UniversityTeacher::input() {
 }
 
 void UniversityTeacher::addScientificWork(const char* work) {
-    if (!work || strlen(work) == 0) return;
+    if (!work || std::strlen(work) == 0) return;  // Добавлено std::
 
     if (worksCount >= worksCapacity) {
         resizeWorks();
@@ -123,7 +123,7 @@ const char* UniversityTeacher::getScientificWork(int index) const {
 }
 
 void UniversityTeacher::updateScientificWork(int index,const char* newWork) {
-    if (index < 0 || index >= worksCount || !newWork || strlen(newWork) == 0) return;
+    if (index < 0 || index >= worksCount || !newWork || std::strlen(newWork) == 0) return;  // Добавлено std::
 
     delete[] scientificWorks[index];
     scientificWorks[index] = safeCopy(newWork);

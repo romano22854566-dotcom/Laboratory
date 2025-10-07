@@ -1,14 +1,13 @@
 #include "Human.h"
-#include <cstring>
 
 char* Human::safeCopy(const char* source) {
-    if (!source || strlen(source) == 0) {
+    if (!source || std::strlen(source) == 0) {  // Добавлено std::
         char* empty = new char[1];
         empty[0] = '\0';
         return empty;
     }
 
-    size_t len = strlen(source);
+    size_t len = std::strlen(source);  // Добавлено std::
     char* dest = new char[len + 1];
     for (size_t i = 0; i < len; i++) {
         dest[i] = source[i];
