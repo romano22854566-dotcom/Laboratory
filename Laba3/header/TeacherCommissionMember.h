@@ -3,7 +3,7 @@
 
 #include "UniversityTeacher.h"
 #include "CommissionMember.h"
-#include <cstring>  // Добавлено
+#include <cstring>
 
 class TeacherCommissionMember: public UniversityTeacher,public CommissionMember {
 private:

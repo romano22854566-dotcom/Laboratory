@@ -2,7 +2,7 @@
 #define UNIVERSITYTEACHER_H
 
 #include "Human.h"
-#include <cstring>  // Добавлено
+#include <cstring>
 
 class UniversityTeacher: virtual public Human {
 protected:
@@ -42,4 +42,4 @@ private:
     UniversityTeacher& operator=(const UniversityTeacher&) = delete;
 };
 
-#endif
+#endif  

@@ -1,17 +1,18 @@
 #include "MenuFunctions.h"
 #include <iostream>
+#include <cstring>
 
 void displayMenu() {
-    std::cout << "\n=== MENU ===\n";
-    std::cout << "1. Create university teacher\n";
-    std::cout << "2. Create commission member\n";
-    std::cout << "3. Create teacher-commission member\n";
-    std::cout << "4. Show all people\n";
-    std::cout << "5. Add scientific work to teacher\n";
-    std::cout << "6. Add autobiography line to commission member\n";
-    std::cout << "7. Add commission work\n";
-    std::cout << "0. Exit\n";
-    std::cout << "Choose option: ";
+    std::cout << "\n=== МЕНЮ ===\n";
+    std::cout << "1. Создать преподавателя университета\n";
+    std::cout << "2. Создать члена комиссии\n";
+    std::cout << "3. Создать преподавателя-члена комиссии\n";
+    std::cout << "4. Показать всех созданных людей\n";
+    std::cout << "5. Добавить научный труд преподавателю\n";
+    std::cout << "6. Добавить строку автобиографии члену комиссии\n";
+    std::cout << "7. Добавить работу в комиссии\n";
+    std::cout << "0. Выход\n";
+    std::cout << "Выберите опцию: ";
 }
 
 void resizePeopleArray(Human**& people,int& capacity,int peopleCount) {
@@ -38,7 +39,7 @@ void initializePeople(Human**& people,int& capacity) {
 
 void cleanup(Human** people,int peopleCount) {
     for (int i = 0; i < peopleCount; i++) {
-        if (people[i]) {
+        if (people[i] != nullptr) {
             delete people[i];
         }
     }
@@ -50,10 +51,10 @@ void createUniversityTeacher(Human**& people,int& peopleCount,int& capacity) {
         resizePeopleArray(people,capacity,peopleCount);
     }
     people[peopleCount] = new UniversityTeacher();
-    if (people[peopleCount]) {
+    if (people[peopleCount] != nullptr) {
         people[peopleCount]->input();
         peopleCount++;
-        std::cout << "University teacher created!\n";
+        std::cout << "Преподаватель университета создан!\n";
     }
 }
 
@@ -62,10 +63,10 @@ void createCommissionMember(Human**& people,int& peopleCount,int& capacity) {
         resizePeopleArray(people,capacity,peopleCount);
     }
     people[peopleCount] = new CommissionMember();
-    if (people[peopleCount]) {
+    if (people[peopleCount] != nullptr) {
         people[peopleCount]->input();
         peopleCount++;
-        std::cout << "Commission member created!\n";
+        std::cout << "Член комиссии создан!\n";
     }
 }
 
@@ -74,22 +75,22 @@ void createTeacherCommissionMember(Human**& people,int& peopleCount,int& capacit
         resizePeopleArray(people,capacity,peopleCount);
     }
     people[peopleCount] = new TeacherCommissionMember();
-    if (people[peopleCount]) {
+    if (people[peopleCount] != nullptr) {
         people[peopleCount]->input();
         peopleCount++;
-        std::cout << "Teacher-commission member created!\n";
+        std::cout << "Преподаватель-член комиссии создан!\n";
     }
 }
 
 void displayAllPeople(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "No people created.\n";
+        std::cout << "Нет созданных людей.\n";
     }
     else {
-        std::cout << "\n=== ALL CREATED PEOPLE (" << peopleCount << ") ===\n";
+        std::cout << "\n=== ВСЕ СОЗДАННЫЕ ЛЮДИ (" << peopleCount << ") ===\n";
         for (int i = 0; i < peopleCount; i++) {
-            if (people[i]) {
-                std::cout << "\n--- Person " << (i + 1) << " ---\n";
+            if (people[i] != nullptr) {
+                std::cout << "\n--- Человек " << (i + 1) << " ---\n";
                 people[i]->display();
             }
         }
@@ -98,108 +99,108 @@ void displayAllPeople(Human** people,int peopleCount) {
 
 void addScientificWork(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "No people created.\n";
+        std::cout << "Нет созданных людей.\n";
         return;
     }
 
-    std::cout << "Choose teacher (1-" << peopleCount << "): ";
+    std::cout << "Выберите преподавателя (1-" << peopleCount << "): ";
     int index;
     if (!(std::cin >> index)) {
-        std::cout << "Invalid input!\n";
+        std::cout << "Неверный ввод!\n";
         std::cin.clear();
         std::cin.ignore(10000,'\n');
         return;
     }
     index--;
 
-    if (index < 0 || index >= peopleCount || !people[index]) {
-        std::cout << "Invalid index!\n";
+    if (index < 0 || index >= peopleCount || people[index] == nullptr) {
+        std::cout << "Неверный индекс!\n";
         return;
     }
 
     UniversityTeacher* teacher = dynamic_cast<UniversityTeacher*>(people[index]);
-    if (!teacher) {
-        std::cout << "Selected person is not a university teacher!\n";
+    if (teacher == nullptr) {
+        std::cout << "Выбранный человек не является преподавателем университета!\n";
         return;
     }
 
     char work[256];
-    std::cout << "Enter scientific work: ";
+    std::cout << "Введите название научного труда: ";
     std::cin.ignore();
     if (std::cin.getline(work,256)) {
         teacher->addScientificWork(work);
-        std::cout << "Scientific work added!\n";
+        std::cout << "Научный труд добавлен!\n";
     }
 }
 
 void addAutobiographyLine(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "No people created.\n";
+        std::cout << "Нет созданных людей.\n";
         return;
     }
 
-    std::cout << "Choose commission member (1-" << peopleCount << "): ";
+    std::cout << "Выберите члена комиссии (1-" << peopleCount << "): ";
     int index;
     if (!(std::cin >> index)) {
-        std::cout << "Invalid input!\n";
+        std::cout << "Неверный ввод!\n";
         std::cin.clear();
         std::cin.ignore(10000,'\n');
         return;
     }
     index--;
 
-    if (index < 0 || index >= peopleCount || !people[index]) {
-        std::cout << "Invalid index!\n";
+    if (index < 0 || index >= peopleCount || people[index] == nullptr) {
+        std::cout << "Неверный индекс!\n";
         return;
     }
 
     CommissionMember* member = dynamic_cast<CommissionMember*>(people[index]);
-    if (!member) {
-        std::cout << "Selected person is not a commission member!\n";
+    if (member == nullptr) {
+        std::cout << "Выбранный человек не является членом комиссии!\n";
         return;
     }
 
     char line[256];
-    std::cout << "Enter autobiography line: ";
+    std::cout << "Введите строку автобиографии: ";
     std::cin.ignore();
     if (std::cin.getline(line,256)) {
         member->addAutobiographyLine(line);
-        std::cout << "Autobiography line added!\n";
+        std::cout << "Строка автобиографии добавлена!\n";
     }
 }
 
 void addCommissionWork(Human** people,int peopleCount) {
     if (peopleCount == 0) {
-        std::cout << "No people created.\n";
+        std::cout << "Нет созданных людей.\n";
         return;
     }
 
-    std::cout << "Choose teacher-commission member (1-" << peopleCount << "): ";
+    std::cout << "Выберите преподавателя-члена комиссии (1-" << peopleCount << "): ";
     int index;
     if (!(std::cin >> index)) {
-        std::cout << "Invalid input!\n";
+        std::cout << "Неверный ввод!\n";
         std::cin.clear();
         std::cin.ignore(10000,'\n');
         return;
     }
     index--;
 
-    if (index < 0 || index >= peopleCount || !people[index]) {
-        std::cout << "Invalid index!\n";
+    if (index < 0 || index >= peopleCount || people[index] == nullptr) {
+        std::cout << "Неверный индекс!\n";
         return;
     }
 
     TeacherCommissionMember* tcm = dynamic_cast<TeacherCommissionMember*>(people[index]);
-    if (!tcm) {
-        std::cout << "Selected person is not a teacher-commission member!\n";
+    if (tcm == nullptr) {
+        std::cout << "Выбранный человек не является преподавателем-членом комиссии!\n";
         return;
     }
 
     char work[256];
-    std::cout << "Enter commission work: ";
+    std::cout << "Введите работу в комиссии: ";
     std::cin.ignore();
     if (std::cin.getline(work,256)) {
         tcm->addCommissionWork(work);
-        std::cout << "Commission work added!\n";
+        std::cout << "Работа в комиссии добавлена!\n";
     }
 }

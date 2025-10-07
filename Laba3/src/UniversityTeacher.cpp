@@ -50,15 +50,15 @@ UniversityTeacher::~UniversityTeacher() {
 }
 
 void UniversityTeacher::display() const {
-    std::cout << "University Teacher:\n";
-    std::cout << "Name: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
-    std::cout << "Birth Year: " << birthYear << "\n";
-    std::cout << "Position: " << getPosition() << "\n";
-    std::cout << "Academic Degree: " << getAcademicDegree() << "\n";
-    std::cout << "Specialty: " << getSpecialty() << "\n";
-    std::cout << "Scientific Works (" << worksCount << "):\n";
+    std::cout << "Преподаватель университета:\n";
+    std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
+    std::cout << "Год рождения: " << birthYear << "\n";
+    std::cout << "Должность: " << getPosition() << "\n";
+    std::cout << "Ученая степень: " << getAcademicDegree() << "\n";
+    std::cout << "Специальность: " << getSpecialty() << "\n";
+    std::cout << "Научные труды (" << worksCount << "):\n";
     for (int i = 0; i < worksCount; i++) {
-        if (scientificWorks[i]) {
+        if (scientificWorks[i] != nullptr) {
             std::cout << "  " << (i + 1) << ". " << scientificWorks[i] << "\n";
         }
     }
@@ -67,45 +67,45 @@ void UniversityTeacher::display() const {
 void UniversityTeacher::input() {
     char buffer[256];
 
-    std::cout << "Enter first name: ";
+    std::cout << "Введите имя: ";
     if (std::cin >> buffer) {
         setFirstName(buffer);
     }
 
-    std::cout << "Enter last name: ";
+    std::cout << "Введите фамилию: ";
     if (std::cin >> buffer) {
         setLastName(buffer);
     }
 
-    std::cout << "Enter patronymic: ";
+    std::cout << "Введите отчество: ";
     if (std::cin >> buffer) {
         setPatronymic(buffer);
     }
 
-    std::cout << "Enter birth year: ";
+    std::cout << "Введите год рождения: ";
     if (std::cin >> birthYear) {
-        // valid input
+       
     }
     std::cin.ignore();
 
-    std::cout << "Enter position: ";
+    std::cout << "Введите должность: ";
     if (std::cin.getline(buffer,256)) {
         setPosition(buffer);
     }
 
-    std::cout << "Enter academic degree: ";
+    std::cout << "Введите ученую степень: ";
     if (std::cin.getline(buffer,256)) {
         setAcademicDegree(buffer);
     }
 
-    std::cout << "Enter specialty: ";
+    std::cout << "Введите специальность: ";
     if (std::cin.getline(buffer,256)) {
         setSpecialty(buffer);
     }
 }
 
 void UniversityTeacher::addScientificWork(const char* work) {
-    if (!work || std::strlen(work) == 0) return;  // Добавлено std::
+    if (work == nullptr || std::strlen(work) == 0) return;
 
     if (worksCount >= worksCapacity) {
         resizeWorks();
@@ -116,14 +116,14 @@ void UniversityTeacher::addScientificWork(const char* work) {
 }
 
 const char* UniversityTeacher::getScientificWork(int index) const {
-    if (index < 0 || index >= worksCount || !scientificWorks[index]) {
+    if (index < 0 || index >= worksCount || scientificWorks[index] == nullptr) {
         return "";
     }
     return scientificWorks[index];
 }
 
 void UniversityTeacher::updateScientificWork(int index,const char* newWork) {
-    if (index < 0 || index >= worksCount || !newWork || std::strlen(newWork) == 0) return;  // Добавлено std::
+    if (index < 0 || index >= worksCount || newWork == nullptr || std::strlen(newWork) == 0) return;
 
     delete[] scientificWorks[index];
     scientificWorks[index] = safeCopy(newWork);

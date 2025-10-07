@@ -49,15 +49,15 @@ CommissionMember::~CommissionMember() {
 }
 
 void CommissionMember::display() const {
-    std::cout << "Commission Member:\n";
-    std::cout << "Name: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
-    std::cout << "Birth Year: " << birthYear << "\n";
-    std::cout << "Commission Name: " << getCommissionName() << "\n";
-    std::cout << "Appointment Year: " << appointmentYear << "\n";
-    std::cout << "Certificate Number: " << getCertificateNumber() << "\n";
-    std::cout << "Autobiography (" << autobiographyLines << " lines):\n";
+    std::cout << "Член комиссии:\n";
+    std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
+    std::cout << "Год рождения: " << birthYear << "\n";
+    std::cout << "Название комиссии: " << getCommissionName() << "\n";
+    std::cout << "Год назначения: " << appointmentYear << "\n";
+    std::cout << "Номер свидетельства: " << getCertificateNumber() << "\n";
+    std::cout << "Автобиография (" << autobiographyLines << " строк):\n";
     for (int i = 0; i < autobiographyLines; i++) {
-        if (autobiography[i]) {
+        if (autobiography[i] != nullptr) {
             std::cout << "  " << autobiography[i] << "\n";
         }
     }
@@ -66,46 +66,45 @@ void CommissionMember::display() const {
 void CommissionMember::input() {
     char buffer[256];
 
-    std::cout << "Enter first name: ";
+    std::cout << "Введите имя: ";
     if (std::cin >> buffer) {
         setFirstName(buffer);
     }
 
-    std::cout << "Enter last name: ";
+    std::cout << "Введите фамилию: ";
     if (std::cin >> buffer) {
         setLastName(buffer);
     }
 
-    std::cout << "Enter patronymic: ";
+    std::cout << "Введите отчество: ";
     if (std::cin >> buffer) {
         setPatronymic(buffer);
     }
 
-    std::cout << "Enter birth year: ";
+    std::cout << "Введите год рождения: ";
     if (std::cin >> birthYear) {
-        // valid input
+     
     }
     std::cin.ignore();
 
-    std::cout << "Enter commission name: ";
+    std::cout << "Введите название комиссии: ";
     if (std::cin.getline(buffer,256)) {
         setCommissionName(buffer);
     }
 
-    std::cout << "Enter appointment year: ";
+    std::cout << "Введите год назначения: ";
     if (std::cin >> appointmentYear) {
-        // valid input
+      
     }
     std::cin.ignore();
 
-    std::cout << "Enter certificate number: ";
+    std::cout << "Введите номер свидетельства: ";
     if (std::cin.getline(buffer,256)) {
         setCertificateNumber(buffer);
     }
 }
-
 void CommissionMember::addAutobiographyLine(const char* line) {
-    if (!line || std::strlen(line) == 0) return;  // Добавлено std::
+    if (line == nullptr || std::strlen(line) == 0) return;
 
     if (autobiographyLines >= autobiographyCapacity) {
         resizeAutobiography();
@@ -116,14 +115,14 @@ void CommissionMember::addAutobiographyLine(const char* line) {
 }
 
 const char* CommissionMember::getAutobiographyLine(int index) const {
-    if (index < 0 || index >= autobiographyLines || !autobiography[index]) {
+    if (index < 0 || index >= autobiographyLines || autobiography[index] == nullptr) {
         return "";
     }
     return autobiography[index];
 }
 
 void CommissionMember::updateAutobiographyLine(int index,const char* newLine) {
-    if (index < 0 || index >= autobiographyLines || !newLine || std::strlen(newLine) == 0) return;  // Добавлено std::
+    if (index < 0 || index >= autobiographyLines || newLine == nullptr || std::strlen(newLine) == 0) return;
 
     delete[] autobiography[index];
     autobiography[index] = safeCopy(newLine);

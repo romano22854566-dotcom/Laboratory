@@ -44,33 +44,33 @@ TeacherCommissionMember::~TeacherCommissionMember() {
 }
 
 void TeacherCommissionMember::display() const {
-    std::cout << "Teacher - Commission Member:\n";
-    std::cout << "Name: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
-    std::cout << "Birth Year: " << birthYear << "\n";
-    std::cout << "Position: " << getPosition() << "\n";
-    std::cout << "Academic Degree: " << getAcademicDegree() << "\n";
-    std::cout << "Specialty: " << getSpecialty() << "\n";
-    std::cout << "Commission Name: " << getCommissionName() << "\n";
-    std::cout << "Appointment Year: " << appointmentYear << "\n";
-    std::cout << "Certificate Number: " << getCertificateNumber() << "\n";
+    std::cout << "Преподаватель - член комиссии:\n";
+    std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
+    std::cout << "Год рождения: " << birthYear << "\n";
+    std::cout << "Должность: " << getPosition() << "\n";
+    std::cout << "Ученая степень: " << getAcademicDegree() << "\n";
+    std::cout << "Специальность: " << getSpecialty() << "\n";
+    std::cout << "Название комиссии: " << getCommissionName() << "\n";
+    std::cout << "Год назначения: " << appointmentYear << "\n";
+    std::cout << "Номер свидетельства: " << getCertificateNumber() << "\n";
 
-    std::cout << "Scientific Works (" << worksCount << "):\n";
+    std::cout << "Научные труды (" << worksCount << "):\n";
     for (int i = 0; i < worksCount; i++) {
-        if (scientificWorks[i]) {
+        if (scientificWorks[i] != nullptr) {
             std::cout << "  " << (i + 1) << ". " << scientificWorks[i] << "\n";
         }
     }
 
-    std::cout << "Autobiography (" << autobiographyLines << " lines):\n";
+    std::cout << "Автобиография (" << autobiographyLines << " строк):\n";
     for (int i = 0; i < autobiographyLines; i++) {
-        if (autobiography[i]) {
+        if (autobiography[i] != nullptr) {
             std::cout << "  " << autobiography[i] << "\n";
         }
     }
 
-    std::cout << "Commission Works (" << commissionWorksCount << "):\n";
+    std::cout << "Работы в комиссии (" << commissionWorksCount << "):\n";
     for (int i = 0; i < commissionWorksCount; i++) {
-        if (commissionWorks[i]) {
+        if (commissionWorks[i] != nullptr) {
             std::cout << "  " << (i + 1) << ". " << commissionWorks[i] << "\n";
         }
     }
@@ -80,25 +80,26 @@ void TeacherCommissionMember::input() {
     UniversityTeacher::input();
 
     char buffer[256];
-    std::cout << "Enter commission name: ";
+    std::cout << "Введите название комиссии: ";
     if (std::cin.getline(buffer,256)) {
         setCommissionName(buffer);
     }
 
-    std::cout << "Enter appointment year: ";
+    std::cout << "Введите год назначения: ";
     if (std::cin >> appointmentYear) {
-        // valid input
     }
     std::cin.ignore();
 
-    std::cout << "Enter certificate number: ";
+    std::cout << "Введите номер свидетельства: ";
     if (std::cin.getline(buffer,256)) {
         setCertificateNumber(buffer);
     }
 }
 
+
+
 void TeacherCommissionMember::addCommissionWork(const char* work) {
-    if (!work || std::strlen(work) == 0) return;  // Добавлено std::
+    if (work == nullptr || std::strlen(work) == 0) return;
 
     if (commissionWorksCount >= commissionWorksCapacity) {
         resizeCommissionWorks();
@@ -109,14 +110,14 @@ void TeacherCommissionMember::addCommissionWork(const char* work) {
 }
 
 const char* TeacherCommissionMember::getCommissionWork(int index) const {
-    if (index < 0 || index >= commissionWorksCount || !commissionWorks[index]) {
+    if (index < 0 || index >= commissionWorksCount || commissionWorks[index] == nullptr) {
         return "";
     }
     return commissionWorks[index];
 }
 
 void TeacherCommissionMember::updateCommissionWork(int index,const char* newWork) {
-    if (index < 0 || index >= commissionWorksCount || !newWork || std::strlen(newWork) == 0) return;  // Добавлено std::
+    if (index < 0 || index >= commissionWorksCount || newWork == nullptr || std::strlen(newWork) == 0) return;
 
     delete[] commissionWorks[index];
     commissionWorks[index] = safeCopy(newWork);

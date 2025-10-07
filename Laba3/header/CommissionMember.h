@@ -2,7 +2,7 @@
 #define COMMISSIONMEMBER_H
 
 #include "Human.h"
-#include <cstring>  // Добавлено
+#include <cstring>
 
 class CommissionMember: virtual public Human {
 protected:
