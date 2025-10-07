@@ -2,13 +2,13 @@
 
 char* Human::safeCopy(const char* source) {
     if (source == nullptr || std::strlen(source) == 0) {
-        char* empty = new char[1];
+        auto empty = new char[1];  // Используем auto
         empty[0] = '\0';
         return empty;
     }
 
-    size_t len = std::strlen(source);
-    char* dest = new char[len + 1];
+    auto len = std::strlen(source);  // Используем auto
+    auto dest = new char[len + 1];   // Используем auto
     for (size_t i = 0; i < len; i++) {
         dest[i] = source[i];
     }

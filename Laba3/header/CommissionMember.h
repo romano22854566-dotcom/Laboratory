@@ -4,14 +4,14 @@
 #include "Human.h"
 #include <cstring>
 
-class CommissionMember: virtual public Human {
-protected:
+class CommissionMember: public Human {  // Убрано virtual
+private:
     char* commissionName;
     int appointmentYear;
     char* certificateNumber;
     char** autobiography;
-    int autobiographyLines;
-    int autobiographyCapacity;
+    int autobiographyLines = 0;
+    int autobiographyCapacity = 5;
 
     void resizeAutobiography();
 
@@ -19,7 +19,7 @@ public:
     CommissionMember();
     CommissionMember(const char* fName,const char* lName,const char* pat,int year,
                     const char* commName,int appYear,const char* certNum);
-    virtual ~CommissionMember();
+    ~CommissionMember() override;
 
     void display() const override;
     void input() override;
@@ -37,7 +37,6 @@ public:
     void setAppointmentYear(int year);
     void setCertificateNumber(const char* certNum);
 
-private:
     CommissionMember(const CommissionMember&) = delete;
     CommissionMember& operator=(const CommissionMember&) = delete;
 };

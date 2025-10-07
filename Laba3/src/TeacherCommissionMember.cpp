@@ -2,8 +2,8 @@
 #include <iostream>
 
 void TeacherCommissionMember::resizeCommissionWorks() {
-    int newCapacity = commissionWorksCapacity * 2;
-    char** newWorks = new char* [newCapacity];
+    auto newCapacity = commissionWorksCapacity * 2;  // Используем auto
+    auto newWorks = new char* [newCapacity];  // Используем auto
     for (int i = 0; i < commissionWorksCount; i++) {
         newWorks[i] = commissionWorks[i];
     }
@@ -15,8 +15,7 @@ void TeacherCommissionMember::resizeCommissionWorks() {
     commissionWorksCapacity = newCapacity;
 }
 
-TeacherCommissionMember::TeacherCommissionMember():
-    commissionWorks(nullptr),commissionWorksCount(0),commissionWorksCapacity(5) {
+TeacherCommissionMember::TeacherCommissionMember() {
     commissionWorks = new char* [commissionWorksCapacity];
     for (int i = 0; i < commissionWorksCapacity; i++) {
         commissionWorks[i] = nullptr;
@@ -28,8 +27,7 @@ TeacherCommissionMember::TeacherCommissionMember(const char* fName,const char* l
                                                const char* commName,int appYear,const char* certNum)
     : Human(fName,lName,pat,year),
     UniversityTeacher(fName,lName,pat,year,pos,degree,spec),
-    CommissionMember(fName,lName,pat,year,commName,appYear,certNum),
-    commissionWorksCount(0),commissionWorksCapacity(5) {
+    CommissionMember(fName,lName,pat,year,commName,appYear,certNum) {
     commissionWorks = new char* [commissionWorksCapacity];
     for (int i = 0; i < commissionWorksCapacity; i++) {
         commissionWorks[i] = nullptr;
@@ -87,6 +85,7 @@ void TeacherCommissionMember::input() {
 
     std::cout << "Введите год назначения: ";
     if (std::cin >> appointmentYear) {
+        // valid input - оставлено для ясности
     }
     std::cin.ignore();
 
@@ -95,8 +94,6 @@ void TeacherCommissionMember::input() {
         setCertificateNumber(buffer);
     }
 }
-
-
 
 void TeacherCommissionMember::addCommissionWork(const char* work) {
     if (work == nullptr || std::strlen(work) == 0) return;

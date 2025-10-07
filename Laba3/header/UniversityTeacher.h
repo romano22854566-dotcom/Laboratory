@@ -4,14 +4,14 @@
 #include "Human.h"
 #include <cstring>
 
-class UniversityTeacher: virtual public Human {
-protected:
+class UniversityTeacher: public Human {  // Убрано virtual
+private:
     char* position;
     char* academicDegree;
     char* specialty;
     char** scientificWorks;
-    int worksCount;
-    int worksCapacity;
+    int worksCount = 0;
+    int worksCapacity = 5;
 
     void resizeWorks();
 
@@ -19,7 +19,7 @@ public:
     UniversityTeacher();
     UniversityTeacher(const char* fName,const char* lName,const char* pat,int year,
                      const char* pos,const char* degree,const char* spec);
-    virtual ~UniversityTeacher();
+    ~UniversityTeacher() override;
 
     void display() const override;
     void input() override;
@@ -37,9 +37,8 @@ public:
     void setAcademicDegree(const char* degree);
     void setSpecialty(const char* spec);
 
-private:
     UniversityTeacher(const UniversityTeacher&) = delete;
     UniversityTeacher& operator=(const UniversityTeacher&) = delete;
 };
 
-#endif  
+#endif

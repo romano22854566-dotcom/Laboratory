@@ -2,8 +2,8 @@
 #include <iostream>
 
 void CommissionMember::resizeAutobiography() {
-    int newCapacity = autobiographyCapacity * 2;
-    char** newAutobiography = new char* [newCapacity];
+    auto newCapacity = autobiographyCapacity * 2;  // Используем auto
+    auto newAutobiography = new char* [newCapacity];  // Используем auto
     for (int i = 0; i < autobiographyLines; i++) {
         newAutobiography[i] = autobiography[i];
     }
@@ -16,8 +16,7 @@ void CommissionMember::resizeAutobiography() {
 }
 
 CommissionMember::CommissionMember():
-    commissionName(safeCopy("")),appointmentYear(0),certificateNumber(safeCopy("")),
-    autobiography(nullptr),autobiographyLines(0),autobiographyCapacity(5) {
+    commissionName(safeCopy("")),appointmentYear(0),certificateNumber(safeCopy("")) {
     autobiography = new char* [autobiographyCapacity];
     for (int i = 0; i < autobiographyCapacity; i++) {
         autobiography[i] = nullptr;
@@ -26,8 +25,7 @@ CommissionMember::CommissionMember():
 
 CommissionMember::CommissionMember(const char* fName,const char* lName,const char* pat,int year,
                                  const char* commName,int appYear,const char* certNum)
-    : Human(fName,lName,pat,year),appointmentYear(appYear),
-    autobiographyLines(0),autobiographyCapacity(5) {
+    : Human(fName,lName,pat,year),appointmentYear(appYear) {
 
     commissionName = safeCopy(commName);
     certificateNumber = safeCopy(certNum);
@@ -83,7 +81,7 @@ void CommissionMember::input() {
 
     std::cout << "Введите год рождения: ";
     if (std::cin >> birthYear) {
-     
+        // valid input - оставлено для ясности
     }
     std::cin.ignore();
 
@@ -94,7 +92,7 @@ void CommissionMember::input() {
 
     std::cout << "Введите год назначения: ";
     if (std::cin >> appointmentYear) {
-      
+        // valid input - оставлено для ясности
     }
     std::cin.ignore();
 
@@ -103,6 +101,7 @@ void CommissionMember::input() {
         setCertificateNumber(buffer);
     }
 }
+
 void CommissionMember::addAutobiographyLine(const char* line) {
     if (line == nullptr || std::strlen(line) == 0) return;
 

@@ -8,8 +8,8 @@
 class TeacherCommissionMember: public UniversityTeacher,public CommissionMember {
 private:
     char** commissionWorks;
-    int commissionWorksCount;
-    int commissionWorksCapacity;
+    int commissionWorksCount = 0;
+    int commissionWorksCapacity = 5;
 
     void resizeCommissionWorks();
 
@@ -18,7 +18,7 @@ public:
     TeacherCommissionMember(const char* fName,const char* lName,const char* pat,int year,
                           const char* pos,const char* degree,const char* spec,
                           const char* commName,int appYear,const char* certNum);
-    ~TeacherCommissionMember();
+    ~TeacherCommissionMember() override;
 
     void display() const override;
     void input() override;
@@ -28,7 +28,6 @@ public:
     const char* getCommissionWork(int index) const;
     void updateCommissionWork(int index,const char* newWork);
 
-private:
     TeacherCommissionMember(const TeacherCommissionMember&) = delete;
     TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;
 };

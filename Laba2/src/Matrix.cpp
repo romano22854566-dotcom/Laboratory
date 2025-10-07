@@ -79,6 +79,18 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
+int Matrix::getRows() const {
+    return rows;
+}
+
+int Matrix::getCols() const {
+    return cols;
+}
+
+bool Matrix::isValid() const {
+    return rows > 0 && cols > 0;
+}
+
 void print(const Matrix& matrix) {
     for (int i = 0; i < matrix.rows; ++i) {
         for (int j = 0; j < matrix.cols; ++j) {

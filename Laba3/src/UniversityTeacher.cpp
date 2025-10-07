@@ -2,8 +2,8 @@
 #include <iostream>
 
 void UniversityTeacher::resizeWorks() {
-    int newCapacity = worksCapacity * 2;
-    char** newWorks = new char* [newCapacity];
+    auto newCapacity = worksCapacity * 2;  // Используем auto
+    auto newWorks = new char* [newCapacity];  // Используем auto
     for (int i = 0; i < worksCount; i++) {
         newWorks[i] = scientificWorks[i];
     }
@@ -16,8 +16,7 @@ void UniversityTeacher::resizeWorks() {
 }
 
 UniversityTeacher::UniversityTeacher():
-    position(safeCopy("")),academicDegree(safeCopy("")),specialty(safeCopy("")),
-    scientificWorks(nullptr),worksCount(0),worksCapacity(5) {
+    position(safeCopy("")),academicDegree(safeCopy("")),specialty(safeCopy("")) {
     scientificWorks = new char* [worksCapacity];
     for (int i = 0; i < worksCapacity; i++) {
         scientificWorks[i] = nullptr;
@@ -26,7 +25,7 @@ UniversityTeacher::UniversityTeacher():
 
 UniversityTeacher::UniversityTeacher(const char* fName,const char* lName,const char* pat,int year,
                                    const char* pos,const char* degree,const char* spec)
-    : Human(fName,lName,pat,year),worksCount(0),worksCapacity(5) {
+    : Human(fName,lName,pat,year) {
 
     position = safeCopy(pos);
     academicDegree = safeCopy(degree);
@@ -84,7 +83,7 @@ void UniversityTeacher::input() {
 
     std::cout << "Введите год рождения: ";
     if (std::cin >> birthYear) {
-       
+        // valid input - оставлено для ясности
     }
     std::cin.ignore();
 

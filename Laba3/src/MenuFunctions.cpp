@@ -16,8 +16,8 @@ void displayMenu() {
 }
 
 void resizePeopleArray(Human**& people,int& capacity,int peopleCount) {
-    int newCapacity = capacity * 2;
-    Human** newPeople = new Human * [newCapacity];
+    auto newCapacity = capacity * 2;  // Используем auto
+    auto newPeople = new Human * [newCapacity];  // Используем auto
     for (int i = 0; i < peopleCount; i++) {
         newPeople[i] = people[i];
     }
@@ -118,7 +118,7 @@ void addScientificWork(Human** people,int peopleCount) {
         return;
     }
 
-    UniversityTeacher* teacher = dynamic_cast<UniversityTeacher*>(people[index]);
+    auto teacher = dynamic_cast<UniversityTeacher*>(people[index]);  // Используем auto
     if (teacher == nullptr) {
         std::cout << "Выбранный человек не является преподавателем университета!\n";
         return;
@@ -154,7 +154,7 @@ void addAutobiographyLine(Human** people,int peopleCount) {
         return;
     }
 
-    CommissionMember* member = dynamic_cast<CommissionMember*>(people[index]);
+    auto member = dynamic_cast<CommissionMember*>(people[index]);  // Используем auto
     if (member == nullptr) {
         std::cout << "Выбранный человек не является членом комиссии!\n";
         return;
@@ -190,7 +190,7 @@ void addCommissionWork(Human** people,int peopleCount) {
         return;
     }
 
-    TeacherCommissionMember* tcm = dynamic_cast<TeacherCommissionMember*>(people[index]);
+    auto tcm = dynamic_cast<TeacherCommissionMember*>(people[index]);  // Используем auto
     if (tcm == nullptr) {
         std::cout << "Выбранный человек не является преподавателем-членом комиссии!\n";
         return;

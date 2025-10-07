@@ -16,9 +16,10 @@ public:
     Matrix(const Matrix& other);
     ~Matrix();
     Matrix& operator=(const Matrix& other);
-    int getRows() const { return rows; }
-    int getCols() const { return cols; }
-    bool isValid() const { return rows > 0 && cols > 0; }
+    int getRows() const;
+    int getCols() const;
+    bool isValid() const;
+
     friend Matrix operator&(const Matrix& lhs,const Matrix& rhs) {
         if (lhs.cols != rhs.rows) {
             std::cout << "Ошибка: нельзя умножить матрицы таких размеров!\n";
