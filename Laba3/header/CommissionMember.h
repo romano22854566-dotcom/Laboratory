@@ -4,8 +4,8 @@
 #include "Human.h"
 #include <cstring>
 
-class CommissionMember: public Human {  // Убрано virtual
-private:
+class CommissionMember: virtual public Human {
+protected:
     char* commissionName;
     int appointmentYear;
     char* certificateNumber;

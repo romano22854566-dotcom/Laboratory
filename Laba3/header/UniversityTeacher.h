@@ -4,8 +4,8 @@
 #include "Human.h"
 #include <cstring>
 
-class UniversityTeacher: public Human {  // Убрано virtual
-private:
+class UniversityTeacher: virtual public Human {
+protected:
     char* position;
     char* academicDegree;
     char* specialty;

@@ -2,14 +2,16 @@
 #include <iostream>
 
 void CommissionMember::resizeAutobiography() {
-    auto newCapacity = autobiographyCapacity * 2;  // Используем auto
-    auto newAutobiography = new char* [newCapacity];  // Используем auto
+    int newCapacity = autobiographyCapacity * 2;
+    char** newAutobiography = new char* [newCapacity];
+
     for (int i = 0; i < autobiographyLines; i++) {
         newAutobiography[i] = autobiography[i];
     }
     for (int i = autobiographyLines; i < newCapacity; i++) {
         newAutobiography[i] = nullptr;
     }
+
     delete[] autobiography;
     autobiography = newAutobiography;
     autobiographyCapacity = newCapacity;
@@ -26,7 +28,6 @@ CommissionMember::CommissionMember():
 CommissionMember::CommissionMember(const char* fName,const char* lName,const char* pat,int year,
                                  const char* commName,int appYear,const char* certNum)
     : Human(fName,lName,pat,year),appointmentYear(appYear) {
-
     commissionName = safeCopy(commName);
     certificateNumber = safeCopy(certNum);
 
@@ -49,7 +50,7 @@ CommissionMember::~CommissionMember() {
 void CommissionMember::display() const {
     std::cout << "Член комиссии:\n";
     std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
-    std::cout << "Год рождения: " << birthYear << "\n";
+    std::cout << "Год рождения: " << getBirthYear() << "\n";
     std::cout << "Название комиссии: " << getCommissionName() << "\n";
     std::cout << "Год назначения: " << appointmentYear << "\n";
     std::cout << "Номер свидетельства: " << getCertificateNumber() << "\n";
@@ -65,41 +66,32 @@ void CommissionMember::input() {
     char buffer[256];
 
     std::cout << "Введите имя: ";
-    if (std::cin >> buffer) {
-        setFirstName(buffer);
-    }
+    std::cin >> buffer;
+    setFirstName(buffer);
 
     std::cout << "Введите фамилию: ";
-    if (std::cin >> buffer) {
-        setLastName(buffer);
-    }
+    std::cin >> buffer;
+    setLastName(buffer);
 
     std::cout << "Введите отчество: ";
-    if (std::cin >> buffer) {
-        setPatronymic(buffer);
-    }
+    std::cin >> buffer;
+    setPatronymic(buffer);
 
     std::cout << "Введите год рождения: ";
-    if (std::cin >> birthYear) {
-        // valid input - оставлено для ясности
-    }
+    std::cin >> birthYear;
     std::cin.ignore();
 
     std::cout << "Введите название комиссии: ";
-    if (std::cin.getline(buffer,256)) {
-        setCommissionName(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setCommissionName(buffer);
 
     std::cout << "Введите год назначения: ";
-    if (std::cin >> appointmentYear) {
-        // valid input - оставлено для ясности
-    }
+    std::cin >> appointmentYear;
     std::cin.ignore();
 
     std::cout << "Введите номер свидетельства: ";
-    if (std::cin.getline(buffer,256)) {
-        setCertificateNumber(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setCertificateNumber(buffer);
 }
 
 void CommissionMember::addAutobiographyLine(const char* line) {

@@ -3,7 +3,6 @@
 
 #include "UniversityTeacher.h"
 #include "CommissionMember.h"
-#include <cstring>
 
 class TeacherCommissionMember: public UniversityTeacher,public CommissionMember {
 private:
@@ -27,6 +26,11 @@ public:
     int getCommissionWorksCount() const { return commissionWorksCount; }
     const char* getCommissionWork(int index) const;
     void updateCommissionWork(int index,const char* newWork);
+
+ 
+    void setCommissionName(const char* commName);
+    void setAppointmentYear(int year);
+    void setCertificateNumber(const char* certNum);
 
     TeacherCommissionMember(const TeacherCommissionMember&) = delete;
     TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;

@@ -2,14 +2,16 @@
 #include <iostream>
 
 void TeacherCommissionMember::resizeCommissionWorks() {
-    auto newCapacity = commissionWorksCapacity * 2;  // Используем auto
-    auto newWorks = new char* [newCapacity];  // Используем auto
+    int newCapacity = commissionWorksCapacity * 2;
+    char** newWorks = new char* [newCapacity];
+
     for (int i = 0; i < commissionWorksCount; i++) {
         newWorks[i] = commissionWorks[i];
     }
     for (int i = commissionWorksCount; i < newCapacity; i++) {
         newWorks[i] = nullptr;
     }
+
     delete[] commissionWorks;
     commissionWorks = newWorks;
     commissionWorksCapacity = newCapacity;
@@ -28,6 +30,7 @@ TeacherCommissionMember::TeacherCommissionMember(const char* fName,const char* l
     : Human(fName,lName,pat,year),
     UniversityTeacher(fName,lName,pat,year,pos,degree,spec),
     CommissionMember(fName,lName,pat,year,commName,appYear,certNum) {
+
     commissionWorks = new char* [commissionWorksCapacity];
     for (int i = 0; i < commissionWorksCapacity; i++) {
         commissionWorks[i] = nullptr;
@@ -44,25 +47,27 @@ TeacherCommissionMember::~TeacherCommissionMember() {
 void TeacherCommissionMember::display() const {
     std::cout << "Преподаватель - член комиссии:\n";
     std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
-    std::cout << "Год рождения: " << birthYear << "\n";
-    std::cout << "Должность: " << getPosition() << "\n";
-    std::cout << "Ученая степень: " << getAcademicDegree() << "\n";
-    std::cout << "Специальность: " << getSpecialty() << "\n";
-    std::cout << "Название комиссии: " << getCommissionName() << "\n";
-    std::cout << "Год назначения: " << appointmentYear << "\n";
-    std::cout << "Номер свидетельства: " << getCertificateNumber() << "\n";
+    std::cout << "Год рождения: " << getBirthYear() << "\n";
+    std::cout << "Должность: " << UniversityTeacher::getPosition() << "\n";
+    std::cout << "Ученая степень: " << UniversityTeacher::getAcademicDegree() << "\n";
+    std::cout << "Специальность: " << UniversityTeacher::getSpecialty() << "\n";
+    std::cout << "Название комиссии: " << CommissionMember::getCommissionName() << "\n";
+    std::cout << "Год назначения: " << CommissionMember::getAppointmentYear() << "\n";
+    std::cout << "Номер свидетельства: " << CommissionMember::getCertificateNumber() << "\n";
 
-    std::cout << "Научные труды (" << worksCount << "):\n";
-    for (int i = 0; i < worksCount; i++) {
-        if (scientificWorks[i] != nullptr) {
-            std::cout << "  " << (i + 1) << ". " << scientificWorks[i] << "\n";
+    std::cout << "Научные труды (" << UniversityTeacher::getScientificWorksCount() << "):\n";
+    for (int i = 0; i < UniversityTeacher::getScientificWorksCount(); i++) {
+        const char* work = UniversityTeacher::getScientificWork(i);
+        if (work != nullptr && std::strlen(work) > 0) {
+            std::cout << "  " << (i + 1) << ". " << work << "\n";
         }
     }
 
-    std::cout << "Автобиография (" << autobiographyLines << " строк):\n";
-    for (int i = 0; i < autobiographyLines; i++) {
-        if (autobiography[i] != nullptr) {
-            std::cout << "  " << autobiography[i] << "\n";
+    std::cout << "Автобиография (" << CommissionMember::getAutobiographyLinesCount() << " строк):\n";
+    for (int i = 0; i < CommissionMember::getAutobiographyLinesCount(); i++) {
+        const char* line = CommissionMember::getAutobiographyLine(i);
+        if (line != nullptr && std::strlen(line) > 0) {
+            std::cout << "  " << line << "\n";
         }
     }
 
@@ -75,24 +80,62 @@ void TeacherCommissionMember::display() const {
 }
 
 void TeacherCommissionMember::input() {
-    UniversityTeacher::input();
-
     char buffer[256];
+
+    // Ввод данных Human
+    std::cout << "Введите имя: ";
+    std::cin >> buffer;
+    setFirstName(buffer);
+
+    std::cout << "Введите фамилию: ";
+    std::cin >> buffer;
+    setLastName(buffer);
+
+    std::cout << "Введите отчество: ";
+    std::cin >> buffer;
+    setPatronymic(buffer);
+
+    std::cout << "Введите год рождения: ";
+    std::cin >> birthYear;
+    std::cin.ignore();
+
+    // Ввод данных UniversityTeacher
+    std::cout << "Введите должность: ";
+    std::cin.getline(buffer,256);
+    setPosition(buffer);
+
+    std::cout << "Введите ученую степень: ";
+    std::cin.getline(buffer,256);
+    setAcademicDegree(buffer);
+
+    std::cout << "Введите специальность: ";
+    std::cin.getline(buffer,256);
+    setSpecialty(buffer);
+
+    // Ввод данных CommissionMember
     std::cout << "Введите название комиссии: ";
-    if (std::cin.getline(buffer,256)) {
-        setCommissionName(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setCommissionName(buffer);
 
     std::cout << "Введите год назначения: ";
-    if (std::cin >> appointmentYear) {
-        // valid input - оставлено для ясности
-    }
+    std::cin >> appointmentYear;
     std::cin.ignore();
 
     std::cout << "Введите номер свидетельства: ";
-    if (std::cin.getline(buffer,256)) {
-        setCertificateNumber(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setCertificateNumber(buffer);
+}
+
+void TeacherCommissionMember::setCommissionName(const char* commName) {
+    CommissionMember::setCommissionName(commName);
+}
+
+void TeacherCommissionMember::setAppointmentYear(int year) {
+    CommissionMember::setAppointmentYear(year);
+}
+
+void TeacherCommissionMember::setCertificateNumber(const char* certNum) {
+    CommissionMember::setCertificateNumber(certNum);
 }
 
 void TeacherCommissionMember::addCommissionWork(const char* work) {

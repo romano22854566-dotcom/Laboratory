@@ -5,7 +5,7 @@
 #include <cstring>
 
 class Human {
-protected:  // Оставляем protected для наследования
+protected:
     char* firstName;
     char* lastName;
     char* patronymic;
@@ -21,7 +21,7 @@ public:
     const char* getFirstName() const { return firstName ? firstName : ""; }
     const char* getLastName() const { return lastName ? lastName : ""; }
     const char* getPatronymic() const { return patronymic ? patronymic : ""; }
-    int getBirthYear() const { return birthYear; }  // Добавлен геттер
+    int getBirthYear() const { return birthYear; }
 
     void setFirstName(const char* fName);
     void setLastName(const char* lName);
@@ -29,7 +29,7 @@ public:
     void setBirthYear(int year);
 
     virtual void display() const = 0;
-    virtual void input() = 0;
+    virtual void input() = 0;  
 
     Human(const Human&) = delete;
     Human& operator=(const Human&) = delete;

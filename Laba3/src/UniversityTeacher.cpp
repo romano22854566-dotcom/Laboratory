@@ -2,14 +2,16 @@
 #include <iostream>
 
 void UniversityTeacher::resizeWorks() {
-    auto newCapacity = worksCapacity * 2;  // Используем auto
-    auto newWorks = new char* [newCapacity];  // Используем auto
+    int newCapacity = worksCapacity * 2;
+    char** newWorks = new char* [newCapacity];
+
     for (int i = 0; i < worksCount; i++) {
         newWorks[i] = scientificWorks[i];
     }
     for (int i = worksCount; i < newCapacity; i++) {
         newWorks[i] = nullptr;
     }
+
     delete[] scientificWorks;
     scientificWorks = newWorks;
     worksCapacity = newCapacity;
@@ -26,7 +28,6 @@ UniversityTeacher::UniversityTeacher():
 UniversityTeacher::UniversityTeacher(const char* fName,const char* lName,const char* pat,int year,
                                    const char* pos,const char* degree,const char* spec)
     : Human(fName,lName,pat,year) {
-
     position = safeCopy(pos);
     academicDegree = safeCopy(degree);
     specialty = safeCopy(spec);
@@ -51,7 +52,7 @@ UniversityTeacher::~UniversityTeacher() {
 void UniversityTeacher::display() const {
     std::cout << "Преподаватель университета:\n";
     std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
-    std::cout << "Год рождения: " << birthYear << "\n";
+    std::cout << "Год рождения: " << getBirthYear() << "\n";
     std::cout << "Должность: " << getPosition() << "\n";
     std::cout << "Ученая степень: " << getAcademicDegree() << "\n";
     std::cout << "Специальность: " << getSpecialty() << "\n";
@@ -67,40 +68,32 @@ void UniversityTeacher::input() {
     char buffer[256];
 
     std::cout << "Введите имя: ";
-    if (std::cin >> buffer) {
-        setFirstName(buffer);
-    }
+    std::cin >> buffer;
+    setFirstName(buffer);
 
     std::cout << "Введите фамилию: ";
-    if (std::cin >> buffer) {
-        setLastName(buffer);
-    }
+    std::cin >> buffer;
+    setLastName(buffer);
 
     std::cout << "Введите отчество: ";
-    if (std::cin >> buffer) {
-        setPatronymic(buffer);
-    }
+    std::cin >> buffer;
+    setPatronymic(buffer);
 
     std::cout << "Введите год рождения: ";
-    if (std::cin >> birthYear) {
-        // valid input - оставлено для ясности
-    }
+    std::cin >> birthYear;
     std::cin.ignore();
 
     std::cout << "Введите должность: ";
-    if (std::cin.getline(buffer,256)) {
-        setPosition(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setPosition(buffer);
 
     std::cout << "Введите ученую степень: ";
-    if (std::cin.getline(buffer,256)) {
-        setAcademicDegree(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setAcademicDegree(buffer);
 
     std::cout << "Введите специальность: ";
-    if (std::cin.getline(buffer,256)) {
-        setSpecialty(buffer);
-    }
+    std::cin.getline(buffer,256);
+    setSpecialty(buffer);
 }
 
 void UniversityTeacher::addScientificWork(const char* work) {
