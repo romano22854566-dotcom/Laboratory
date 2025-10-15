@@ -5,13 +5,12 @@
 #include <cstring>
 
 class Human {
-private:
+protected:
     char* firstName;
     char* lastName;
     char* patronymic;
     int birthYear;
 
-protected:
     static char* safeCopy(const char* source);
 
 public:

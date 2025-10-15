@@ -2,7 +2,6 @@
 #define COMMISSIONMEMBER_H
 
 #include "Human.h"
-#include <cstring>
 
 class CommissionMember: virtual public Human {
 private:
@@ -10,8 +9,8 @@ private:
     int appointmentYear;
     char* certificateNumber;
     char** autobiography;
-    int autobiographyLines = 0;
-    int autobiographyCapacity = 5;
+    int autobiographyLines;
+    int autobiographyCapacity;
 
     void resizeAutobiography();
 

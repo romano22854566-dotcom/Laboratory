@@ -20,7 +20,9 @@ void UniversityTeacher::resizeWorks() {
 UniversityTeacher::UniversityTeacher():
     position(safeCopy("")),
     academicDegree(safeCopy("")),
-    specialty(safeCopy("")) {
+    specialty(safeCopy("")),
+    worksCount(0),
+    worksCapacity(5) {
     scientificWorks = new char* [worksCapacity];
     for (int i = 0; i < worksCapacity; i++) {
         scientificWorks[i] = nullptr;
@@ -29,7 +31,9 @@ UniversityTeacher::UniversityTeacher():
 
 UniversityTeacher::UniversityTeacher(const char* fName,const char* lName,const char* pat,int year,
                                    const char* pos,const char* degree,const char* spec)
-    : Human(fName,lName,pat,year) {
+    : Human(fName,lName,pat,year),
+    worksCount(0),
+    worksCapacity(5) {
     position = safeCopy(pos);
     academicDegree = safeCopy(degree);
     specialty = safeCopy(spec);

@@ -2,7 +2,6 @@
 #define UNIVERSITYTEACHER_H
 
 #include "Human.h"
-#include <cstring>
 
 class UniversityTeacher: virtual public Human {
 private:
@@ -10,8 +9,8 @@ private:
     char* academicDegree;
     char* specialty;
     char** scientificWorks;
-    int worksCount = 0;
-    int worksCapacity = 5;
+    int worksCount;
+    int worksCapacity;
 
     void resizeWorks();
 

@@ -20,7 +20,9 @@ void CommissionMember::resizeAutobiography() {
 CommissionMember::CommissionMember():
     commissionName(safeCopy("")),
     appointmentYear(0),
-    certificateNumber(safeCopy("")) {
+    certificateNumber(safeCopy("")),
+    autobiographyLines(0),
+    autobiographyCapacity(5) {
     autobiography = new char* [autobiographyCapacity];
     for (int i = 0; i < autobiographyCapacity; i++) {
         autobiography[i] = nullptr;
@@ -29,7 +31,10 @@ CommissionMember::CommissionMember():
 
 CommissionMember::CommissionMember(const char* fName,const char* lName,const char* pat,int year,
                                  const char* commName,int appYear,const char* certNum)
-    : Human(fName,lName,pat,year),appointmentYear(appYear) {
+    : Human(fName,lName,pat,year),
+    appointmentYear(appYear),
+    autobiographyLines(0),
+    autobiographyCapacity(5) {
     commissionName = safeCopy(commName);
     certificateNumber = safeCopy(certNum);
 

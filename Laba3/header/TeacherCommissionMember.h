@@ -7,8 +7,8 @@
 class TeacherCommissionMember: public UniversityTeacher,public CommissionMember {
 private:
     char** commissionWorks;
-    int commissionWorksCount = 0;
-    int commissionWorksCapacity = 5;
+    int commissionWorksCount;
+    int commissionWorksCapacity;
 
     void resizeCommissionWorks();
 
@@ -27,9 +27,19 @@ public:
     const char* getCommissionWork(int index) const;
     void updateCommissionWork(int index,const char* newWork);
 
-    using CommissionMember::setCommissionName;
-    using CommissionMember::setAppointmentYear;
-    using CommissionMember::setCertificateNumber;
+    // Методы для разрешения неоднозначности
+    const char* getFirstName() const { return UniversityTeacher::getFirstName(); }
+    const char* getLastName() const { return UniversityTeacher::getLastName(); }
+    const char* getPatronymic() const { return UniversityTeacher::getPatronymic(); }
+    int getBirthYear() const { return UniversityTeacher::getBirthYear(); }
+
+    void setFirstName(const char* fName) { UniversityTeacher::setFirstName(fName); }
+    void setLastName(const char* lName) { UniversityTeacher::setLastName(lName); }
+    void setPatronymic(const char* pat) { UniversityTeacher::setPatronymic(pat); }
+    void setBirthYear(int year) {
+        UniversityTeacher::setBirthYear(year);
+        CommissionMember::setBirthYear(year);
+    }
 
     TeacherCommissionMember(const TeacherCommissionMember&) = delete;
     TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;
