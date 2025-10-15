@@ -1,35 +1,17 @@
 #include "Human.h"
 
 char* Human::safeCopy(const char* source) {
-    // Если source равен nullptr или пустая строка
-    if (source == nullptr) {
-        char* empty = new char[1];
+    if (source == nullptr || std::strlen(source) == 0) {
+        auto empty = new char[1];
         empty[0] = '\0';
         return empty;
     }
 
-    // Если пустая строка
-    if (std::strlen(source) == 0) {
-        char* empty = new char[1];
-        empty[0] = '\0';
-        return empty;
-    }
-
-    // Вычисляем длину строки
-    size_t len = 0;
-    while (source[len] != '\0') {
-        len++;
-    }
-
-    // Выделяем память для новой строки
-    char* dest = new char[len + 1];
-
-    // Копируем символы вручную
+    auto len = std::strlen(source);
+    auto dest = new char[len + 1];
     for (size_t i = 0; i < len; i++) {
         dest[i] = source[i];
     }
-
-    // Добавляем нулевой терминатор
     dest[len] = '\0';
 
     return dest;

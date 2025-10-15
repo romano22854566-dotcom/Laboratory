@@ -15,7 +15,7 @@ int main() {
     do {
         displayMenu();
         if (!(std::cin >> choice)) {
-            std::cout << "Invalid input!\n";
+            std::cout << "Неверный ввод!\n";
             std::cin.clear();
             std::cin.ignore(10000,'\n');
             continue;
@@ -44,10 +44,10 @@ int main() {
         addCommissionWork(people,peopleCount);
         break;
         case 0:
-        std::cout << "Exiting program.\n";
+        std::cout << "Выход из программы.\n";
         break;
         default:
-        std::cout << "Invalid choice!\n";
+        std::cout << "Неверный выбор!\n";
         break;
         }
 

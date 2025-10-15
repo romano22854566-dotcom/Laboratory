@@ -126,17 +126,22 @@ void showMatrix(const Matrix& matrix,const std::string& name) {
     }
 }
 
-void multiplyMatrices(const Matrix& matrix1,const Matrix& matrix2) {
-    std::cout << "\nУмножение матриц:\n";
+Matrix multiplyMatrices(const Matrix& matrix1,const Matrix& matrix2) {
     if (matrix1.isValid() && matrix2.isValid()) {
-        Matrix result = matrix1 & matrix2;
-        if (result.isValid()) {
-            std::cout << "Результат:\n";
-            print(result);
-        }
+        return matrix1 & matrix2;
     }
     else {
-        std::cout << "Обе матрицы должны быть созданы!\n";
+        std::cout << "Ошибка!\n";
+        return Matrix(0,0);
+    }
+}
+
+void showMultiplyMatrices(const Matrix& matrix1,const Matrix& matrix2) {
+    std::cout << "\nУмножение матриц:\n";
+    Matrix result = multiplyMatrices(matrix1,matrix2);
+    if (result.isValid()) {
+        std::cout << "Результат:\n";
+        print(result);
     }
 }
 

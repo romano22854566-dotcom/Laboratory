@@ -27,10 +27,9 @@ public:
     const char* getCommissionWork(int index) const;
     void updateCommissionWork(int index,const char* newWork);
 
- 
-    void setCommissionName(const char* commName);
-    void setAppointmentYear(int year);
-    void setCertificateNumber(const char* certNum);
+    using CommissionMember::setCommissionName;
+    using CommissionMember::setAppointmentYear;
+    using CommissionMember::setCertificateNumber;
 
     TeacherCommissionMember(const TeacherCommissionMember&) = delete;
     TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;

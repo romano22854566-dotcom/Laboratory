@@ -18,7 +18,9 @@ void CommissionMember::resizeAutobiography() {
 }
 
 CommissionMember::CommissionMember():
-    commissionName(safeCopy("")),appointmentYear(0),certificateNumber(safeCopy("")) {
+    commissionName(safeCopy("")),
+    appointmentYear(0),
+    certificateNumber(safeCopy("")) {
     autobiography = new char* [autobiographyCapacity];
     for (int i = 0; i < autobiographyCapacity; i++) {
         autobiography[i] = nullptr;
@@ -77,8 +79,10 @@ void CommissionMember::input() {
     std::cin >> buffer;
     setPatronymic(buffer);
 
+    int year;
     std::cout << "¬ведите год рождени€: ";
-    std::cin >> birthYear;
+    std::cin >> year;
+    setBirthYear(year);
     std::cin.ignore();
 
     std::cout << "¬ведите название комиссии: ";

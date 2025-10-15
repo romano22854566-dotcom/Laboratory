@@ -18,7 +18,9 @@ void UniversityTeacher::resizeWorks() {
 }
 
 UniversityTeacher::UniversityTeacher():
-    position(safeCopy("")),academicDegree(safeCopy("")),specialty(safeCopy("")) {
+    position(safeCopy("")),
+    academicDegree(safeCopy("")),
+    specialty(safeCopy("")) {
     scientificWorks = new char* [worksCapacity];
     for (int i = 0; i < worksCapacity; i++) {
         scientificWorks[i] = nullptr;
@@ -79,8 +81,10 @@ void UniversityTeacher::input() {
     std::cin >> buffer;
     setPatronymic(buffer);
 
+    int year;
     std::cout << "¬ведите год рождени€: ";
-    std::cin >> birthYear;
+    std::cin >> year;
+    setBirthYear(year);
     std::cin.ignore();
 
     std::cout << "¬ведите должность: ";

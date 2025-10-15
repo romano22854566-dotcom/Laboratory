@@ -5,12 +5,13 @@
 #include <cstring>
 
 class Human {
-protected:
+private:
     char* firstName;
     char* lastName;
     char* patronymic;
     int birthYear;
 
+protected:
     static char* safeCopy(const char* source);
 
 public:
@@ -29,7 +30,7 @@ public:
     void setBirthYear(int year);
 
     virtual void display() const = 0;
-    virtual void input() = 0;  
+    virtual void input() = 0;
 
     Human(const Human&) = delete;
     Human& operator=(const Human&) = delete;

@@ -5,7 +5,7 @@
 #include <cstring>
 
 class CommissionMember: virtual public Human {
-protected:
+private:
     char* commissionName;
     int appointmentYear;
     char* certificateNumber;

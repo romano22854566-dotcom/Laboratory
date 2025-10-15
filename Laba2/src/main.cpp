@@ -23,7 +23,7 @@ int main() {
         showMatrix(matrix2,"Вторая матрица");
         break;
         case 3:
-        multiplyMatrices(matrix1,matrix2);
+        showMultiplyMatrices(matrix1,matrix2);
         break;
         case 4:
         std::cout << "Выход\n";

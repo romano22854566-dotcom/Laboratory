@@ -5,7 +5,7 @@
 #include <cstring>
 
 class UniversityTeacher: virtual public Human {
-protected:
+private:
     char* position;
     char* academicDegree;
     char* specialty;

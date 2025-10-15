@@ -43,6 +43,7 @@ public:
 };
 
 void showMatrix(const Matrix& matrix,const std::string& name);
-void multiplyMatrices(const Matrix& matrix1,const Matrix& matrix2);
+Matrix multiplyMatrices(const Matrix& matrix1,const Matrix& matrix2);
+void showMultiplyMatrices(const Matrix& matrix1,const Matrix& matrix2);
 int safeMenuInput();
 void printMenu();
