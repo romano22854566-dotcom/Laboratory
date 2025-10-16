@@ -1,58 +1,36 @@
+#include "menu.hpp"
 #include <iostream>
 #include <locale.h>
-#include "MenuFunctions.h"
 
 int main() {
     setlocale(0,"rus");
-    Human** people = nullptr;
-    int peopleCount = 0;
-    int capacity = 0;
-
-    initializePeople(people,capacity);
-
-    int choice = -1;
-
+    int choice;
     do {
-        displayMenu();
-        if (!(std::cin >> choice)) {
-            std::cout << "Неверный ввод!\n";
-            std::cin.clear();
-            std::cin.ignore(10000,'\n');
-            continue;
-        }
+        std::cout << "\n=== МЕНЮ ===\n";
+        std::cout << "1. Создать преподавателя университета\n";
+        std::cout << "2. Создать члена комиссии\n";
+        std::cout << "3. Создать преподавателя-члена комиссии\n";
+        std::cout << "4. Показать всех созданных людей\n";
+        std::cout << "5. Добавить научный труд преподавателю\n";
+        std::cout << "6. Добавить строку автобиографии члену комиссии\n";
+        std::cout << "7. Добавить работу в комиссии\n";
+        std::cout << "0. Выход\n";
+        std::cout << "Выберите опцию: ";
+        std::cin >> choice;
 
         switch (choice) {
-        case 1:
-        createUniversityTeacher(people,peopleCount,capacity);
-        break;
-        case 2:
-        createCommissionMember(people,peopleCount,capacity);
-        break;
-        case 3:
-        createTeacherCommissionMember(people,peopleCount,capacity);
-        break;
-        case 4:
-        displayAllPeople(people,peopleCount);
-        break;
-        case 5:
-        addScientificWork(people,peopleCount);
-        break;
-        case 6:
-        addAutobiographyLine(people,peopleCount);
-        break;
-        case 7:
-        addCommissionWork(people,peopleCount);
-        break;
-        case 0:
-        std::cout << "Выход из программы.\n";
-        break;
-        default:
-        std::cout << "Неверный выбор!\n";
-        break;
+        case 1: createTeacher(); break;
+        case 2: createCommissionMember(); break;
+        case 3: createTeacherCommissionMember(); break;
+        case 4: showAllPeople(); break;
+        case 5: addWorkToTeachers(); break;
+        case 6: addBioToCommissionMembers(); break;
+        case 7: addCommissionWorkToTCM(); break;
+        case 0: std::cout << "Выход...\n"; break;
+        default: std::cout << "Неверный выбор!\n"; break;
         }
-
     } while (choice != 0);
-
-    cleanup(people,peopleCount);
+    for (int i = 0; i < peopleCount; i++) delete people[i];
+    delete[] people;
     return 0;
 }
