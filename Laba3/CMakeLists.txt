@@ -11,8 +11,8 @@ set(SOURCES
     src/menu.cpp
     src/person.cpp
     src/teacher.cpp
-    src/commissionMember.cpp
-    src/teacherCommissionMember.cpp
+    src/CommissionMember.cpp
+    src/TeacherCommissionMember.cpp
     src/string.cpp
     src/linkedList.cpp
 )
