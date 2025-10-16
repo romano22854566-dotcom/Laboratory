@@ -1,173 +1,134 @@
 #include "menu.hpp"
+#include "teacher.hpp"
+#include "commissionMember.hpp"
+#include "teacherCommissionMember.hpp"
 #include <iostream>
+#include <string>
 
-Person** people = nullptr;
-int peopleCount = 0;
-
-void showPeopleWithIndex() {
-    std::cout << "\n=== Список людей ===\n";
-    for (int i = 0; i < peopleCount; i++) {
-        std::cout << i << ") ";
-        people[i]->printInfo();
+Menu::~Menu() {
+    for (int i = 0; i < count; i++) {
+        delete people[i];
     }
+    delete[] people;
 }
 
-void createTeacher() {
-    char name[100],surname[100],patronymic[100];
-    char position[100],degree[100],specialty[100];
-    int year;
+void Menu::createTeacher() {
+    std::string name,surname,patronymic,position,degree,specialty;
+    int yearOfBirth{};
+    std::cout << "Введите имя: "; std::getline(std::cin >> std::ws,name);
+    std::cout << "Введите фамилию: "; std::getline(std::cin,surname);
+    std::cout << "Введите отчество: "; std::getline(std::cin,patronymic);
+    std::cout << "Введите год рождения: "; std::cin >> yearOfBirth; std::cin.ignore();
+    std::cout << "Введите должность: "; std::getline(std::cin,position);
+    std::cout << "Введите ученую степень: "; std::getline(std::cin,degree);
+    std::cout << "Введите специальность: "; std::getline(std::cin,specialty);
 
-    std::cin.ignore();
-    std::cout << "Введите имя: ";
-    std::cin.getline(name,100);
-    std::cout << "Введите фамилию: ";
-    std::cin.getline(surname,100);
-    std::cout << "Введите отчество: ";
-    std::cin.getline(patronymic,100);
-    std::cout << "Введите год рождения: ";
-    std::cin >> year; std::cin.ignore();
-    std::cout << "Введите должность: ";
-    std::cin.getline(position,100);
-    std::cout << "Введите ученую степень: ";
-    std::cin.getline(degree,100);
-    std::cout << "Введите специальность: ";
-    std::cin.getline(specialty,100);
-
-    Person** newArr = new Person * [peopleCount + 1];
-    for (int i = 0; i < peopleCount; i++) newArr[i] = people[i];
-    newArr[peopleCount] = new Teacher(name,surname,patronymic,year,
-                                      position,degree,specialty);
+    Person** newArr = new Person * [count + 1];
+    for (int i = 0; i < count; i++) newArr[i] = people[i];
+    newArr[count] = new Teacher(
+        String(name.c_str()),String(surname.c_str()),String(patronymic.c_str()),yearOfBirth,
+        String(position.c_str()),String(degree.c_str()),String(specialty.c_str())
+    );
     delete[] people;
     people = newArr;
-    peopleCount++;
-    std::cout << "Преподаватель создан.\n";
+    ++count;
 }
 
-void createCommissionMember() {
-    char name[100],surname[100],patronymic[100];
-    char commissionName[100];
-    int year,yearAppointed,cert;
+void Menu::createCommissionMember() {
+    std::string name,surname,patronymic,commissionName;
+    int yearOfBirth{},yearAppointed{},cert{};
+    std::cout << "Введите имя: "; std::getline(std::cin >> std::ws,name);
+    std::cout << "Введите фамилию: "; std::getline(std::cin,surname);
+    std::cout << "Введите отчество: "; std::getline(std::cin,patronymic);
+    std::cout << "Введите год рождения: "; std::cin >> yearOfBirth; std::cin.ignore();
+    std::cout << "Введите название комиссии: "; std::getline(std::cin,commissionName);
+    std::cout << "Введите год назначения: "; std::cin >> yearAppointed;
+    std::cout << "Введите номер свидетельства: "; std::cin >> cert; std::cin.ignore();
 
-    std::cin.ignore();
-    std::cout << "Введите имя: ";
-    std::cin.getline(name,100);
-    std::cout << "Введите фамилию: ";
-    std::cin.getline(surname,100);
-    std::cout << "Введите отчество: ";
-    std::cin.getline(patronymic,100);
-    std::cout << "Введите год рождения: ";
-    std::cin >> year; std::cin.ignore();
-    std::cout << "Введите название комиссии: ";
-    std::cin.getline(commissionName,100);
-    std::cout << "Введите год назначения: ";
-    std::cin >> yearAppointed;
-    std::cout << "Введите номер свидетельства: ";
-    std::cin >> cert; std::cin.ignore();
-
-    Person** newArr = new Person * [peopleCount + 1];
-    for (int i = 0; i < peopleCount; i++) newArr[i] = people[i];
-    newArr[peopleCount] = new CommissionMember(name,surname,patronymic,year,
-                                               commissionName,yearAppointed,cert);
+    Person** newArr = new Person * [count + 1];
+    for (int i = 0; i < count; i++) newArr[i] = people[i];
+    newArr[count] = new CommissionMember(
+        String(name.c_str()),String(surname.c_str()),String(patronymic.c_str()),yearOfBirth,
+        String(commissionName.c_str()),yearAppointed,cert
+    );
     delete[] people;
     people = newArr;
-    peopleCount++;
-    std::cout << "Член комиссии создан.\n";
+    ++count;
 }
 
-void createTeacherCommissionMember() {
-    char name[100],surname[100],patronymic[100];
-    char position[100],degree[100],specialty[100];
-    char commissionName[100];
-    int year,yearAppointed,cert;
+void Menu::createTeacherCommissionMember() {
+    std::string name,surname,patronymic,position,degree,specialty,commissionName;
+    int yearOfBirth{},yearAppointed{},cert{};
+    std::cout << "Введите имя: "; std::getline(std::cin >> std::ws,name);
+    std::cout << "Введите фамилию: "; std::getline(std::cin,surname);
+    std::cout << "Введите отчество: "; std::getline(std::cin,patronymic);
+    std::cout << "Введите год рождения: "; std::cin >> yearOfBirth; std::cin.ignore();
+    std::cout << "Введите должность: "; std::getline(std::cin,position);
+    std::cout << "Введите ученую степень: "; std::getline(std::cin,degree);
+    std::cout << "Введите специальность: "; std::getline(std::cin,specialty);
+    std::cout << "Введите название комиссии: "; std::getline(std::cin,commissionName);
+    std::cout << "Введите год назначения: "; std::cin >> yearAppointed;
+    std::cout << "Введите номер свидетельства: "; std::cin >> cert; std::cin.ignore();
 
-    std::cin.ignore();
-    std::cout << "Введите имя: ";
-    std::cin.getline(name,100);
-    std::cout << "Введите фамилию: ";
-    std::cin.getline(surname,100);
-    std::cout << "Введите отчество: ";
-    std::cin.getline(patronymic,100);
-    std::cout << "Введите год рождения: ";
-    std::cin >> year; std::cin.ignore();
-    std::cout << "Введите должность: ";
-    std::cin.getline(position,100);
-    std::cout << "Введите ученую степень: ";
-    std::cin.getline(degree,100);
-    std::cout << "Введите специальность: ";
-    std::cin.getline(specialty,100);
-    std::cout << "Введите название комиссии: ";
-    std::cin.getline(commissionName,100);
-    std::cout << "Введите год назначения: ";
-    std::cin >> yearAppointed;
-    std::cout << "Введите номер свидетельства: ";
-    std::cin >> cert; std::cin.ignore();
-
-    Person** newArr = new Person * [peopleCount + 1];
-    for (int i = 0; i < peopleCount; i++) newArr[i] = people[i];
-    newArr[peopleCount] = new TeacherCommissionMember(name,surname,patronymic,year,
-                                                      position,degree,specialty,
-                                                      commissionName,yearAppointed,cert);
+    Person** newArr = new Person * [count + 1];
+    for (int i = 0; i < count; i++) newArr[i] = people[i];
+    newArr[count] = new TeacherCommissionMember(
+        String(name.c_str()),String(surname.c_str()),String(patronymic.c_str()),yearOfBirth,
+        String(position.c_str()),String(degree.c_str()),String(specialty.c_str()),
+        String(commissionName.c_str()),yearAppointed,cert
+    );
     delete[] people;
     people = newArr;
-    peopleCount++;
-    std::cout << "Преподаватель-член комиссии создан.\n";
+    ++count;
 }
 
-
-
-void showAllPeople() {
-    if (peopleCount == 0) {
+void Menu::showAllPeople() const {
+    if (count == 0) {
         std::cout << "Список пуст.\n";
         return;
     }
     std::cout << "\n=== Список людей ===\n";
-    for (int i = 0; i < peopleCount; i++) {
+    for (int i = 0; i < count; i++) {
         std::cout << i << ") ";
         people[i]->printInfo();
     }
 }
 
-void addWorkToTeachers() {
-    if (peopleCount == 0) { std::cout << "Нет людей.\n"; return; }
-    showPeopleWithIndex();
-    std::cout << "Введите номер преподавателя: ";
+void Menu::addWorkToTeacher() {
+    showAllPeople();
+    std::cout << "Введите индекс преподавателя: ";
     int idx; std::cin >> idx; std::cin.ignore();
-    if (idx < 0 || idx >= peopleCount) { std::cout << "Неверный индекс.\n"; return; }
-    Teacher* t = dynamic_cast<Teacher*>(people[idx]);
-    if (!t) { std::cout << "Этот человек не является преподавателем.\n"; return; }
-    char work[200];
+    if (idx < 0 || idx >= count) return;
+    auto* t = dynamic_cast<Teacher*>(people[idx]);
+    if (!t) { std::cout << "Не преподаватель.\n"; return; }
+    std::string work;
     std::cout << "Введите название научного труда: ";
-    std::cin.getline(work,200);
-    t->addWork(work,1.0);
-    std::cout << "Труд добавлен.\n";
+    std::getline(std::cin,work);
+    t->addWork(String(work.c_str()));
 }
 
-void addBioToCommissionMembers() {
-    if (peopleCount == 0) { std::cout << "Нет людей.\n"; return; }
-    showPeopleWithIndex();
-    std::cout << "Введите номер члена комиссии: ";
+void Menu::addBioToCommissionMember() {
+    showAllPeople();
+    std::cout << "Введите индекс члена комиссии: ";
     int idx; std::cin >> idx; std::cin.ignore();
-    if (idx < 0 || idx >= peopleCount) { std::cout << "Неверный индекс.\n"; return; }
-    CommissionMember* c = dynamic_cast<CommissionMember*>(people[idx]);
-    if (!c) { std::cout << "Этот человек не является членом комиссии.\n"; return; }
-    char bio[200];
+    if (idx < 0 || idx >= count) return;
+    auto* c = dynamic_cast<CommissionMember*>(people[idx]);
+    if (!c) { std::cout << "Не член комиссии.\n"; return; }
+    std::string bio;
     std::cout << "Введите строку автобиографии: ";
-    std::cin.getline(bio,200);
-    c->addBio(bio,0.0);
-    std::cout << "Строка добавлена.\n";
+    std::getline(std::cin,bio);
+    c->addBio(String(bio.c_str()));
 }
 
-void addCommissionWorkToTCM() {
-    if (peopleCount == 0) { std::cout << "Нет людей.\n"; return; }
-    showPeopleWithIndex();
-    std::cout << "Введите номер преподавателя-члена комиссии: ";
+void Menu::addCommissionWorkToTCM() {
+    showAllPeople();
+    std::cout << "Введите индекс преподавателя-члена комиссии: ";
     int idx; std::cin >> idx; std::cin.ignore();
-    if (idx < 0 || idx >= peopleCount) { std::cout << "Неверный индекс.\n"; return; }
-    TeacherCommissionMember* tcm = dynamic_cast<TeacherCommissionMember*>(people[idx]);
-    if (!tcm) { std::cout << "Этот человек не является преподавателем-членом комиссии.\n"; return; }
-    char work[200];
+    if (idx < 0 || idx >= count) return;
+    auto* tcm = dynamic_cast<TeacherCommissionMember*>(people[idx]);
+    if (!tcm) { std::cout << "Не преподаватель-член комиссии.\n"; return; }
+    std::string work;
     std::cout << "Введите работу в комиссии: ";
-    std::cin.getline(work,200);
-    tcm->addCommissionWork(work,2.0);
-    std::cout << "Работа добавлена.\n";
+    std::getline(std::cin,work);
+    tcm->addCommissionWork(String(work.c_str()));
 }

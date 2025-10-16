@@ -1,27 +1,25 @@
 #pragma once
 #include "string.hpp"
+#include <iostream>
 
 class LinkedList {
-private:
+public:
     struct Node {
-        String string;
-        double data;
-        Node* next;
-        Node(const String& str,double value);
+        String value;
+        Node* next{nullptr};
+        explicit Node(const String& str): value(str) {}
     };
 
-    Node* head;
-    Node* tail;
+private:
+    Node* head{nullptr};
+    Node* tail{nullptr};
 
 public:
-    LinkedList();
+    LinkedList() = default;
     LinkedList(const LinkedList& other);
     ~LinkedList();
 
-    LinkedList& operator=(const LinkedList& other) = delete;
-   
-    void pushBack(const String& string,double data);
-    void pushBack(const char* string,double data);
-    Node* find(const String& key) const;
+    void pushBack(const String& str);
+    bool empty() const { return head == nullptr; }
     void print() const;
 };

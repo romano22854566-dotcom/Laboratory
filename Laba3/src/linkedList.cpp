@@ -1,17 +1,9 @@
 #include "linkedList.hpp"
-#include <iostream>
-#include <cstring>
 
-LinkedList::Node::Node(const String& str,double value)
-    : string(str),data(value),next(nullptr) {
-}
-
-LinkedList::LinkedList(): head(nullptr),tail(nullptr) {}
-
-LinkedList::LinkedList(const LinkedList& other): head(nullptr),tail(nullptr) {
+LinkedList::LinkedList(const LinkedList& other) {
     Node* cur = other.head;
     while (cur) {
-        pushBack(cur->string,cur->data);
+        pushBack(cur->value);
         cur = cur->next;
     }
 }
@@ -25,8 +17,8 @@ LinkedList::~LinkedList() {
     }
 }
 
-void LinkedList::pushBack(const String& string,double data) {
-    Node* node = new Node(string,data);
+void LinkedList::pushBack(const String& str) {
+    Node* node = new Node(str);
     if (!head) {
         head = tail = node;
     }
@@ -36,26 +28,10 @@ void LinkedList::pushBack(const String& string,double data) {
     }
 }
 
-void LinkedList::pushBack(const char* string,double data) {
-    String s(string);
-    pushBack(s,data);
-}
-
-LinkedList::Node* LinkedList::find(const String& key) const {
-    Node* cur = head;
-    while (cur) {
-        if (std::strcmp(cur->string.cStr(),key.cStr()) == 0) {
-            return cur;
-        }
-        cur = cur->next;
-    }
-    return nullptr;
-}
-
 void LinkedList::print() const {
     Node* cur = head;
     while (cur) {
-        std::cout << "  - " << cur->string.cStr() << std::endl;
+        std::cout << "  - " << cur->value.cStr() << '\n';
         cur = cur->next;
     }
 }

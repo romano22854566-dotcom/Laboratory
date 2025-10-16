@@ -2,26 +2,19 @@
 #include "string.hpp"
 
 class Person {
-protected:
-    String name_;
-    String surname_;
-    String patronymic_;
-    int birthYear_;
+private:
+    String name;
+    String surname;
+    String patronymic;
+    int yearOfBirth{};
 
 public:
-    Person();
-    Person(const String& name,const String& surname,const String& patronymic,int year);
-    virtual ~Person();
+    Person() = default;
+    Person(const String& name,const String& surname,const String& patronymic,int yearOfBirth);
+    virtual ~Person() = default;
 
-    void setName(const String& name);
-    void setSurname(const String& surname);
-    void setPatronymic(const String& patronymic);
-    void setBirthYear(int year);
+    virtual void printInfo() const = 0;
 
-    const String& getName() const;
-    const String& getSurname() const;
-    const String& getPatronymic() const;
-    int getBirthYear() const;
-
-    virtual void printInfo() const;
+protected:
+    void printBase() const;
 };

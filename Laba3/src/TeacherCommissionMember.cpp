@@ -1,31 +1,23 @@
 #include "teacherCommissionMember.hpp"
 #include <iostream>
 
-TeacherCommissionMember::TeacherCommissionMember()
-    : Person(),Teacher(),CommissionMember(),commissionWorks_() {
-}
-
-TeacherCommissionMember::TeacherCommissionMember(const String& name,const String& surname,const String& patronymic,int year,
+TeacherCommissionMember::TeacherCommissionMember(const String& name,const String& surname,const String& patronymic,int yearOfBirth,
                                                  const String& position,const String& degree,const String& specialty,
                                                  const String& commissionName,int yearAppointed,int certificateNumber)
-    : Person(name,surname,patronymic,year),
-    Teacher(name,surname,patronymic,year,position,degree,specialty),
-    CommissionMember(name,surname,patronymic,year,commissionName,yearAppointed,certificateNumber),
-    commissionWorks_() {
+    : Person(name,surname,patronymic,yearOfBirth),
+    Teacher(name,surname,patronymic,yearOfBirth,position,degree,specialty),
+    CommissionMember(name,surname,patronymic,yearOfBirth,commissionName,yearAppointed,certificateNumber) {
 }
 
-TeacherCommissionMember::~TeacherCommissionMember() {}
-
-void TeacherCommissionMember::addCommissionWork(const String& work,double value) {
-    commissionWorks_.pushBack(work,value);
+void TeacherCommissionMember::addCommissionWork(const String& work) {
+    commissionWorks.pushBack(work);
 }
 
 void TeacherCommissionMember::printInfo() const {
     Teacher::printInfo();
     CommissionMember::printInfo();
-
-    if (commissionWorks_.find("") == nullptr) {
-        std::cout << "Работы в комиссии:" << std::endl;
-        commissionWorks_.print();
+    if (!commissionWorks.empty()) {
+        std::cout << "Работы в комиссии:\n";
+        commissionWorks.print();
     }
 }

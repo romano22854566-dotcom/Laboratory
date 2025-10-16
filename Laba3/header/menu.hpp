@@ -1,13 +1,19 @@
 #pragma once
-#include "teacherCommissionMember.hpp"
+#include "person.hpp"
 
-extern Person** people;
-extern int peopleCount;
-void showPeopleWithIndex();
-void createTeacher();
-void createCommissionMember();
-void createTeacherCommissionMember();
-void showAllPeople();
-void addWorkToTeachers();
-void addBioToCommissionMembers();
-void addCommissionWorkToTCM();
+class Menu {
+private:
+    Person** people{nullptr};
+    int count{0};
+
+public:
+    ~Menu();
+
+    void createTeacher();
+    void createCommissionMember();
+    void createTeacherCommissionMember();
+    void showAllPeople() const;
+    void addWorkToTeacher();
+    void addBioToCommissionMember();
+    void addCommissionWorkToTCM();
+};
