@@ -6,20 +6,23 @@ class LinkedList {
 public:
     struct Node {
         String value;
-        Node* next{nullptr};
-        explicit Node(const String& str): value(str) {}
+        Node* next;
+        explicit Node(const String& str);
     };
 
 private:
-    Node* head{nullptr};
-    Node* tail{nullptr};
+    Node* head;
+    Node* tail;
 
 public:
-    LinkedList() = default;
+    LinkedList();
     LinkedList(const LinkedList& other);
+    LinkedList& operator=(const LinkedList& other);
+    LinkedList(LinkedList&& other) noexcept;
+    LinkedList& operator=(LinkedList&& other) noexcept;
     ~LinkedList();
 
     void pushBack(const String& str);
-    bool empty() const { return head == nullptr; }
+    bool empty() const;
     void print() const;
 };

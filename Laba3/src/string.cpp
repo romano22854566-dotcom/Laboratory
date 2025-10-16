@@ -1,7 +1,9 @@
 #include "string.hpp"
 #include <cstring>
 
-String::String(const char* s) {
+String::String(): data(nullptr),length(0) {}
+
+String::String(const char* s): data(nullptr),length(0) {
     if (s) {
         length = std::strlen(s);
         data = new char[length + 1];
@@ -10,7 +12,7 @@ String::String(const char* s) {
     }
 }
 
-String::String(const String& other) {
+String::String(const String& other): data(nullptr),length(0) {
     if (other.data) {
         length = other.length;
         data = new char[length + 1];
@@ -32,4 +34,12 @@ String& String::operator=(const String& other) {
 
 String::~String() {
     delete[] data;
+}
+
+const char* String::cStr() const {
+    return data ? data : "";
+}
+
+std::size_t String::size() const {
+    return length;
 }

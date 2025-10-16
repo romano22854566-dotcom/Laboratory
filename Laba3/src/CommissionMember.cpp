@@ -1,6 +1,8 @@
 #include "commissionMember.hpp"
 #include <iostream>
 
+CommissionMember::CommissionMember(): yearAppointed(0),certificateNumber(0) {}
+
 CommissionMember::CommissionMember(const String& name,const String& surname,const String& patronymic,int yearOfBirth,
                                    const String& commissionName,int yearAppointed,int certificateNumber)
     : Person(name,surname,patronymic,yearOfBirth),

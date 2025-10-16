@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+Menu::Menu(): people(nullptr),count(0) {}
+
 Menu::~Menu() {
     for (int i = 0; i < count; i++) {
         delete people[i];
@@ -13,8 +15,14 @@ Menu::~Menu() {
 }
 
 void Menu::createTeacher() {
-    std::string name,surname,patronymic,position,degree,specialty;
-    int yearOfBirth{};
+    std::string name;
+    std::string surname;
+    std::string patronymic;
+    std::string position;
+    std::string degree;
+    std::string specialty;
+    int yearOfBirth;
+
     std::cout << "Введите имя: "; std::getline(std::cin >> std::ws,name);
     std::cout << "Введите фамилию: "; std::getline(std::cin,surname);
     std::cout << "Введите отчество: "; std::getline(std::cin,patronymic);
@@ -35,8 +43,14 @@ void Menu::createTeacher() {
 }
 
 void Menu::createCommissionMember() {
-    std::string name,surname,patronymic,commissionName;
-    int yearOfBirth{},yearAppointed{},cert{};
+    std::string name;
+    std::string surname;
+    std::string patronymic;
+    std::string commissionName;
+    int yearOfBirth;
+    int yearAppointed;
+    int cert;
+
     std::cout << "Введите имя: "; std::getline(std::cin >> std::ws,name);
     std::cout << "Введите фамилию: "; std::getline(std::cin,surname);
     std::cout << "Введите отчество: "; std::getline(std::cin,patronymic);
@@ -57,8 +71,17 @@ void Menu::createCommissionMember() {
 }
 
 void Menu::createTeacherCommissionMember() {
-    std::string name,surname,patronymic,position,degree,specialty,commissionName;
-    int yearOfBirth{},yearAppointed{},cert{};
+    std::string name;
+    std::string surname;
+    std::string patronymic;
+    std::string position;
+    std::string degree;
+    std::string specialty;
+    std::string commissionName;
+    int yearOfBirth;
+    int yearAppointed;
+    int cert;
+
     std::cout << "Введите имя: "; std::getline(std::cin >> std::ws,name);
     std::cout << "Введите фамилию: "; std::getline(std::cin,surname);
     std::cout << "Введите отчество: "; std::getline(std::cin,patronymic);
@@ -97,7 +120,9 @@ void Menu::showAllPeople() const {
 void Menu::addWorkToTeacher() {
     showAllPeople();
     std::cout << "Введите индекс преподавателя: ";
-    int idx; std::cin >> idx; std::cin.ignore();
+    int idx;
+    std::cin >> idx;
+    std::cin.ignore();
     if (idx < 0 || idx >= count) return;
     auto* t = dynamic_cast<Teacher*>(people[idx]);
     if (!t) { std::cout << "Не преподаватель.\n"; return; }
@@ -110,7 +135,9 @@ void Menu::addWorkToTeacher() {
 void Menu::addBioToCommissionMember() {
     showAllPeople();
     std::cout << "Введите индекс члена комиссии: ";
-    int idx; std::cin >> idx; std::cin.ignore();
+    int idx;
+    std::cin >> idx;
+    std::cin.ignore();
     if (idx < 0 || idx >= count) return;
     auto* c = dynamic_cast<CommissionMember*>(people[idx]);
     if (!c) { std::cout << "Не член комиссии.\n"; return; }
@@ -123,12 +150,18 @@ void Menu::addBioToCommissionMember() {
 void Menu::addCommissionWorkToTCM() {
     showAllPeople();
     std::cout << "Введите индекс преподавателя-члена комиссии: ";
-    int idx; std::cin >> idx; std::cin.ignore();
+    int idx;
+    std::cin >> idx;
+    std::cin.ignore();
     if (idx < 0 || idx >= count) return;
     auto* tcm = dynamic_cast<TeacherCommissionMember*>(people[idx]);
-    if (!tcm) { std::cout << "Не преподаватель-член комиссии.\n"; return; }
+    if (!tcm) {
+        std::cout << "Не преподаватель-член комиссии.\n";
+        return;
+    }
     std::string work;
     std::cout << "Введите работу в комиссии: ";
     std::getline(std::cin,work);
     tcm->addCommissionWork(String(work.c_str()));
 }
+

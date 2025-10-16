@@ -6,10 +6,10 @@ private:
     String name;
     String surname;
     String patronymic;
-    int yearOfBirth{};
+    int yearOfBirth;
 
 public:
-    Person() = default;
+    Person();
     Person(const String& name,const String& surname,const String& patronymic,int yearOfBirth);
     virtual ~Person() = default;
 

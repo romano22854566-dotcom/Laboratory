@@ -1,6 +1,8 @@
 #include "person.hpp"
 #include <iostream>
 
+Person::Person(): yearOfBirth(0) {}
+
 Person::Person(const String& name,const String& surname,const String& patronymic,int yearOfBirth)
     : name(name),surname(surname),patronymic(patronymic),yearOfBirth(yearOfBirth) {
 }

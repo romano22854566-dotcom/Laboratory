@@ -1,6 +1,8 @@
 #include "teacher.hpp"
 #include <iostream>
 
+Teacher::Teacher() = default;
+
 Teacher::Teacher(const String& name,const String& surname,const String& patronymic,int yearOfBirth,
                  const String& position,const String& degree,const String& specialty)
     : Person(name,surname,patronymic,yearOfBirth),

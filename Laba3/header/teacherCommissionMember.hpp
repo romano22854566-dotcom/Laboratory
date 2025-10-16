@@ -8,7 +8,7 @@ private:
     LinkedList commissionWorks;
 
 public:
-    TeacherCommissionMember() = default;
+    TeacherCommissionMember();
     TeacherCommissionMember(const String& name,const String& surname,const String& patronymic,int yearOfBirth,
                             const String& position,const String& degree,const String& specialty,
                             const String& commissionName,int yearAppointed,int certificateNumber);

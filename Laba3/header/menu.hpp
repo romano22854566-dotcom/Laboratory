@@ -3,11 +3,17 @@
 
 class Menu {
 private:
-    Person** people{nullptr};
-    int count{0};
+    Person** people;
+    int count;
 
 public:
+    Menu();
     ~Menu();
+    Menu(const Menu&) = delete;
+    Menu& operator=(const Menu&) = delete;
+
+    Menu(Menu&&) noexcept = default;
+    Menu& operator=(Menu&&) noexcept = default;
 
     void createTeacher();
     void createCommissionMember();
