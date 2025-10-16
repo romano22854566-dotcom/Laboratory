@@ -38,6 +38,22 @@ Human::~Human() {
     delete[] patronymic;
 }
 
+const char* Human::getFirstName() const {
+    return firstName ? firstName : "";
+}
+
+const char* Human::getLastName() const {
+    return lastName ? lastName : "";
+}
+
+const char* Human::getPatronymic() const {
+    return patronymic ? patronymic : "";
+}
+
+int Human::getBirthYear() const {
+    return birthYear;
+}
+
 void Human::setFirstName(const char* fName) {
     delete[] firstName;
     firstName = safeCopy(fName);

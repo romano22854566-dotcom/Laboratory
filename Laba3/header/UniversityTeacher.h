@@ -24,13 +24,13 @@ public:
     void input() override;
 
     void addScientificWork(const char* work);
-    int getScientificWorksCount() const { return worksCount; }
+    int getScientificWorksCount() const;
     const char* getScientificWork(int index) const;
     void updateScientificWork(int index,const char* newWork);
 
-    const char* getPosition() const { return position ? position : ""; }
-    const char* getAcademicDegree() const { return academicDegree ? academicDegree : ""; }
-    const char* getSpecialty() const { return specialty ? specialty : ""; }
+    const char* getPosition() const;
+    const char* getAcademicDegree() const;
+    const char* getSpecialty() const;
 
     void setPosition(const char* pos);
     void setAcademicDegree(const char* degree);

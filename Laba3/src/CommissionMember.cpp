@@ -59,7 +59,7 @@ void CommissionMember::display() const {
     std::cout << "ФИО: " << getLastName() << " " << getFirstName() << " " << getPatronymic() << "\n";
     std::cout << "Год рождения: " << getBirthYear() << "\n";
     std::cout << "Название комиссии: " << getCommissionName() << "\n";
-    std::cout << "Год назначения: " << appointmentYear << "\n";
+    std::cout << "Год назначения: " << getAppointmentYear() << "\n";
     std::cout << "Номер свидетельства: " << getCertificateNumber() << "\n";
     std::cout << "Автобиография (" << autobiographyLines << " строк):\n";
     for (int i = 0; i < autobiographyLines; i++) {
@@ -119,6 +119,22 @@ const char* CommissionMember::getAutobiographyLine(int index) const {
         return "";
     }
     return autobiography[index];
+}
+
+int CommissionMember::getAutobiographyLinesCount() const {
+    return autobiographyLines;
+}
+
+const char* CommissionMember::getCommissionName() const {
+    return commissionName ? commissionName : "";
+}
+
+int CommissionMember::getAppointmentYear() const {
+    return appointmentYear;
+}
+
+const char* CommissionMember::getCertificateNumber() const {
+    return certificateNumber ? certificateNumber : "";
 }
 
 void CommissionMember::updateAutobiographyLine(int index,const char* newLine) {

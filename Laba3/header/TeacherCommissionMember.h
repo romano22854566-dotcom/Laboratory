@@ -23,23 +23,20 @@ public:
     void input() override;
 
     void addCommissionWork(const char* work);
-    int getCommissionWorksCount() const { return commissionWorksCount; }
+    int getCommissionWorksCount() const;
     const char* getCommissionWork(int index) const;
     void updateCommissionWork(int index,const char* newWork);
 
     // Методы для разрешения неоднозначности
-    const char* getFirstName() const { return UniversityTeacher::getFirstName(); }
-    const char* getLastName() const { return UniversityTeacher::getLastName(); }
-    const char* getPatronymic() const { return UniversityTeacher::getPatronymic(); }
-    int getBirthYear() const { return UniversityTeacher::getBirthYear(); }
+    const char* getFirstName() const;
+    const char* getLastName() const;
+    const char* getPatronymic() const;
+    int getBirthYear() const;
 
-    void setFirstName(const char* fName) { UniversityTeacher::setFirstName(fName); }
-    void setLastName(const char* lName) { UniversityTeacher::setLastName(lName); }
-    void setPatronymic(const char* pat) { UniversityTeacher::setPatronymic(pat); }
-    void setBirthYear(int year) {
-        UniversityTeacher::setBirthYear(year);
-        CommissionMember::setBirthYear(year);
-    }
+    void setFirstName(const char* fName);
+    void setLastName(const char* lName);
+    void setPatronymic(const char* pat);
+    void setBirthYear(int year);
 
     TeacherCommissionMember(const TeacherCommissionMember&) = delete;
     TeacherCommissionMember& operator=(const TeacherCommissionMember&) = delete;

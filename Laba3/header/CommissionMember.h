@@ -24,13 +24,13 @@ public:
     void input() override;
 
     void addAutobiographyLine(const char* line);
-    int getAutobiographyLinesCount() const { return autobiographyLines; }
+    int getAutobiographyLinesCount() const;
     const char* getAutobiographyLine(int index) const;
     void updateAutobiographyLine(int index,const char* newLine);
 
-    const char* getCommissionName() const { return commissionName ? commissionName : ""; }
-    int getAppointmentYear() const { return appointmentYear; }
-    const char* getCertificateNumber() const { return certificateNumber ? certificateNumber : ""; }
+    const char* getCommissionName() const;
+    int getAppointmentYear() const;
+    const char* getCertificateNumber() const;
 
     void setCommissionName(const char* commName);
     void setAppointmentYear(int year);

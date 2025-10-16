@@ -149,9 +149,49 @@ const char* TeacherCommissionMember::getCommissionWork(int index) const {
     return commissionWorks[index];
 }
 
+int TeacherCommissionMember::getCommissionWorksCount() const {
+    return commissionWorksCount;
+}
+
 void TeacherCommissionMember::updateCommissionWork(int index,const char* newWork) {
     if (index < 0 || index >= commissionWorksCount || newWork == nullptr || std::strlen(newWork) == 0) return;
 
     delete[] commissionWorks[index];
     commissionWorks[index] = UniversityTeacher::safeCopy(newWork);
+}
+
+const char* TeacherCommissionMember::getFirstName() const {
+    return UniversityTeacher::getFirstName();
+}
+
+const char* TeacherCommissionMember::getLastName() const {
+    return UniversityTeacher::getLastName();
+}
+
+const char* TeacherCommissionMember::getPatronymic() const {
+    return UniversityTeacher::getPatronymic();
+}
+
+int TeacherCommissionMember::getBirthYear() const {
+    return UniversityTeacher::getBirthYear();
+}
+
+void TeacherCommissionMember::setFirstName(const char* fName) {
+    UniversityTeacher::setFirstName(fName);
+    CommissionMember::setFirstName(fName);
+}
+
+void TeacherCommissionMember::setLastName(const char* lName) {
+    UniversityTeacher::setLastName(lName);
+    CommissionMember::setLastName(lName);
+}
+
+void TeacherCommissionMember::setPatronymic(const char* pat) {
+    UniversityTeacher::setPatronymic(pat);
+    CommissionMember::setPatronymic(pat);
+}
+
+void TeacherCommissionMember::setBirthYear(int year) {
+    UniversityTeacher::setBirthYear(year);
+    CommissionMember::setBirthYear(year);
 }

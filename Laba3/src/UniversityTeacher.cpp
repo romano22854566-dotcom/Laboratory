@@ -122,6 +122,22 @@ const char* UniversityTeacher::getScientificWork(int index) const {
     return scientificWorks[index];
 }
 
+int UniversityTeacher::getScientificWorksCount() const {
+    return worksCount;
+}
+
+const char* UniversityTeacher::getPosition() const {
+    return position ? position : "";
+}
+
+const char* UniversityTeacher::getAcademicDegree() const {
+    return academicDegree ? academicDegree : "";
+}
+
+const char* UniversityTeacher::getSpecialty() const {
+    return specialty ? specialty : "";
+}
+
 void UniversityTeacher::updateScientificWork(int index,const char* newWork) {
     if (index < 0 || index >= worksCount || newWork == nullptr || std::strlen(newWork) == 0) return;
 
