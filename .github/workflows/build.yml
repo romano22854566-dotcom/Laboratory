@@ -24,22 +24,22 @@ jobs:
       - name: Install Build Wrapper
         uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v6
 
-      - name: Build Laba3
+      - name: Build Laba4
         run: |
-          rm -rf Laba3/build
-          mkdir Laba3/build
-          cmake -S Laba3 -B Laba3/build
-          build-wrapper-linux-x86-64 --out-dir Laba3/build_wrapper make -C Laba3/build
+          rm -rf Laba4/build
+          mkdir Laba4/build
+          cmake -S Laba4 -B Laba4/build
+          build-wrapper-linux-x86-64 --out-dir Laba4/build_wrapper make -C Laba4/build
 
-      - name: SonarCloud scan Laba3
+      - name: SonarCloud scan Laba4
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=PeTkun_Industries_Laba3
+            -Dsonar.projectKey=PeTkun_Industries_Laba4
             -Dsonar.organization=${{ env.SONAR_ORG }}
-            -Dsonar.sources=Laba3
-            -Dsonar.cfamily.compile-commands=Laba3/build_wrapper/compile_commands.json
+            -Dsonar.sources=Laba4
+            -Dsonar.cfamily.compile-commands=Laba4/build_wrapper/compile_commands.json
             -Dsonar.coverage.exclusions=**
             -Dsonar.cfamily.skipCoverage=true
