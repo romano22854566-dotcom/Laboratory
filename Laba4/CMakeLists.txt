@@ -9,7 +9,6 @@ include_directories(include)
 set(SOURCES
     src/main.cpp
     src/Functions.cpp
-    src/Figure.cpp
     src/Circle.cpp
     src/Rectangle.cpp
     src/Trapezoid.cpp
