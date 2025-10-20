@@ -64,7 +64,7 @@ void addTrapezoid(Figure**& figures,int& count,int& capacity) {
 
 void showFigures(Figure** figures,int count) {
     if (count == 0) {
-        std::cout << "Фигур пока нет.\n";
+        std::cout << "Фигур нет\n";
         return;
     }
     std::cout << "\n=== Список фигур ===\n";
