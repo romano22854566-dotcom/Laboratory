@@ -8,33 +8,34 @@ void MyString::allocateAndCopy(const char* src,std::size_t len) {
     length = len;
 }
 
-MyString::MyString(): data(nullptr),length(0) {
-    data = new char[1];
-    data[0] = '\0';
+MyString::MyString() {
+ 
+    data = new char[1]{'\0'};
+   
 }
 
-MyString::MyString(const char* str): data(nullptr),length(0) {
+MyString::MyString(const char* str) {
     if (!str) {
-        data = new char[1];
-        data[0] = '\0';
+        data = new char[1]{'\0'};
         return;
     }
-    std::size_t len = std::strlen(str);
+    const std::size_t len = std::strlen(str);
     if (len > MAX_LENGTH) {
-        throw StringTooLongException("Ошибка строка длиннее 10 символов");
+        throw StringTooLongException("Ошибка: строка длиннее 10 символов.");
     }
     allocateAndCopy(str,len);
 }
 
-MyString::MyString(const MyString& other): data(nullptr),length(0) {
+MyString::MyString(const MyString& other) {
     allocateAndCopy(other.data,other.length);
 }
 
 MyString& MyString::operator=(const MyString& other) {
     if (this != &other) {
-        char* newData = new char[other.length + 1];
+        auto newData = new char[other.length + 1]; 
         std::memcpy(newData,other.data,other.length);
         newData[other.length] = '\0';
+
         delete[] data;
         data = newData;
         length = other.length;
@@ -44,6 +45,8 @@ MyString& MyString::operator=(const MyString& other) {
 
 MyString::~MyString() {
     delete[] data;
+    data = nullptr;
+    length = 0;
 }
 
 const char* MyString::c_str() const {
@@ -54,15 +57,16 @@ std::size_t MyString::size() const {
     return length;
 }
 
-MyString MyString::operator+(const MyString& other) const {
-    std::size_t newLen = length + other.length;
-    if (newLen > MAX_LENGTH) {
-        throw ConcatTooLongException("Ошибка Результат объединения длиннее 10 символов");
+MyString operator+(const MyString& lhs,const MyString& rhs) {
+    const std::size_t newLen = lhs.length + rhs.length;
+    if (newLen > MyString::max_length()) {
+        throw ConcatTooLongException("Ошибка: результат объединения длиннее 10 символов.");
     }
-    char* buffer = new char[newLen + 1];
-    std::memcpy(buffer,data,length);
-    std::memcpy(buffer + length,other.data,other.length);
+    auto buffer = new char[newLen + 1]; 
+    std::memcpy(buffer,lhs.data,lhs.length);
+    std::memcpy(buffer + lhs.length,rhs.data,rhs.length);
     buffer[newLen] = '\0';
+
     MyString result(buffer);
     delete[] buffer;
     return result;

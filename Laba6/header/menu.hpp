@@ -2,7 +2,7 @@
 
 void showMenu();
 
-void handleCreateString();
-void handlePrintString();
-void handleConcatTwoStrings();
-void handleShowConcatenated();
+void handleCreateString();       
+void handlePrintString();         
+void handleConcatTwoStrings();    
+void handleShowConcatenated();    

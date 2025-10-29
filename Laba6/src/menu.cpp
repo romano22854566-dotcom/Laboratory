@@ -5,8 +5,9 @@
 #include <string>
 
 namespace{
-MyString* gCurrentString = nullptr;
-MyString* gConcatResult = nullptr;
+
+MyString* gCurrentString = nullptr; 
+MyString* gConcatResult = nullptr;  
 
 void clearString(MyString*& ptr) {
     delete ptr;
@@ -33,10 +34,10 @@ void showMenu() {
 void handleCreateString() {
     std::cout << "Введите строку (макс. " << MyString::max_length() << " символов): ";
     if (std::cin.peek() == '\n') std::cin.get();
-    std::string input = readLine();
+    const std::string input = readLine();
 
     try {
-        MyString* created = new MyString(input.c_str());
+        auto created = new MyString(input.c_str()); 
         clearString(gCurrentString);
         gCurrentString = created;
         std::cout << "Строка создана.\n";
@@ -55,19 +56,19 @@ void handlePrintString() {
 }
 
 void handleConcatTwoStrings() {
-    std::cout << "Введите первую строку: ";
+    std::cout << "Введите первую строку (макс. " << MyString::max_length() << "): ";
     if (std::cin.peek() == '\n') std::cin.get();
-    std::string s1 = readLine();
+    const std::string s1 = readLine();
 
-    std::cout << "Введите вторую строку: ";
-    std::string s2 = readLine();
+    std::cout << "Введите вторую строку (макс. " << MyString::max_length() << "): ";
+    const std::string s2 = readLine();
 
     try {
         MyString m1(s1.c_str());
         MyString m2(s2.c_str());
         MyString res = m1 + m2;
         clearString(gConcatResult);
-        gConcatResult = new MyString(res);
+        gConcatResult = new MyString(res); 
         std::cout << "Строки успешно объединены.\n";
     }
     catch (const StringTooLongException& e) {
