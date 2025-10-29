@@ -5,11 +5,11 @@
 #include <string>
 
 namespace{
-MyString*& currentStringRef() {
+MyString*& currentString() {
     static MyString* ptr = nullptr;
     return ptr;
 }
-MyString*& concatResultRef() {
+MyString*& concatResult() {
     static MyString* ptr = nullptr;
     return ptr;
 }
@@ -43,9 +43,8 @@ void handleCreateString() {
 
     try {
         auto created = new MyString(input.c_str());
-        auto& cur = currentStringRef();
-        clearString(cur);
-        cur = created;
+        clearString(currentString());
+        currentString() = created;
         std::cout << "Строка создана.\n";
     }
     catch (const StringTooLongException& e) {
@@ -54,12 +53,11 @@ void handleCreateString() {
 }
 
 void handlePrintString() {
-    auto& cur = currentStringRef();
-    if (!cur) {
+    if (!currentString()) {
         std::cout << "Строка не создана.\n";
         return;
     }
-    std::cout << "Текущая строка: " << cur->c_str() << "\n";
+    std::cout << "Текущая строка: " << currentString()->c_str() << "\n";
 }
 
 void handleConcatTwoStrings() {
@@ -74,9 +72,8 @@ void handleConcatTwoStrings() {
         MyString m1(s1.c_str());
         MyString m2(s2.c_str());
         MyString res = m1 + m2;
-        auto& cr = concatResultRef();
-        clearString(cr);
-        cr = new MyString(res);
+        clearString(concatResult());
+        concatResult() = new MyString(res);
         std::cout << "Строки успешно объединены.\n";
     }
     catch (const StringTooLongException& e) {
@@ -88,10 +85,9 @@ void handleConcatTwoStrings() {
 }
 
 void handleShowConcatenated() {
-    auto& cr = concatResultRef();
-    if (!cr) {
+    if (!concatResult()) {
         std::cout << "Объединённых строк пока нет.\n";
         return;
     }
-    std::cout << "Результат объединения: " << cr->c_str() << "\n";
+    std::cout << "Результат объединения: " << concatResult()->c_str() << "\n";
 }

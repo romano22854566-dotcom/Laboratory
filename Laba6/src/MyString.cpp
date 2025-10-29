@@ -52,20 +52,6 @@ std::size_t MyString::size() const {
     return length;
 }
 
-MyString operator+(const MyString& lhs,const MyString& rhs) {
-    const std::size_t newLen = lhs.length + rhs.length;
-    if (newLen > MyString::max_length()) {
-        throw ConcatTooLongException("Ошибка: результат объединения длиннее 10 символов.");
-    }
-    auto buffer = new char[newLen + 1];
-    std::memcpy(buffer,lhs.data,lhs.length);
-    std::memcpy(buffer + lhs.length,rhs.data,rhs.length);
-    buffer[newLen] = '\0';
-    MyString result(buffer);
-    delete[] buffer;
-    return result;
-}
-
 std::size_t MyString::max_length() {
     return MAX_LENGTH;
 }

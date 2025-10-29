@@ -20,7 +20,19 @@ public:
     const char* c_str() const;
     std::size_t size() const;
 
-    friend MyString operator+(const MyString& lhs,const MyString& rhs);
+    friend MyString operator+(const MyString& lhs,const MyString& rhs) {
+        const std::size_t newLen = lhs.length + rhs.length;
+        if (newLen > MAX_LENGTH) {
+            throw ConcatTooLongException("Ошибка: результат объединения длиннее 10 символов.");
+        }
+        auto buffer = new char[newLen + 1];
+        std::memcpy(buffer,lhs.data,lhs.length);
+        std::memcpy(buffer + lhs.length,rhs.data,rhs.length);
+        buffer[newLen] = '\0';
+        MyString result(buffer);
+        delete[] buffer;
+        return result;
+    }
 
     static std::size_t max_length();
 };
