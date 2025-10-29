@@ -8,11 +8,7 @@ void MyString::allocateAndCopy(const char* src,std::size_t len) {
     length = len;
 }
 
-MyString::MyString() {
- 
-    data = new char[1]{'\0'};
-   
-}
+MyString::MyString(): data(new char[1]{'\0'}) {}
 
 MyString::MyString(const char* str) {
     if (!str) {
@@ -32,10 +28,9 @@ MyString::MyString(const MyString& other) {
 
 MyString& MyString::operator=(const MyString& other) {
     if (this != &other) {
-        auto newData = new char[other.length + 1]; 
+        auto newData = new char[other.length + 1];
         std::memcpy(newData,other.data,other.length);
         newData[other.length] = '\0';
-
         delete[] data;
         data = newData;
         length = other.length;
@@ -62,11 +57,10 @@ MyString operator+(const MyString& lhs,const MyString& rhs) {
     if (newLen > MyString::max_length()) {
         throw ConcatTooLongException("Ошибка: результат объединения длиннее 10 символов.");
     }
-    auto buffer = new char[newLen + 1]; 
+    auto buffer = new char[newLen + 1];
     std::memcpy(buffer,lhs.data,lhs.length);
     std::memcpy(buffer + lhs.length,rhs.data,rhs.length);
     buffer[newLen] = '\0';
-
     MyString result(buffer);
     delete[] buffer;
     return result;

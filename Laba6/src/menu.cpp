@@ -5,9 +5,14 @@
 #include <string>
 
 namespace{
-
-MyString* gCurrentString = nullptr; 
-MyString* gConcatResult = nullptr;  
+MyString*& currentStringRef() {
+    static MyString* ptr = nullptr;
+    return ptr;
+}
+MyString*& concatResultRef() {
+    static MyString* ptr = nullptr;
+    return ptr;
+}
 
 void clearString(MyString*& ptr) {
     delete ptr;
@@ -37,9 +42,10 @@ void handleCreateString() {
     const std::string input = readLine();
 
     try {
-        auto created = new MyString(input.c_str()); 
-        clearString(gCurrentString);
-        gCurrentString = created;
+        auto created = new MyString(input.c_str());
+        auto& cur = currentStringRef();
+        clearString(cur);
+        cur = created;
         std::cout << "Строка создана.\n";
     }
     catch (const StringTooLongException& e) {
@@ -48,11 +54,12 @@ void handleCreateString() {
 }
 
 void handlePrintString() {
-    if (!gCurrentString) {
+    auto& cur = currentStringRef();
+    if (!cur) {
         std::cout << "Строка не создана.\n";
         return;
     }
-    std::cout << "Текущая строка: " << gCurrentString->c_str() << "\n";
+    std::cout << "Текущая строка: " << cur->c_str() << "\n";
 }
 
 void handleConcatTwoStrings() {
@@ -67,8 +74,9 @@ void handleConcatTwoStrings() {
         MyString m1(s1.c_str());
         MyString m2(s2.c_str());
         MyString res = m1 + m2;
-        clearString(gConcatResult);
-        gConcatResult = new MyString(res); 
+        auto& cr = concatResultRef();
+        clearString(cr);
+        cr = new MyString(res);
         std::cout << "Строки успешно объединены.\n";
     }
     catch (const StringTooLongException& e) {
@@ -80,9 +88,10 @@ void handleConcatTwoStrings() {
 }
 
 void handleShowConcatenated() {
-    if (!gConcatResult) {
+    auto& cr = concatResultRef();
+    if (!cr) {
         std::cout << "Объединённых строк пока нет.\n";
         return;
     }
-    std::cout << "Результат объединения: " << gConcatResult->c_str() << "\n";
+    std::cout << "Результат объединения: " << cr->c_str() << "\n";
 }

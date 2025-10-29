@@ -8,10 +8,9 @@ int main() {
         showMenu();
         if (!(std::cin >> choice)) {
             std::cin.clear();
-            while (std::cin.get() != '\n' && std::cin.good()) {
-            }
-            std::cout << "Неверный ввод.\n";
-            continue;
+            while (std::cin.get() != '\n' && std::cin.good()) 
+                std::cout << "Неверный ввод.\n";
+                continue;
         }
 
         switch (choice) {
