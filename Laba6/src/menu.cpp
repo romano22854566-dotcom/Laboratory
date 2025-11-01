@@ -27,7 +27,7 @@ std::string readLine() {
 }
 
 void showMenu() {
-    std::cout << "\n=== МЕНЮ ===\n";
+    std::cout << "=== МЕНЮ ===\n";
     std::cout << "1. Создать строку\n";
     std::cout << "2. Вывести строку\n";
     std::cout << "3. Объединить две строки\n";
