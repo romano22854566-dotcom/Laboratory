@@ -30,7 +30,7 @@ jobs:
           mkdir Laba6/build
           cmake -S Laba6 -B Laba6/build
           build-wrapper-linux-x86-64 --out-dir Laba6/build_wrapper make -C Laba6/build
-          
+
       - name: SonarCloud scan Laba6
         uses: SonarSource/sonarqube-scan-action@v6
         env:
@@ -44,22 +44,22 @@ jobs:
             -Dsonar.coverage.exclusions=**
             -Dsonar.cfamily.skipCoverage=true
 
-            - name: Build Laba7
-             run: |
-                  rm -rf Laba7/build
-              mkdir Laba7/build
-              cmake -S Laba7 -B Laba7/build
-              build-wrapper-linux-x86-64 --out-dir Laba7/build_wrapper make -C Laba7/build
-    
-             - name: SonarCloud scan Laba7
-            uses: SonarSource/sonarqube-scan-action@v6
-             env:
-             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-             with:
-             args: >
-             -Dsonar.projectKey=PeTkun_Industries_Laba7
-               -Dsonar.organization=${{ env.SONAR_ORG }}
-               -Dsonar.sources=Laba7
-              -Dsonar.cfamily.compile-commands=Laba7/build_wrapper/compile_commands.json
-               -Dsonar.coverage.exclusions=**
-                 -Dsonar.cfamily.skipCoverage=true
+      - name: Build Laba7
+        run: |
+          rm -rf Laba7/build
+          mkdir Laba7/build
+          cmake -S Laba7 -B Laba7/build
+          build-wrapper-linux-x86-64 --out-dir Laba7/build_wrapper make -C Laba7/build
+
+      - name: SonarCloud scan Laba7
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=PeTkun_Industries_Laba7
+            -Dsonar.organization=${{ env.SONAR_ORG }}
+            -Dsonar.sources=Laba7
+            -Dsonar.cfamily.compile-commands=Laba7/build_wrapper/compile_commands.json
+            -Dsonar.coverage.exclusions=**
+            -Dsonar.cfamily.skipCoverage=true
