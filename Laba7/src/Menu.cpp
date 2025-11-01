@@ -50,7 +50,7 @@ void Menu::displayMainMenu() {
     std::cout << "4. Найти сотрудников по фамилии\n";
     std::cout << "6. Очистить всех сотрудников\n";
     std::cout << "0. Выход\n";
-    std::cout << "Выбор: ";
+    std::cout << "Выбор:";
 }
 
 int Menu::getUserChoice() {
