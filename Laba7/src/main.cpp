@@ -1,6 +1,9 @@
 #include "Menu.hpp"
 #include<locale.h>
-#include<windows.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
