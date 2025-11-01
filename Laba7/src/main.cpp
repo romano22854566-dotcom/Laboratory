@@ -5,8 +5,10 @@
 #endif
 
 int main() {
+#ifdef _WIN32
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+#endif
     setlocale(0,"rus");
     Menu::run();
     return 0;
