@@ -18,7 +18,7 @@ public:
              const std::string& mName,
              int number);
 
-    // Rule of 0
+    // Rule of 0: строки сами управл€ют пам€тью
     Employee(const Employee&) = default;
     Employee& operator=(const Employee&) = default;
     ~Employee() = default;
