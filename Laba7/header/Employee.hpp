@@ -1,4 +1,4 @@
-#ifndef EMPLOYEE_HPP
+п»ї#ifndef EMPLOYEE_HPP
 #define EMPLOYEE_HPP
 
 #include <iostream>
@@ -18,7 +18,7 @@ public:
              const std::string& mName,
              int number);
 
-    // Rule of 0: строки сами управляют памятью
+    // Rule of 0: СЃС‚СЂРѕРєРё СЃР°РјРё СѓРїСЂР°РІР»СЏСЋС‚ РїР°РјСЏС‚СЊСЋ
     Employee(const Employee&) = default;
     Employee& operator=(const Employee&) = default;
     ~Employee() = default;

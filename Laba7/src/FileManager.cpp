@@ -31,7 +31,7 @@ Employee* FileManager::readAllEmployees(int& count) {
         return nullptr;
     }
 
-    Employee* employees = new Employee[recordCount];
+     auto employees = new Employee[recordCount];
 
     while (count < recordCount && in >> employees[count]) {
         count++;
@@ -55,7 +55,7 @@ Employee* FileManager::findEmployeeByNumber(int number,bool& found) {
         return nullptr;
     }
 
-    Employee* emp = new Employee();
+    auto emp = new Employee();
 
     while (in >> *emp) {
         if (emp->getEmployeeNumber() == number) {
@@ -88,7 +88,7 @@ Employee* FileManager::findEmployeesByLastName(const char* lastName,int& count) 
         return nullptr;
     }
 
-    Employee* tempEmployees = new Employee[totalRecords];
+    auto tempEmployees = new Employee[totalRecords];
     Employee currentEmp;
     int readCount = 0;
 
@@ -107,7 +107,7 @@ Employee* FileManager::findEmployeesByLastName(const char* lastName,int& count) 
         return nullptr;
     }
 
-    Employee* result = new Employee[count];
+    auto result = new Employee[count];
     for (int i = 0; i < count; i++) {
         result[i] = tempEmployees[i];
     }
