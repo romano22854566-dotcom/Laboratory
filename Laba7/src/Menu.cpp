@@ -3,7 +3,7 @@
 #include "FileManager.hpp"
 #include <iostream>
 #include <limits>
-#include <cstring>
+#include <string>
 
 void Menu::run() {
     int choice;
@@ -14,21 +14,11 @@ void Menu::run() {
         choice = getUserChoice();
 
         switch (choice) {
-        case 1:
-        handleAddEmployee();
-        break;
-        case 2:
-        handleShowAllEmployees();
-        break;
-        case 3:
-        handleFindByNumber();
-        break;
-        case 4:
-        handleFindByLastName();
-        break;
-        case 5:
-        handleClearDatabase();
-        break;
+        case 1: handleAddEmployee(); break;
+        case 2: handleShowAllEmployees(); break;
+        case 3: handleFindByNumber(); break;
+        case 4: handleFindByLastName(); break;
+        case 5: handleClearDatabase(); break;
         case 0:
         std::cout << "\nВыход\n";
         running = false;
@@ -37,51 +27,46 @@ void Menu::run() {
         std::cout << "\nОшибка: неверный выбор.\n";
         break;
         }
-
-       
     }
 }
 
 void Menu::displayMainMenu() {
     std::cout << "=== Меню ===\n";
-    std::cout << "1. Добавить нового сотрудника\n";
+    std::cout << "1. Добавить сотрудника\n";
     std::cout << "2. Показать всех сотрудников\n";
-    std::cout << "3. Найти сотрудника по номеру\n";
-    std::cout << "4. Найти сотрудников по фамилии\n";
-    std::cout << "6. Очистить всех сотрудников\n";
+    std::cout << "3. Найти по номеру\n";
+    std::cout << "4. Найти по фамилии\n";
+    std::cout << "5. Очистить базу\n";
     std::cout << "0. Выход\n";
-    std::cout << "Выбор:";
+    std::cout << "Выбор: ";
 }
 
 int Menu::getUserChoice() {
     int choice;
-
     while (!(std::cin >> choice)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         std::cout << "Ошибка, введите число: ";
     }
-
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     return choice;
 }
 
 void Menu::handleAddEmployee() {
-    char firstName[100],lastName[100],middleName[100];
+    std::string firstName;
+    std::string lastName;
+    std::string middleName;
     int number;
 
-    std::cout << "\nВвод данных сотрудника\n";
-
+    std::cout << "\nВведите данные сотрудника\n";
     std::cout << "Фамилия: ";
     std::cin >> lastName;
-
     std::cout << "Имя: ";
     std::cin >> firstName;
-
     std::cout << "Отчество: ";
     std::cin >> middleName;
 
-    std::cout << "Номер работника: ";
+    std::cout << "Номер сотрудника: ";
     while (!(std::cin >> number) || number <= 0) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -90,12 +75,11 @@ void Menu::handleAddEmployee() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
     Employee newEmployee(firstName,lastName,middleName,number);
-
     if (FileManager::writeEmployee(newEmployee)) {
-        std::cout << "\nСотрудник добавлен. \n";
+        std::cout << "\nСотрудник добавлен.\n";
     }
     else {
-        std::cout << "\nОшибка, не удалось добавить сотрудника.\n";
+        std::cout << "\nОшибка записи.\n";
     }
 }
 
@@ -104,26 +88,23 @@ void Menu::handleShowAllEmployees() {
     Employee* employees = FileManager::readAllEmployees(count);
 
     if (!employees || count == 0) {
-        std::cout << "\nНет работников.\n";
+        std::cout << "\nНет сотрудников.\n";
         return;
     }
 
-    std::cout << "\nСписок всех работников \n";
-
+    std::cout << "\nСписок сотрудников:\n";
     for (int i = 0; i < count; i++) {
         std::cout << "\n[" << (i + 1) << "]\n";
         employees[i].display();
     }
-
-    std::cout << "\nВсего записей: " << count << "\n";
+    std::cout << "\nВсего сотрудников: " << count << "\n";
 
     delete[] employees;
 }
 
 void Menu::handleFindByNumber() {
     int number;
-
-    std::cout << "\nВведите номер работника: ";
+    std::cout << "\nВведите номер сотрудника: ";
     while (!(std::cin >> number) || number <= 0) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -135,48 +116,53 @@ void Menu::handleFindByNumber() {
     Employee* employee = FileManager::findEmployeeByNumber(number,found);
 
     if (found && employee) {
-        std::cout << "\nРаботник найден\n";
+        std::cout << "\nНайден сотрудник:\n";
         employee->display();
         delete employee;
     }
     else {
-        std::cout << "\nРаботник с номером " << number << " не найден.\n";
+        std::cout << "\nСотрудник с номером " << number << " не найден.\n";
     }
 }
 
 void Menu::handleFindByLastName() {
-    char lastName[100];
-
+    std::string lastName;
     std::cout << "\nВведите фамилию для поиска: ";
-    std::cin.getline(lastName,100);
+    std::getline(std::cin,lastName);
 
     int count = 0;
-    Employee* employees = FileManager::findEmployeesByLastName(lastName,count);
+    Employee* employees = FileManager::findEmployeesByLastName(lastName.c_str(),count);
 
     if (!employees || count == 0) {
-        std::cout << "\nРаботник с фамилией \"" << lastName << "\" не найдены.\n";
+        std::cout << "\nСотрудники с фамилией \"" << lastName << "\" не найдены.\n";
         return;
     }
 
-    std::cout << "\nРезультаты поиска\n";
-
+    std::cout << "\nНайденные сотрудники:\n";
     for (int i = 0; i < count; i++) {
         std::cout << "\n[" << (i + 1) << "]\n";
         employees[i].display();
     }
-    std::cout << "\nНайдено записей: " << count << "\n";
+    std::cout << "\nВсего найдено: " << count << "\n";
 
     delete[] employees;
 }
 
 void Menu::handleClearDatabase() {
     char confirm;
+    std::cout << "\nВы уверены, что хотите очистить базу? (y/n): ";
     std::cin >> confirm;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+
+    if (confirm == 'y' || confirm == 'Y') {
         if (FileManager::clearFile()) {
-            std::cout << "\nФаил очищен.\n";
+            std::cout << "\nБаза очищена.\n";
         }
         else {
-            std::cout << "\nОшибка, не удалось очистить ба.\n";
+            std::cout << "\nОшибка очистки базы.\n";
         }
     }
+    else {
+        std::cout << "\nОтмена операции.\n";
+    }
+}

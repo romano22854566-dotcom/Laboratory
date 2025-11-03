@@ -11,7 +11,6 @@ set(SOURCES
     src/Employee.cpp
     src/FileManager.cpp
     src/Menu.cpp
-    src/StringUtils.cpp
 )
 
 add_executable(laba7_exec ${SOURCES})

@@ -2,39 +2,42 @@
 #define EMPLOYEE_HPP
 
 #include <iostream>
-#include <fstream>
+#include <string>
 
 class Employee {
 private:
-    char* firstName;
-    char* lastName;
-    char* middleName;
-    int employeeNumber;
-
-    void allocateString(char*& dest,const char* src);
-    void deallocateString(char*& str);
+    std::string firstName{""};
+    std::string lastName{""};
+    std::string middleName{""};
+    int employeeNumber{0};
 
 public:
-    Employee();
-    Employee(const char* fName,const char* lName,const char* mName,int number);
-    Employee(const Employee& other);
-    Employee& operator=(const Employee& other);
-    ~Employee();
+    Employee() = default;
+    Employee(const std::string& fName,
+             const std::string& lName,
+             const std::string& mName,
+             int number);
 
-    const char* getFirstName() const;
-    const char* getLastName() const;
-    const char* getMiddleName() const;
+    // Rule of 0: строки сами управл€ют пам€тью
+    Employee(const Employee&) = default;
+    Employee& operator=(const Employee&) = default;
+    ~Employee() = default;
+
+    const std::string& getFirstName() const;
+    const std::string& getLastName() const;
+    const std::string& getMiddleName() const;
     int getEmployeeNumber() const;
 
-    void setFirstName(const char* fName);
-    void setLastName(const char* lName);
-    void setMiddleName(const char* mName);
+    void setFirstName(const std::string& fName);
+    void setLastName(const std::string& lName);
+    void setMiddleName(const std::string& mName);
     void setEmployeeNumber(int number);
 
+    void display() const;
+
+    // hidden friends
     friend std::ostream& operator<<(std::ostream& out,const Employee& emp);
     friend std::istream& operator>>(std::istream& in,Employee& emp);
-
-    void display() const;
 };
 
 #endif
