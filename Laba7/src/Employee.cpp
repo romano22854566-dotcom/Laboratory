@@ -7,15 +7,31 @@ Employee::Employee(const std::string& fName,
     : firstName(fName),lastName(lName),middleName(mName),employeeNumber(number) {
 }
 
-const std::string& Employee::getFirstName() const { return firstName; }
-const std::string& Employee::getLastName() const { return lastName; }
-const std::string& Employee::getMiddleName() const { return middleName; }
-int Employee::getEmployeeNumber() const { return employeeNumber; }
+const std::string& Employee::getFirstName() const { 
+    return firstName; 
+}
+const std::string& Employee::getLastName() const { 
+    return lastName; 
+}
+const std::string& Employee::getMiddleName() const { 
+    return middleName; 
+}
+int Employee::getEmployeeNumber() const { 
+    return employeeNumber; 
+}
 
-void Employee::setFirstName(const std::string& fName) { firstName = fName; }
-void Employee::setLastName(const std::string& lName) { lastName = lName; }
-void Employee::setMiddleName(const std::string& mName) { middleName = mName; }
-void Employee::setEmployeeNumber(int number) { employeeNumber = number; }
+void Employee::setFirstName(const std::string& fName) {
+    firstName = fName; 
+}
+void Employee::setLastName(const std::string& lName) { 
+    lastName = lName; 
+}
+void Employee::setMiddleName(const std::string& mName) { 
+    middleName = mName; 
+}
+void Employee::setEmployeeNumber(int number) { 
+    employeeNumber = number; 
+}
 
 std::ostream& operator<<(std::ostream& out,const Employee& emp) {
     out << emp.lastName << " "
@@ -33,5 +49,5 @@ void Employee::display() const {
     std::cout << "Фамилия: " << lastName << "\n"
         << "Имя: " << firstName << "\n"
         << "Отчество: " << middleName << "\n"
-        << "Табельный номер: " << employeeNumber << "\n";
+        << "Номер работника: " << employeeNumber << "\n";
 }

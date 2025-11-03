@@ -36,7 +36,7 @@ void Menu::displayMainMenu() {
     std::cout << "2. Показать всех сотрудников\n";
     std::cout << "3. Найти по номеру\n";
     std::cout << "4. Найти по фамилии\n";
-    std::cout << "5. Очистить базу\n";
+    std::cout << "5. Очистить фаил\n";
     std::cout << "0. Выход\n";
     std::cout << "Выбор: ";
 }
@@ -66,7 +66,7 @@ void Menu::handleAddEmployee() {
     std::cout << "Отчество: ";
     std::cin >> middleName;
 
-    std::cout << "Номер сотрудника: ";
+    std::cout << "Номер работника: ";
     while (!(std::cin >> number) || number <= 0) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -76,7 +76,7 @@ void Menu::handleAddEmployee() {
 
     Employee newEmployee(firstName,lastName,middleName,number);
     if (FileManager::writeEmployee(newEmployee)) {
-        std::cout << "\nСотрудник добавлен.\n";
+        std::cout << "\nРаботник добавлен.\n";
     }
     else {
         std::cout << "\nОшибка записи.\n";
@@ -88,23 +88,23 @@ void Menu::handleShowAllEmployees() {
     Employee* employees = FileManager::readAllEmployees(count);
 
     if (!employees || count == 0) {
-        std::cout << "\nНет сотрудников.\n";
+        std::cout << "\nНет работников.\n";
         return;
     }
 
-    std::cout << "\nСписок сотрудников:\n";
+    std::cout << "\nСписок работников:\n";
     for (int i = 0; i < count; i++) {
         std::cout << "\n[" << (i + 1) << "]\n";
         employees[i].display();
     }
-    std::cout << "\nВсего сотрудников: " << count << "\n";
+    std::cout << "\nВсего работников: " << count << "\n";
 
     delete[] employees;
 }
 
 void Menu::handleFindByNumber() {
     int number;
-    std::cout << "\nВведите номер сотрудника: ";
+    std::cout << "\nВведите номер работника: ";
     while (!(std::cin >> number) || number <= 0) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -116,12 +116,12 @@ void Menu::handleFindByNumber() {
     Employee* employee = FileManager::findEmployeeByNumber(number,found);
 
     if (found && employee) {
-        std::cout << "\nНайден сотрудник:\n";
+        std::cout << "\nНайден работник:\n";
         employee->display();
         delete employee;
     }
     else {
-        std::cout << "\nСотрудник с номером " << number << " не найден.\n";
+        std::cout << "\nРаботник с номером " << number << " не найден.\n";
     }
 }
 
@@ -134,11 +134,11 @@ void Menu::handleFindByLastName() {
     Employee* employees = FileManager::findEmployeesByLastName(lastName.c_str(),count);
 
     if (!employees || count == 0) {
-        std::cout << "\nСотрудники с фамилией \"" << lastName << "\" не найдены.\n";
+        std::cout << "\nРаботники с фамилией \"" << lastName << "\" не найдены.\n";
         return;
     }
 
-    std::cout << "\nНайденные сотрудники:\n";
+    std::cout << "\nНайденные работники:\n";
     for (int i = 0; i < count; i++) {
         std::cout << "\n[" << (i + 1) << "]\n";
         employees[i].display();
@@ -149,20 +149,14 @@ void Menu::handleFindByLastName() {
 }
 
 void Menu::handleClearDatabase() {
-    char confirm;
-    std::cout << "\nВы уверены, что хотите очистить базу? (y/n): ";
-    std::cin >> confirm;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
-    if (confirm == 'y' || confirm == 'Y') {
         if (FileManager::clearFile()) {
-            std::cout << "\nБаза очищена.\n";
+            std::cout << "\nФаил очищена.\n";
         }
         else {
-            std::cout << "\nОшибка очистки базы.\n";
+            std::cout << "\nОшибка очистки файла.\n";
         }
     }
-    else {
-        std::cout << "\nОтмена операции.\n";
-    }
-}
+  
+

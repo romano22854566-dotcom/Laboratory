@@ -20,7 +20,6 @@ bool FileManager::writeEmployee(const Employee& emp) {
 Employee* FileManager::readAllEmployees(int& count) {
     count = 0;
 
-    // Убрали лишнюю проверку - countRecords уже проверит файл
     int recordCount = countRecords();
     if (recordCount == 0) {
         return nullptr;
@@ -120,7 +119,7 @@ int FileManager::countRecords() {
     std::ifstream in(FILENAME);
 
     if (!in.is_open()) {
-        return 0;  // ← Вот здесь защита от несуществующего файла!
+        return 0;  
     }
 
     int count = 0;

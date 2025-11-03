@@ -33,8 +33,6 @@ public:
     void setEmployeeNumber(int number);
 
     void display() const;
-
-    // hidden friends
     friend std::ostream& operator<<(std::ostream& out,const Employee& emp);
     friend std::istream& operator>>(std::istream& in,Employee& emp);
 };
