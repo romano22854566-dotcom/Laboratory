@@ -72,7 +72,7 @@ Employee* FileManager::findEmployeeByNumber(int number,bool& found) {
 Employee* FileManager::findEmployeesByLastName(const char* lastName,int& count) {
     count = 0;
 
-    if (!lastName) {
+    if (!lastName || std::string(lastName).empty()) {
         return nullptr;
     }
 
@@ -91,8 +91,10 @@ Employee* FileManager::findEmployeesByLastName(const char* lastName,int& count) 
     Employee currentEmp;
     int readCount = 0;
 
+    std::string searchStr(lastName);
+
     while (readCount < totalRecords && in >> currentEmp) {
-        if (StringUtils::stringCompare(currentEmp.getLastName(),lastName) == 0) {
+        if (currentEmp.getLastName().find(searchStr) != std::string::npos) {
             tempEmployees[count] = currentEmp;
             count++;
         }
@@ -114,6 +116,7 @@ Employee* FileManager::findEmployeesByLastName(const char* lastName,int& count) 
     delete[] tempEmployees;
     return result;
 }
+
 
 int FileManager::countRecords() {
     std::ifstream in(FILENAME);
