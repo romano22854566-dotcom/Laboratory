@@ -12,7 +12,7 @@ void SinglyLinkedList::push_front(int value) {
 }
 
 void SinglyLinkedList::push_back(int value) {
-    Node* n = new Node(value);
+    auto n = new Node(value);
     if (!m_head) {
         m_head = n;
     }
